@@ -1,0 +1,2784 @@
+[
+  {
+    "id": "ACM-RUS-UKR",
+    "slug": "russia-ukraine-war",
+    "titleEn": "The Russia–Ukraine War",
+    "titleKo": "러시아-우크라이나 전쟁",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Eastern Europe",
+    "regionKo": "동유럽",
+    "mainTheaters": "도네츠크, 자포리자, 쿠르스크, 하르키우",
+    "type": "Interstate war",
+    "trackedSince": "2022",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Kyiv",
+        "type": "city",
+        "lat": 50.4501,
+        "lon": 30.5234,
+        "description": "Capital of Ukraine and seat of the Ukrainian government, targeted repeatedly by long-range Russian missile and drone strikes.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kharkiv",
+        "type": "city",
+        "lat": 49.9935,
+        "lon": 36.2304,
+        "description": "Ukraine's second-largest city, near the northeastern border with Russia and under recurring artillery and glide-bomb range pressure.",
+        "control": "Held by Ukrainian forces; Russian forces are attempting to advance within artillery range of the city",
+        "asOf": "2026-08-01"
+      },
+      {
+        "name": "Kupiansk",
+        "type": "city",
+        "lat": 49.7167,
+        "lon": 37.6167,
+        "description": "Kharkiv Oblast city on the Oskil River that changed hands early in the war and remains a contested infiltration front.",
+        "control": "Held by Ukrainian forces amid continued Russian infiltration attempts",
+        "asOf": "2026-08-01"
+      },
+      {
+        "name": "Pokrovsk",
+        "type": "city",
+        "lat": 48.2833,
+        "lon": 37.1667,
+        "description": "Donetsk Oblast logistics hub and rail junction that has been a focal point of Russia's slow-moving offensive for over a year.",
+        "control": "Held by Ukrainian forces, who have repelled repeated Russian advances",
+        "asOf": "2026-08-01"
+      },
+      {
+        "name": "Zaporizhzhia",
+        "type": "city",
+        "lat": 47.8388,
+        "lon": 35.1396,
+        "description": "Regional capital on the Dnipro River, near the front line since Russia's 2022 invasion of the surrounding oblast.",
+        "control": "Held by Ukrainian forces",
+        "asOf": "2026-08-01"
+      },
+      {
+        "name": "Kherson",
+        "type": "city",
+        "lat": 46.6354,
+        "lon": 32.6169,
+        "description": "Southern regional capital on the west bank of the Dnipro, retaken by Ukraine in November 2022 and shelled from Russian-held territory across the river since.",
+        "control": "Held by Ukrainian forces west of the Dnipro River",
+        "asOf": "2026-08-01"
+      },
+      {
+        "name": "Mariupol",
+        "type": "port",
+        "lat": 47.0971,
+        "lon": 37.5434,
+        "description": "Sea of Azov port city largely destroyed in a months-long 2022 siege and held by Russian forces since, now a rebuilt administrative center under occupation.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Sevastopol",
+        "type": "port",
+        "lat": 44.6054,
+        "lon": 33.522,
+        "description": "Crimean port city and historic headquarters of Russia's Black Sea Fleet; Crimea has been administered by Russia since a 2014 annexation that most of the international community does not recognize.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Odesa",
+        "type": "port",
+        "lat": 46.4825,
+        "lon": 30.7233,
+        "description": "Ukraine's principal Black Sea port, essential to grain exports and a recurring target of Russian missile and drone strikes.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/russia-ukraine-war.html"
+  },
+  {
+    "id": "ACM-ISR-GZA",
+    "slug": "israel-gaza-war",
+    "titleEn": "The Israel–Gaza War",
+    "titleKo": "이스라엘-하마스(가자) 전쟁",
+    "status": "Ceasefire (fragile)",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "Gaza / West Bank",
+    "regionKo": "중동",
+    "mainTheaters": "가자지구, 라파, 서안지구",
+    "type": "Asymmetric conflict",
+    "trackedSince": "2023",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Gaza City",
+        "type": "city",
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "description": "The Gaza Strip's largest city, in the north of the territory, heavily damaged during the 2023-2025 war and outside the Israeli-held Yellow Line zone.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Khan Younis",
+        "type": "city",
+        "lat": 31.3406,
+        "lon": 34.3062,
+        "description": "Southern Gaza's largest city, roughly bisected by the ceasefire's Yellow Line demarcation, with the two halves falling under differing zones of control.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Rafah",
+        "type": "city",
+        "lat": 31.2972,
+        "lon": 34.241,
+        "description": "Southernmost Gaza city on the Egyptian border, most of which sits inside the Israeli-controlled Yellow Line zone under the current ceasefire.",
+        "control": "Israeli troops remain stationed at the Rafah border crossing after reopening it in February 2026",
+        "asOf": "2026-02-24"
+      },
+      {
+        "name": "Philadelphi Corridor",
+        "type": "border",
+        "lat": 31.25,
+        "lon": 34.22,
+        "description": "Narrow strip along the Gaza-Egypt border historically used for smuggling tunnels and held by Israeli forces since 2024.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kerem Shalom Crossing",
+        "type": "border",
+        "lat": 31.2167,
+        "lon": 34.2833,
+        "description": "The main commercial and humanitarian aid crossing between Israel and Gaza, near the Egyptian border tri-point.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Rafah Crossing",
+        "type": "border",
+        "lat": 31.2833,
+        "lon": 34.25,
+        "description": "The principal crossing between Gaza and Egypt, used for aid deliveries and medical evacuations, subject to intermittent closure during the war.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Erez Crossing",
+        "type": "border",
+        "lat": 31.55,
+        "lon": 34.5333,
+        "description": "Pedestrian crossing on Gaza's northern border with Israel, historically the main route for people movement between the territory and Israel.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Ashkelon",
+        "type": "city",
+        "lat": 31.6688,
+        "lon": 34.5715,
+        "description": "Israeli coastal city just north of the Gaza Strip, repeatedly targeted by rocket fire from Gaza-based armed groups during the war.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/israel-gaza-war.html"
+  },
+  {
+    "id": "ACM-IRN-ISR",
+    "slug": "iran-israel-war",
+    "titleEn": "The Iran–Israel War",
+    "titleKo": "이란-이스라엘 분쟁",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Global",
+    "regionKo": "중동",
+    "mainTheaters": "테헤란, 텔아비브, 시리아 국경",
+    "type": "Armed Conflict",
+    "trackedSince": "",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Tehran",
+        "type": "city",
+        "lat": 35.6892,
+        "lon": 51.389,
+        "description": "Capital of Iran and seat of government, targeted during the February 2026 U.S. and Israeli strikes.",
+        "control": "Islamic Republic of Iran, under Supreme Leader Mojtaba Khamenei since his father's death in February 2026",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Natanz",
+        "type": "base",
+        "lat": 33.7206,
+        "lon": 51.7268,
+        "description": "Underground uranium enrichment facility in central Iran, one of three nuclear sites struck by U.S. forces on June 21, 2025.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Fordow",
+        "type": "base",
+        "lat": 34.8847,
+        "lon": 50.9964,
+        "description": "Fortified underground uranium enrichment site near Qom, struck alongside Natanz and Isfahan in the June 2025 U.S. strikes.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Isfahan",
+        "type": "city",
+        "lat": 32.6546,
+        "lon": 51.668,
+        "description": "Major central Iranian city and site of a nuclear technology center struck by U.S. forces in June 2025.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Strait of Hormuz",
+        "type": "chokepoint",
+        "lat": 26.5667,
+        "lon": 56.25,
+        "description": "Narrow maritime chokepoint between the Persian Gulf and Gulf of Oman through which a large share of global oil transits.",
+        "control": "Contested; Iranian forces attempted to close the strait during the 2026 war, met by a U.S. Navy blockade of Iranian ports",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Bandar Abbas",
+        "type": "port",
+        "lat": 27.1865,
+        "lon": 56.2808,
+        "description": "Iran's principal naval base on the Strait of Hormuz, home port for its Islamic Revolutionary Guard Corps Navy.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bushehr",
+        "type": "base",
+        "lat": 28.9684,
+        "lon": 50.8385,
+        "description": "Site of Iran's sole operating nuclear power plant, on the Persian Gulf coast.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Tel Aviv",
+        "type": "city",
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "description": "Israel's commercial and diplomatic capital, repeatedly targeted by Iranian missile and drone strikes during the 2026 war.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Al Udeid Air Base",
+        "type": "base",
+        "lat": 25.1173,
+        "lon": 51.3151,
+        "description": "Qatari base hosting U.S. Central Command's forward headquarters, struck by Iranian missiles during the 2026 war.",
+        "control": "Qatari sovereign territory hosting U.S. forces; struck by Iran on June 23, 2025",
+        "asOf": "2026-07-29"
+      }
+    ],
+    "url": "https://armedconflicts.org/iran-israel-war.html"
+  },
+  {
+    "id": "ACM-LBN-ISR",
+    "slug": "lebanon-israel-conflict",
+    "titleEn": "The Lebanon–Israel Conflict",
+    "titleKo": "레바논-이스라엘(헤즈볼라) 충돌",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Middle East",
+    "regionKo": "중동",
+    "mainTheaters": "남부 레바논, 베이루트",
+    "type": "Interstate / non-state",
+    "trackedSince": "2023",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Beirut",
+        "type": "city",
+        "lat": 33.8938,
+        "lon": 35.5018,
+        "description": "Capital of Lebanon and seat of the Lebanese government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Dahiyeh",
+        "type": "region",
+        "lat": 33.8558,
+        "lon": 35.5253,
+        "description": "Hezbollah's traditional political and military stronghold in southern Beirut, repeatedly targeted by Israeli airstrikes during the war.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Tyre",
+        "type": "port",
+        "lat": 33.2704,
+        "lon": 35.2038,
+        "description": "Ancient port city in the heart of Hezbollah's south Lebanon base of support.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Nabatieh",
+        "type": "city",
+        "lat": 33.3789,
+        "lon": 35.4839,
+        "description": "South Lebanon provincial city struck repeatedly during the conflict, including reported strikes in July 2026.",
+        "control": "Outside formal Israeli-held zones but within range of continued Israeli strikes on Hezbollah-linked targets",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Naqoura",
+        "type": "border",
+        "lat": 33.1281,
+        "lon": 35.1075,
+        "description": "Coastal town hosting the headquarters of the UN Interim Force in Lebanon (UNIFIL), near the Israel-Lebanon border.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kfar Kila",
+        "type": "border",
+        "lat": 33.0917,
+        "lon": 35.5628,
+        "description": "Border village directly on the Blue Line demarcation, among the areas hit hardest when the March 2026 ground invasion began.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Litani River",
+        "type": "region",
+        "lat": 33.35,
+        "lon": 35.45,
+        "description": "River roughly 30 kilometers north of the border that UN Security Council Resolution 1701 designates as the line behind which Hezbollah forces are meant to withdraw.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Southern Lebanon buffer area",
+        "type": "region",
+        "lat": 33.15,
+        "lon": 35.35,
+        "description": "Zone south of the Litani River where Israeli ground forces have operated since the March 2026 invasion.",
+        "control": "Israeli forces remain entrenched across roughly 20 percent of Lebanese territory, pending Hezbollah's disarmament under a June 2026 U.S.-brokered framework",
+        "asOf": "2026-08-03"
+      }
+    ],
+    "url": "https://armedconflicts.org/lebanon-israel-conflict.html"
+  },
+  {
+    "id": "ACM-YEM-WAR",
+    "slug": "yemen-war",
+    "titleEn": "The Yemen War",
+    "titleKo": "예멘 내전 & 홍해 후티 위기",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Arabian Peninsula",
+    "regionKo": "중동/홍해",
+    "mainTheaters": "홍해 항로, 사나, 아덴만",
+    "type": "Civil war",
+    "trackedSince": "2014",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Sanaa",
+        "type": "city",
+        "lat": 15.3694,
+        "lon": 44.191,
+        "description": "Yemen's traditional capital, seized by Houthi forces in 2014 and still the seat of their administration.",
+        "control": "Houthi movement (Ansar Allah)",
+        "asOf": "2026-01-14"
+      },
+      {
+        "name": "Aden",
+        "type": "port",
+        "lat": 12.7794,
+        "lon": 45.0367,
+        "description": "Southern port city serving as the interim seat of Yemen's internationally recognized government.",
+        "control": "Internationally recognized government (Presidential Leadership Council)",
+        "asOf": "2026-01-14"
+      },
+      {
+        "name": "Hodeidah",
+        "type": "port",
+        "lat": 14.7979,
+        "lon": 42.9545,
+        "description": "Yemen's main Red Sea port and principal entry point for humanitarian aid, overlooking approaches to the Bab-el-Mandeb Strait.",
+        "control": "Houthi movement (Ansar Allah)",
+        "asOf": "2026-01-14"
+      },
+      {
+        "name": "Marib",
+        "type": "city",
+        "lat": 15.462,
+        "lon": 45.3222,
+        "description": "Oil- and gas-producing city east of Sanaa that has repeatedly repelled Houthi offensives and hosts large numbers of displaced Yemenis.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Taiz",
+        "type": "city",
+        "lat": 13.5789,
+        "lon": 44.0178,
+        "description": "Yemen's third-largest city, besieged and divided along front lines since 2015 with roads in and out subject to closure.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bab-el-Mandeb Strait",
+        "type": "chokepoint",
+        "lat": 12.5804,
+        "lon": 43.3311,
+        "description": "Narrow maritime chokepoint between the Red Sea and Gulf of Aden through which a large share of global container traffic normally passes; repeatedly targeted by Houthi missile and drone attacks on shipping since late 2023.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Al Mukha (Mocha)",
+        "type": "port",
+        "lat": 13.3208,
+        "lon": 43.2478,
+        "description": "Historic Red Sea coffee-trade port south of Hodeidah that has changed hands multiple times during the war.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Al Mukalla",
+        "type": "port",
+        "lat": 14.5333,
+        "lon": 49.1333,
+        "description": "Main port of eastern Hadramawt governorate, briefly held by al-Qaeda in the Arabian Peninsula in 2015-2016 before being retaken by a Saudi-led coalition offensive.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/yemen-war.html"
+  },
+  {
+    "id": "ACM-SYR-CIV",
+    "slug": "syria-civil-war",
+    "titleEn": "The Syria Conflict",
+    "titleKo": "시리아 내전",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Middle East",
+    "regionKo": "중동",
+    "mainTheaters": "알레포, 이들립, 다마스쿠스",
+    "type": "Multi-party / instability",
+    "trackedSince": "2011",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Damascus",
+        "type": "city",
+        "lat": 33.5138,
+        "lon": 36.2765,
+        "description": "Capital of Syria and seat of government since the Assad regime's collapse on December 8, 2024.",
+        "control": "Syrian Transitional Government (HTS-led)",
+        "asOf": "2026-08-04"
+      },
+      {
+        "name": "Aleppo",
+        "type": "city",
+        "lat": 36.2021,
+        "lon": 37.1343,
+        "description": "Syria's largest city by pre-war population and an industrial hub in the north; the first major city taken in the offensive that toppled the Assad government.",
+        "control": "Syrian Transitional Government (HTS-led)",
+        "asOf": "2026-08-04"
+      },
+      {
+        "name": "Qamishli",
+        "type": "city",
+        "lat": 37.0522,
+        "lon": 41.2189,
+        "description": "Largest city in Syria's Kurdish-majority northeast and former de facto capital of the Autonomous Administration of North and East Syria.",
+        "control": "Syrian government (administrative control transferred from the Syrian Democratic Forces under a US-mediated ceasefire reached January 30, 2026)",
+        "asOf": "2026-08-04"
+      },
+      {
+        "name": "Al-Hasakah",
+        "type": "city",
+        "lat": 36.5024,
+        "lon": 40.7477,
+        "description": "Provincial capital in Syria's northeast, near oil fields and a former US military presence supporting the Syrian Democratic Forces.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Homs",
+        "type": "city",
+        "lat": 34.7324,
+        "lon": 36.7137,
+        "description": "Central Syrian crossroads city linking Damascus, the coast, and the north; a key strategic corridor since the war's start in 2011.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Idlib",
+        "type": "city",
+        "lat": 35.9306,
+        "lon": 36.6339,
+        "description": "Northwestern city that served as the last major opposition-held stronghold and the launch point for the late-2024 offensive against the Assad government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Latakia",
+        "type": "port",
+        "lat": 35.5317,
+        "lon": 35.7915,
+        "description": "Mediterranean port city and historic base of Assad-family and Alawite support; site of serious sectarian violence in the months after the government's fall.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Quneitra / Golan buffer zone",
+        "type": "border",
+        "lat": 33.1264,
+        "lon": 35.8244,
+        "description": "Area along the Syria-Israel frontier near the Golan Heights ceasefire line.",
+        "control": "Israeli military, operating a de facto buffer zone established December 8, 2024",
+        "asOf": "2026-08-04"
+      },
+      {
+        "name": "Tartus",
+        "type": "port",
+        "lat": 34.889,
+        "lon": 35.8866,
+        "description": "Syria's second Mediterranean port and the site of Russia's only overseas naval facility, leased since the Soviet era.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/syria-civil-war.html"
+  },
+  {
+    "id": "ACM-IRQ-CON",
+    "slug": "iraq-conflict",
+    "titleEn": "The Iraq Conflict",
+    "titleKo": "이라크 안보 위기",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "Middle East",
+    "regionKo": "중동",
+    "mainTheaters": "바그다드, 에르빌",
+    "type": "Insurgency / instability",
+    "trackedSince": "2003",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Baghdad",
+        "type": "city",
+        "lat": 33.3152,
+        "lon": 44.3661,
+        "description": "Capital of Iraq and seat of the federal government, currently led by Prime Minister Ali al-Zaidi.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Mosul",
+        "type": "city",
+        "lat": 36.3489,
+        "lon": 43.1189,
+        "description": "Iraq's second-largest city, captured by the Islamic State in June 2014 and recaptured by Iraqi forces in July 2017.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kirkuk",
+        "type": "city",
+        "lat": 35.4681,
+        "lon": 44.3922,
+        "description": "Oil-rich city that sits along the fault line between Iraq's Kurdistan autonomous region and areas administered by the federal government, a longstanding source of Arab-Kurdish tension.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Erbil",
+        "type": "city",
+        "lat": 36.1911,
+        "lon": 44.0092,
+        "description": "Capital of the Kurdistan Regional Government in northern Iraq.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Basra",
+        "type": "port",
+        "lat": 30.5085,
+        "lon": 47.7804,
+        "description": "Iraq's main port city and oil-export hub on the Persian Gulf.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Al-Asad Airbase",
+        "type": "base",
+        "lat": 33.7756,
+        "lon": 42.4411,
+        "description": "Major air base in western Anbar province used by U.S. forces in an advisory role against Islamic State remnants.",
+        "control": "Iraqi government, hosting roughly 2,500 U.S. troops in an advisory capacity",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Fallujah",
+        "type": "city",
+        "lat": 33.3489,
+        "lon": 43.7869,
+        "description": "Anbar province city recaptured from the Islamic State in June 2016 after months of fighting.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Ramadi",
+        "type": "city",
+        "lat": 33.42,
+        "lon": 43.3,
+        "description": "Anbar province's capital, recaptured from the Islamic State in December 2015.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/iraq-conflict.html"
+  },
+  {
+    "id": "ACM-TUR-KUR",
+    "slug": "turkey-kurdish-conflict",
+    "titleEn": "The Turkey–Kurdish Conflict",
+    "titleKo": "튀르키예-쿠르드(PKK) 분쟁",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "Middle East",
+    "regionKo": "중동/아나톨리아",
+    "mainTheaters": "이라크 북부 국경, 시리아 북부",
+    "type": "Insurgency",
+    "trackedSince": "1984",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Ankara",
+        "type": "city",
+        "lat": 39.9334,
+        "lon": 32.8597,
+        "description": "Capital of Turkey and seat of the government negotiating the PKK peace and disarmament process.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Diyarbakir",
+        "type": "city",
+        "lat": 37.9144,
+        "lon": 40.2306,
+        "description": "Largest Kurdish-majority city in southeastern Turkey and a center of Kurdish political life.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Qandil Mountains",
+        "type": "region",
+        "lat": 36.5,
+        "lon": 44.9,
+        "description": "Mountainous range in Iraqi Kurdistan near the Iran border that has served as the PKK's main base area for decades.",
+        "control": "Kurdistan Workers' Party (PKK) operational base, though the group announced its intent to disarm and disband in 2025",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Sinjar",
+        "type": "region",
+        "lat": 36.3209,
+        "lon": 41.8767,
+        "description": "Yazidi-majority district in northern Iraq where Turkey has conducted strikes against PKK-linked forces.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Imrali Island",
+        "type": "region",
+        "lat": 40.55,
+        "lon": 28.65,
+        "description": "Sea of Marmara prison island holding PKK founder Abdullah Ocalan, who called for the group's disbandment in February 2025.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Zakho",
+        "type": "border",
+        "lat": 37.1447,
+        "lon": 42.6863,
+        "description": "Iraqi Kurdistan border town near Turkish military outposts established under Turkey's cross-border Operation Claw campaign.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kobani",
+        "type": "border",
+        "lat": 36.8909,
+        "lon": 38.3534,
+        "description": "Syrian border city that became a symbol of Kurdish YPG resistance against the Islamic State and a recurring flashpoint in Turkey-Syria tensions.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Qamishli",
+        "type": "city",
+        "lat": 37.0522,
+        "lon": 41.2189,
+        "description": "Largest city in Syria's Kurdish-majority northeast, whose SDF forces signed an accord to integrate with Syria's post-Assad armed forces after 2024.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/turkey-kurdish-conflict.html"
+  },
+  {
+    "id": "ACM-SDN-CIV",
+    "slug": "sudan-civil-war",
+    "titleEn": "The Sudan Civil War",
+    "titleKo": "수단 내전 (정규군 vs RSF)",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Northeast Africa",
+    "regionKo": "아프리카",
+    "mainTheaters": "하르툼, 다르푸르",
+    "type": "Armed Conflict",
+    "trackedSince": "2023",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Khartoum",
+        "type": "city",
+        "lat": 15.5007,
+        "lon": 32.5599,
+        "description": "Sudan's capital, the site of the war's opening battles in April 2023 and heavily damaged before its recapture from the Rapid Support Forces.",
+        "control": "Sudanese Armed Forces (SAF)",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Omdurman",
+        "type": "city",
+        "lat": 15.6445,
+        "lon": 32.4777,
+        "description": "Khartoum's twin city across the Nile, retaken from Rapid Support Forces in early 2025 fighting.",
+        "control": "Sudanese Armed Forces (SAF)",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "El Fasher",
+        "type": "city",
+        "lat": 13.6289,
+        "lon": 25.3492,
+        "description": "Capital of North Darfur and the army's last major stronghold in the region until it fell after an eighteen-month siege on October 27, 2025.",
+        "control": "Rapid Support Forces (RSF)",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Port Sudan",
+        "type": "port",
+        "lat": 19.6158,
+        "lon": 37.2164,
+        "description": "Red Sea port city that has functioned as the wartime seat of Sudan's government and its main gateway for humanitarian and commercial shipping.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "El Obeid",
+        "type": "city",
+        "lat": 13.1889,
+        "lon": 30.2176,
+        "description": "North Kordofan capital with rail links to Khartoum, held after the army broke a Rapid Support Forces siege in February 2025.",
+        "control": "Sudanese Armed Forces (SAF)",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Nyala",
+        "type": "city",
+        "lat": 12.05,
+        "lon": 24.8833,
+        "description": "Largest city in South Darfur and a commercial hub for the wider Darfur region.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "El Geneina",
+        "type": "city",
+        "lat": 13.4523,
+        "lon": 22.4453,
+        "description": "Capital of West Darfur, near the Chad border, the site of mass ethnically targeted killings documented early in the war.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kadugli",
+        "type": "city",
+        "lat": 11.0167,
+        "lon": 29.7167,
+        "description": "Capital of South Kordofan, a state that has seen fighting spread as the conflict's east-west front line hardens.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/sudan-civil-war.html"
+  },
+  {
+    "id": "ACM-SSD-CON",
+    "slug": "south-sudan-conflict",
+    "titleEn": "The South Sudan Conflict",
+    "titleKo": "남수단 분쟁",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "East Africa",
+    "regionKo": "아프리카",
+    "mainTheaters": "주바, 유니티주",
+    "type": "Civil conflict",
+    "trackedSince": "2013",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Juba",
+        "type": "city",
+        "lat": 4.8517,
+        "lon": 31.5825,
+        "description": "South Sudan's capital and seat of the Transitional Government, briefly threatened by fighting in early 2025 before Ugandan forces deployed in support.",
+        "control": "South Sudan's Transitional Government, held with the support of SSPDF and allied Ugandan forces deployed in 2025",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Akobo",
+        "type": "city",
+        "lat": 7.7833,
+        "lon": 33.0167,
+        "description": "Eastern Jonglei town near the Ethiopian border where fighting in 2025-2026 displaced civilians.",
+        "control": "South Sudan People's Defence Forces (SSPDF), which took the town in early March 2026",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Nasir",
+        "type": "city",
+        "lat": 8.6034,
+        "lon": 33.0708,
+        "description": "Upper Nile town on the Sobat River where an army base was overrun during the White Army's 2025 offensive, a flashpoint in the collapse of the unity government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Malakal",
+        "type": "city",
+        "lat": 9.5334,
+        "lon": 31.6605,
+        "description": "Capital of Upper Nile state and a historic front line of South Sudan's civil wars, sited on the Nile's main river-transport corridor.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bentiu",
+        "type": "city",
+        "lat": 9.2333,
+        "lon": 29.7833,
+        "description": "Capital of oil-producing Unity state, repeatedly fought over since 2013 for its proximity to South Sudan's main oil fields.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bor",
+        "type": "city",
+        "lat": 6.2088,
+        "lon": 31.5602,
+        "description": "Capital of Jonglei state and site of a 2013 massacre that marked the civil war's opening phase.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Wau",
+        "type": "city",
+        "lat": 7.7,
+        "lon": 27.9833,
+        "description": "Capital of Western Bahr el Ghazal state and South Sudan's second-largest city, a rail and road hub in the country's west.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Renk",
+        "type": "border",
+        "lat": 11.75,
+        "lon": 32.7833,
+        "description": "Border town on the Sudan frontier that serves as the main transit point for people fleeing both South Sudan's conflict and the war in Sudan.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Yei",
+        "type": "border",
+        "lat": 4.093,
+        "lon": 30.6866,
+        "description": "Southern town near the Ugandan border, an agricultural center and displacement corridor for South Sudanese fleeing violence.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/south-sudan-conflict.html"
+  },
+  {
+    "id": "ACM-SOM-SHB",
+    "slug": "somalia-al-shabaab",
+    "titleEn": "The Somalia Conflict",
+    "titleKo": "소말리아-알샤바브 분쟁",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Horn of Africa",
+    "regionKo": "동아프리카",
+    "mainTheaters": "모가디슈, 소말릴란드 국경",
+    "type": "Insurgency",
+    "trackedSince": "2006",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Mogadishu",
+        "type": "city",
+        "lat": 2.0469,
+        "lon": 45.3182,
+        "description": "Somalia's capital and largest city, seat of the Federal Government, which has repeatedly been the target of al-Shabaab bombings and assaults.",
+        "control": "Federal Government of Somalia",
+        "asOf": "2026-07-30"
+      },
+      {
+        "name": "Kismayo",
+        "type": "port",
+        "lat": -0.3582,
+        "lon": 42.5454,
+        "description": "Jubaland's capital and southern Somalia's principal port, al-Shabaab's last major urban stronghold until government-aligned forces retook it in October 2012.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Baidoa",
+        "type": "city",
+        "lat": 3.1167,
+        "lon": 43.65,
+        "description": "Capital of South West State and a frequent staging point for government and African Union operations against al-Shabaab in the surrounding Bay region.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Beledweyne",
+        "type": "city",
+        "lat": 4.7358,
+        "lon": 45.2036,
+        "description": "Hiiraan region capital where government forces made significant gains against al-Shabaab during the 2022-2023 central Somalia offensive.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Jowhar",
+        "type": "city",
+        "lat": 2.7809,
+        "lon": 45.5005,
+        "description": "Capital of Hirshabelle state on the Shabelle River, a farming region contested during successive government offensives against al-Shabaab.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Baraawe",
+        "type": "port",
+        "lat": 1.1141,
+        "lon": 44.0296,
+        "description": "Historic Indian Ocean port south of Mogadishu that has changed hands between government and al-Shabaab forces over the course of the conflict.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bosaso",
+        "type": "port",
+        "lat": 11.2842,
+        "lon": 49.1816,
+        "description": "Puntland's main commercial port on the Gulf of Aden, largely insulated from the al-Shabaab insurgency further south.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Garoowe",
+        "type": "city",
+        "lat": 8.4054,
+        "lon": 48.4845,
+        "description": "Capital of the semi-autonomous Puntland state in northeastern Somalia.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/somalia-al-shabaab.html"
+  },
+  {
+    "id": "ACM-ETH-CON",
+    "slug": "ethiopia-conflict",
+    "titleEn": "The Ethiopia Conflict",
+    "titleKo": "에티오피아 암하라/오로모 분쟁",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Horn of Africa",
+    "regionKo": "동아프리카",
+    "mainTheaters": "암하라주, 티그라이",
+    "type": "Multi-front insurgency",
+    "trackedSince": "2018",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Addis Ababa",
+        "type": "city",
+        "lat": 9.025,
+        "lon": 38.7469,
+        "description": "Ethiopia's capital and seat of the federal government, increasingly within reach of Oromo Liberation Army activity spreading from Oromia region.",
+        "control": "Federal government of Ethiopia (Ethiopian National Defense Force)",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Mekelle",
+        "type": "city",
+        "lat": 13.4967,
+        "lon": 39.4697,
+        "description": "Capital of Tigray region, administered by a federally appointed Interim Administration after the 2022 peace deal until renewed clashes in 2026.",
+        "control": "Tigray People's Liberation Front (TPLF) / Tigray Defense Forces, which took effective control from the Interim Administration after clashes in 2026",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Bahir Dar",
+        "type": "city",
+        "lat": 11.5936,
+        "lon": 37.3908,
+        "description": "Capital of Amhara region on Lake Tana, a target of offensives by the Fano militia insurgency active across the region since 2023.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Shire",
+        "type": "city",
+        "lat": 14.1061,
+        "lon": 38.2839,
+        "description": "Northwestern Tigray town that has served as a major shelter site for civilians displaced by the region's recurring rounds of conflict.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Humera",
+        "type": "region",
+        "lat": 14.2974,
+        "lon": 36.6136,
+        "description": "Town anchoring the disputed Western Tigray territory, occupied by Amhara regional and Eritrean forces since the Tigray war and claimed by both Tigray and Amhara.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Jijiga",
+        "type": "city",
+        "lat": 9.35,
+        "lon": 42.8,
+        "description": "Capital of Ethiopia's Somali region, on the road corridor linking Addis Ababa to the port of Berbera in Somaliland.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Ambo",
+        "type": "city",
+        "lat": 8.9806,
+        "lon": 37.8547,
+        "description": "Oromia town west of Addis Ababa that has repeatedly seen unrest tied to the Oromo Liberation Army insurgency.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Gondar",
+        "type": "city",
+        "lat": 12.6,
+        "lon": 37.4667,
+        "description": "Historic former imperial capital in Amhara region and a center of Fano militia recruitment and activity.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/ethiopia-conflict.html"
+  },
+  {
+    "id": "ACM-COD-M23",
+    "slug": "dr-congo-m23-conflict",
+    "titleEn": "The Eastern DR Congo Conflict",
+    "titleKo": "민주콩고(DRC)-M23 반군 분쟁",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Central Africa",
+    "regionKo": "중앙아프리카",
+    "mainTheaters": "북키부주, 고마",
+    "type": "Multi-party insurgency",
+    "trackedSince": "2004",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Goma",
+        "type": "city",
+        "lat": -1.6792,
+        "lon": 29.2228,
+        "description": "Capital of North Kivu province and eastern DRC's largest city, on the Rwandan border, captured by M23 in January 2025.",
+        "control": "M23, backed by Rwandan forces",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Bukavu",
+        "type": "city",
+        "lat": -2.5083,
+        "lon": 28.8608,
+        "description": "Capital of South Kivu province on Lake Kivu, seized by M23 in February 2025 shortly after the fall of Goma.",
+        "control": "M23, backed by Rwandan forces",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Kinshasa",
+        "type": "city",
+        "lat": -4.4419,
+        "lon": 15.2663,
+        "description": "The Democratic Republic of Congo's capital, on the Congo River in the far west of the country, seat of President Félix Tshisekedi's government.",
+        "control": "Government of the Democratic Republic of Congo",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Kisangani",
+        "type": "city",
+        "lat": 0.5167,
+        "lon": 25.2,
+        "description": "Major Congo River port city in the country's northeast interior, a historic strategic prize in successive Congolese conflicts.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Beni",
+        "type": "city",
+        "lat": 0.4906,
+        "lon": 29.4736,
+        "description": "North Kivu city near the Ugandan border that has been a recurring target of attacks attributed to the Allied Democratic Forces (ADF).",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Butembo",
+        "type": "city",
+        "lat": 0.15,
+        "lon": 29.2833,
+        "description": "Commercial hub in North Kivu province, north of Goma, situated amid overlapping armed-group activity in the eastern Congo conflict zone.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Uvira",
+        "type": "border",
+        "lat": -3.4,
+        "lon": 29.15,
+        "description": "South Kivu town on Lake Tanganyika near the Burundian border, a strategic gateway between eastern DRC and the African Great Lakes region.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kasindi",
+        "type": "border",
+        "lat": 0.1667,
+        "lon": 29.7,
+        "description": "Main official border crossing between North Kivu and Uganda, a key commercial trade route into eastern DRC.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/dr-congo-m23-conflict.html"
+  },
+  {
+    "id": "ACM-CAF-REP",
+    "slug": "central-african-republic",
+    "titleEn": "The Central African Republic Conflict",
+    "titleKo": "중앙아프리카공화국 분쟁",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "Central Africa",
+    "regionKo": "중앙아프리카",
+    "mainTheaters": "방기, 국경지대",
+    "type": "Civil conflict",
+    "trackedSince": "2012",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Bangui",
+        "type": "city",
+        "lat": 4.3947,
+        "lon": 18.5582,
+        "description": "Capital of the Central African Republic on the Ubangi River, seat of the government and site of a July 2025 ceremony marking a ceasefire with armed groups.",
+        "control": "Central African Republic government forces, alongside Russian security personnel (Wagner/Africa Corps) and UN MINUSCA peacekeepers",
+        "asOf": "2026-02-04"
+      },
+      {
+        "name": "Birao",
+        "type": "city",
+        "lat": 10.2833,
+        "lon": 22.7833,
+        "description": "Remote capital of Vakaga prefecture in the far northeast, near the borders with Chad and Sudan, historically difficult for the state to secure.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bria",
+        "type": "city",
+        "lat": 6.5423,
+        "lon": 21.9862,
+        "description": "Capital of Haute-Kotto prefecture and a diamond-mining center that has repeatedly been contested by armed factions competing for mining revenue.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bambari",
+        "type": "city",
+        "lat": 5.7639,
+        "lon": 20.6767,
+        "description": "Central Ouaka prefecture capital and one of the country's larger interior towns, a historic base for former Seleka factions.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bangassou",
+        "type": "border",
+        "lat": 4.7397,
+        "lon": 22.8206,
+        "description": "Southeastern town on the Mbomou River across from the Democratic Republic of Congo, a cross-border trade and displacement route.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Paoua",
+        "type": "city",
+        "lat": 7.2417,
+        "lon": 16.4392,
+        "description": "Northwestern town that was a longtime stronghold of the 3R armed group before its 2025 ceasefire and dissolution.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Berberati",
+        "type": "city",
+        "lat": 4.2667,
+        "lon": 15.7833,
+        "description": "Southwestern regional center near the Cameroonian border, a commercial hub for the country's timber-producing region.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/central-african-republic.html"
+  },
+  {
+    "id": "ACM-NGA-BKH",
+    "slug": "nigeria-boko-haram",
+    "titleEn": "The Nigeria Conflict",
+    "titleKo": "나이지리아 보코하람/ISWAP 반란",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "West Africa",
+    "regionKo": "서아프리카",
+    "mainTheaters": "보르노주, 차드호",
+    "type": "Insurgency / communal violence",
+    "trackedSince": "2009",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Maiduguri",
+        "type": "city",
+        "lat": 11.8333,
+        "lon": 13.15,
+        "description": "Capital of Borno state and the birthplace of Boko Haram in 2002, now the most fortified city in the northeast and headquarters of Nigeria's counterinsurgency operations.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Chibok",
+        "type": "city",
+        "lat": 10.8833,
+        "lon": 12.8333,
+        "description": "Borno town where Boko Haram abducted a large group of schoolgirls in April 2014, an attack that drew global attention to the insurgency.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Sambisa Forest",
+        "type": "region",
+        "lat": 11.1667,
+        "lon": 13.0333,
+        "description": "Dense forest reserve in southern Borno state that served as a historic Boko Haram base and hideout for abducted captives.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Gwoza",
+        "type": "city",
+        "lat": 11.0833,
+        "lon": 13.6961,
+        "description": "Borno town near the Cameroonian border and the Mandara Mountains, the site of hostage releases by Boko Haram in mid-2026.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Baga",
+        "type": "city",
+        "lat": 13.1667,
+        "lon": 14.2333,
+        "description": "Fishing town on the Nigerian shore of Lake Chad that has repeatedly been fought over by Boko Haram/ISWAP factions and Nigerian and multinational forces.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Abuja",
+        "type": "city",
+        "lat": 9.0765,
+        "lon": 7.3986,
+        "description": "Nigeria's federal capital, targeted by a Boko Haram bus-station bombing in 2014 and the seat of national counterterrorism policy.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Damaturu",
+        "type": "city",
+        "lat": 11.747,
+        "lon": 11.9608,
+        "description": "Capital of Yobe state, one of the three northeastern states placed under a state of emergency in 2013 as the insurgency escalated.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Lake Chad Basin",
+        "type": "region",
+        "lat": 13.2,
+        "lon": 14.1,
+        "description": "Shrinking inland lake shared by Nigeria, Chad, Niger, and Cameroon whose islands and shoreline have been repeatedly contested between Boko Haram's JAS and ISWAP factions.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/nigeria-boko-haram.html"
+  },
+  {
+    "id": "ACM-SHL-INS",
+    "slug": "sahel-insurgency",
+    "titleEn": "The Sahel Insurgency",
+    "titleKo": "사헬 지대 이슬람 반군 (말리/니제르/부르키나파소)",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "West Africa / Sahel",
+    "regionKo": "서아프리카",
+    "mainTheaters": "3국 접경지대",
+    "type": "Transnational insurgency",
+    "trackedSince": "2012",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Bamako",
+        "type": "city",
+        "lat": 12.6392,
+        "lon": -8.0029,
+        "description": "Capital of Mali and seat of the military government that has led the country since a series of coups beginning in 2020.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Timbuktu",
+        "type": "city",
+        "lat": 16.7666,
+        "lon": -3.0026,
+        "description": "Historic northern Mali city that was blockaded by JNIM militants in 2023, cutting off fuel and food supplies to the population.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Gao",
+        "type": "city",
+        "lat": 16.2666,
+        "lon": -0.05,
+        "description": "Major city in northern Mali on the Niger River, a longtime hub for French, UN, and now Russian military operations in the region.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Niamey",
+        "type": "city",
+        "lat": 13.5137,
+        "lon": 2.1098,
+        "description": "Capital of Niger and seat of the military government installed by the 2023 coup that ended Western security cooperation with France and the United States.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Ouagadougou",
+        "type": "city",
+        "lat": 12.3714,
+        "lon": -1.5197,
+        "description": "Capital of Burkina Faso and seat of the military government that has governed the country since the 2022 coups.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Liptako-Gourma borderlands",
+        "type": "border",
+        "lat": 14.9,
+        "lon": 0.5,
+        "description": "Tri-border region where Mali, Burkina Faso, and Niger meet, the epicenter of the JNIM and Islamic State Sahel Province insurgencies and a large share of global terrorism-related deaths.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Markoye",
+        "type": "city",
+        "lat": 14.9333,
+        "lon": 0.0667,
+        "description": "Northern Burkina Faso town near the Malian and Nigerien borders that has repeatedly been the site of attacks attributed to Islamic State Sahel Province.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Diffa",
+        "type": "border",
+        "lat": 13.3154,
+        "lon": 12.6113,
+        "description": "Southeastern Niger city near Lake Chad and the Nigerian border, at the intersection of the Sahel insurgency and the Boko Haram/ISWAP conflict.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/sahel-insurgency.html"
+  },
+  {
+    "id": "ACM-MOZ-CBD",
+    "slug": "mozambique-cabo-delgado",
+    "titleEn": "The Mozambique (Cabo Delgado) Conflict",
+    "titleKo": "모잠비크 카보델가도 반군",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "Southern Africa",
+    "regionKo": "남아프리카",
+    "mainTheaters": "카보델가도주 가스전 지대",
+    "type": "Insurgency",
+    "trackedSince": "2017",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Pemba",
+        "type": "city",
+        "lat": -12.974,
+        "lon": 40.5178,
+        "description": "Capital of Cabo Delgado province and the region's main port and administrative center for the counterinsurgency campaign.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Mocímboa da Praia",
+        "type": "port",
+        "lat": -11.3494,
+        "lon": 40.36,
+        "description": "Coastal town seized by Islamic State Mozambique insurgents at the peak of their 2020 offensive and retaken by Mozambican and Rwandan forces in 2021.",
+        "control": "Mozambican Armed Forces (FADM) and Rwanda Defence Force troops hold the town, though Islamic State Mozambique continues to mount IED and raid attacks nearby",
+        "asOf": "2026-06-17"
+      },
+      {
+        "name": "Palma",
+        "type": "city",
+        "lat": -10.75,
+        "lon": 40.4667,
+        "description": "Northern coastal town near Mozambique's offshore natural gas fields, the site of a major Islamic State Mozambique attack in March 2021 that halted LNG development.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Macomia",
+        "type": "city",
+        "lat": -12.2333,
+        "lon": 40.1333,
+        "description": "Cabo Delgado district town that has seen recurring Islamic State Mozambique activity, including IED deployments in 2026.",
+        "control": "Mozambican state forces hold the town center, while Islamic State Mozambique operates from forest bases in the surrounding district",
+        "asOf": "2026-06-17"
+      },
+      {
+        "name": "Mueda",
+        "type": "base",
+        "lat": -11.6667,
+        "lon": 39.5667,
+        "description": "Plateau town hosting one of the main Mozambican and allied military garrisons supporting operations across northern Cabo Delgado.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Nangade",
+        "type": "border",
+        "lat": -10.9333,
+        "lon": 39.6167,
+        "description": "District bordering Tanzania that has seen clashes between Islamic State Mozambique insurgents and Mozambican and Rwandan forces.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Quissanga",
+        "type": "region",
+        "lat": -12.4167,
+        "lon": 40.5333,
+        "description": "Coastal district south of Mocímboa da Praia used by Islamic State Mozambique as a transit route between operational areas.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Montepuez",
+        "type": "city",
+        "lat": -13.1256,
+        "lon": 39.0278,
+        "description": "Inland town known for ruby mining that has become a major host site for civilians displaced by the Cabo Delgado insurgency.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/mozambique-cabo-delgado.html"
+  },
+  {
+    "id": "ACM-LBY-CON",
+    "slug": "libya-conflict",
+    "titleEn": "The Libya Conflict",
+    "titleKo": "리비아 동서 정권 대립",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "North Africa",
+    "regionKo": "북아프리카",
+    "mainTheaters": "트리폴리, 벵가지, 시르테",
+    "type": "Political / armed division",
+    "trackedSince": "2011",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Tripoli",
+        "type": "city",
+        "lat": 32.8872,
+        "lon": 13.1913,
+        "description": "Capital of Libya and seat of the UN-recognized Government of National Unity (GNU).",
+        "control": "Government of National Unity (GNU), led by Prime Minister Abdul Hamid Dbeibah, with Turkish military support",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Benghazi",
+        "type": "city",
+        "lat": 32.1167,
+        "lon": 20.0667,
+        "description": "Libya's second-largest city and historic base of Khalifa Haftar's Libyan National Army.",
+        "control": "Libyan National Army (LNA), aligned with the eastern-based House of Representatives government",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Sirte",
+        "type": "city",
+        "lat": 31.2089,
+        "lon": 16.5887,
+        "description": "Central coastal city that changed hands repeatedly during the war against the Islamic State and now serves as the seat of the eastern House of Representatives government.",
+        "control": "House of Representatives (HoR) government, backed by the Libyan National Army",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Misrata",
+        "type": "port",
+        "lat": 32.3754,
+        "lon": 15.0925,
+        "description": "Major western port city and stronghold of militias aligned with the Tripoli-based government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Derna",
+        "type": "city",
+        "lat": 32.7569,
+        "lon": 22.6367,
+        "description": "Eastern coastal city and the Islamic State's last stronghold in Libya until its recapture by the LNA in July 2018.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Sabha",
+        "type": "city",
+        "lat": 27.0377,
+        "lon": 14.4283,
+        "description": "Largest city in Libya's southern Fezzan region, a hub for cross-border smuggling routes and foreign-fighter presence.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Zawiya",
+        "type": "port",
+        "lat": 32.7522,
+        "lon": 12.7278,
+        "description": "Western coastal city near Tripoli with a major oil refinery and export terminal.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Es Sider",
+        "type": "port",
+        "lat": 30.6167,
+        "lon": 18.3667,
+        "description": "One of Libya's largest oil export terminals, repeatedly blockaded by rival factions to cut off opponents' revenue.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/libya-conflict.html"
+  },
+  {
+    "id": "ACM-AFG-CON",
+    "slug": "afghanistan-conflict",
+    "titleEn": "The Afghanistan Conflict",
+    "titleKo": "아프가니스탄 탈레반-ISKP 분쟁",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "South-Central Asia",
+    "regionKo": "서남아시아",
+    "mainTheaters": "카불, 낭가르하르",
+    "type": "Insurgency / instability",
+    "trackedSince": "2021",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Kabul",
+        "type": "city",
+        "lat": 34.5553,
+        "lon": 69.2075,
+        "description": "Capital of Afghanistan, captured by the Taliban on August 15, 2021.",
+        "control": "Taliban (Islamic Emirate of Afghanistan)",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Kandahar",
+        "type": "city",
+        "lat": 31.6289,
+        "lon": 65.7372,
+        "description": "Southern city that serves as the Taliban's spiritual and political heartland.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Herat",
+        "type": "city",
+        "lat": 34.3529,
+        "lon": 62.2042,
+        "description": "Major western Afghan city near the Iran border and a historic trade hub.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Mazar-i-Sharif",
+        "type": "city",
+        "lat": 36.7092,
+        "lon": 67.1108,
+        "description": "Largest city in northern Afghanistan and a former stronghold of anti-Taliban forces before 2021.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Durand Line",
+        "type": "border",
+        "lat": 33.7,
+        "lon": 69.9,
+        "description": "Contested colonial-era border dividing Pashtun tribal lands between Afghanistan and Pakistan, the site of repeated cross-border clashes since October 2025.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Torkham",
+        "type": "border",
+        "lat": 34.1042,
+        "lon": 71.0797,
+        "description": "Main Afghanistan-Pakistan border crossing on the historic Khyber Pass route, repeatedly closed during 2025-2026 clashes.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Spin Boldak",
+        "type": "border",
+        "lat": 31.0089,
+        "lon": 66.4258,
+        "description": "Southern Afghan border town opposite Pakistan's Chaman, another key crossing point affected by cross-border fighting.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Panjshir Valley",
+        "type": "region",
+        "lat": 35.35,
+        "lon": 69.6,
+        "description": "Mountainous valley northeast of Kabul and historic center of anti-Taliban resistance.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/afghanistan-conflict.html"
+  },
+  {
+    "id": "ACM-PAK-CON",
+    "slug": "pakistan-conflict",
+    "titleEn": "The Pakistan Conflict",
+    "titleKo": "파키스탄 TTP & 발루치 분쟁",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "South Asia",
+    "regionKo": "서남아시아",
+    "mainTheaters": "카이베르파크툰크와, 발루치스탄",
+    "type": "Insurgency",
+    "trackedSince": "2007",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Islamabad",
+        "type": "city",
+        "lat": 33.6844,
+        "lon": 73.0479,
+        "description": "Capital of Pakistan and seat of the federal government, the site of a mosque suicide bombing on February 6, 2026.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Peshawar",
+        "type": "city",
+        "lat": 34.0151,
+        "lon": 71.5249,
+        "description": "Capital of Khyber Pakhtunkhwa province, near the Afghan border and a frequent target of Tehrik-e-Taliban Pakistan (TTP) attacks.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Quetta",
+        "type": "city",
+        "lat": 30.1798,
+        "lon": 66.975,
+        "description": "Capital of Balochistan province, a center of Baloch separatist insurgent activity.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Karachi",
+        "type": "port",
+        "lat": 24.8607,
+        "lon": 67.0011,
+        "description": "Pakistan's largest city and principal seaport on the Arabian Sea.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Bajaur",
+        "type": "region",
+        "lat": 34.6833,
+        "lon": 71.5,
+        "description": "Tribal district near the Afghan border, the site of a Tehrik-e-Taliban Pakistan assault reported on February 17, 2026.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Torkham",
+        "type": "border",
+        "lat": 34.1042,
+        "lon": 71.0797,
+        "description": "Main Pakistan-Afghanistan border crossing on the Khyber Pass route, a recurring flashpoint in cross-border clashes.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Chaman",
+        "type": "border",
+        "lat": 30.9208,
+        "lon": 66.4522,
+        "description": "Balochistan border town opposite Afghanistan's Spin Boldak, another key crossing affected by the conflict.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Gwadar",
+        "type": "port",
+        "lat": 25.1216,
+        "lon": 62.3254,
+        "description": "Strategic deep-water Arabian Sea port developed with Chinese investment, in a Balochistan region affected by separatist attacks.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/pakistan-conflict.html"
+  },
+  {
+    "id": "ACM-IND-KSH",
+    "slug": "india-pakistan-kashmir",
+    "titleEn": "The India–Pakistan & Kashmir Conflict",
+    "titleKo": "인도-파키스탄 카슈미르 분쟁",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "South Asia",
+    "regionKo": "남아시아",
+    "mainTheaters": "통제선(LoC), 라다크 국경",
+    "type": "Interstate / insurgency",
+    "trackedSince": "1947",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Srinagar",
+        "type": "city",
+        "lat": 34.0837,
+        "lon": 74.7973,
+        "description": "Summer capital of Indian-administered Jammu and Kashmir.",
+        "control": "Government of India, administered as a union territory since the 2019 revocation of Article 370",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Muzaffarabad",
+        "type": "city",
+        "lat": 34.37,
+        "lon": 73.4711,
+        "description": "Capital of Pakistan-administered Azad Kashmir.",
+        "control": "Government of Pakistan, as capital of Azad Jammu and Kashmir",
+        "asOf": "2026-08-03"
+      },
+      {
+        "name": "Jammu",
+        "type": "city",
+        "lat": 32.7266,
+        "lon": 74.857,
+        "description": "Winter capital of Indian-administered Jammu and Kashmir, south of the Kashmir Valley.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Line of Control",
+        "type": "border",
+        "lat": 34.0,
+        "lon": 74.3,
+        "description": "De facto military boundary dividing Kashmir between India and Pakistan, established under the 1972 Simla Agreement.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Pahalgam",
+        "type": "city",
+        "lat": 34.0161,
+        "lon": 75.3193,
+        "description": "Southern Kashmir town near which an April 2025 militant attack on tourists triggered the most serious India-Pakistan military confrontation since 2019.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Gilgit",
+        "type": "city",
+        "lat": 35.9208,
+        "lon": 74.3144,
+        "description": "Capital of Pakistan-administered Gilgit-Baltistan, a mountainous northern region bordering China.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Siachen Glacier",
+        "type": "region",
+        "lat": 35.5,
+        "lon": 77.0,
+        "description": "High-altitude glacier in eastern Kashmir disputed between India and Pakistan, site of the world's highest-altitude military standoff.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kargil",
+        "type": "city",
+        "lat": 34.5539,
+        "lon": 76.1313,
+        "description": "Ladakh town near the Line of Control, site of the 1999 Kargil War between India and Pakistan.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/india-pakistan-kashmir.html"
+  },
+  {
+    "id": "ACM-MMR-CIV",
+    "slug": "myanmar-civil-war",
+    "titleEn": "The Myanmar Civil War",
+    "titleKo": "미얀마 내전 (군부 vs NUG/반군)",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Southeast Asia",
+    "regionKo": "동남아시아",
+    "mainTheaters": "만달레이, 샨주, 라카인주",
+    "type": "Civil war",
+    "trackedSince": "2021",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Naypyidaw",
+        "type": "city",
+        "lat": 19.7633,
+        "lon": 96.0785,
+        "description": "Purpose-built administrative capital of Myanmar since 2005 and seat of the military-led government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Yangon",
+        "type": "city",
+        "lat": 16.8409,
+        "lon": 96.1735,
+        "description": "Myanmar's largest city and commercial hub, a former capital retained as the country's principal port and business center.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Mandalay",
+        "type": "city",
+        "lat": 21.9588,
+        "lon": 96.0891,
+        "description": "Myanmar's second-largest city and a former royal capital in the central dry zone.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Lashio",
+        "type": "city",
+        "lat": 22.9331,
+        "lon": 97.7522,
+        "description": "Northern Shan State city and site of a regional military command headquarters seized in an August 2024 offensive.",
+        "control": "Myanmar National Democratic Alliance Army (MNDAA)",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Maungdaw",
+        "type": "city",
+        "lat": 20.8163,
+        "lon": 92.3736,
+        "description": "Rakhine State township on the Bangladesh border, at the center of the 2017 Rohingya displacement crisis.",
+        "control": "Arakan Army",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Myawaddy",
+        "type": "border",
+        "lat": 16.6833,
+        "lon": 98.5058,
+        "description": "Border town on the Moei River opposite Thailand, a key overland trade crossing and route for migrants and refugees.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Sittwe",
+        "type": "port",
+        "lat": 20.15,
+        "lon": 92.9,
+        "description": "Capital of Rakhine State and a Bay of Bengal port, home to a deep-sea port project and long-running displacement camps.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Laukkai",
+        "type": "region",
+        "lat": 23.7833,
+        "lon": 98.8833,
+        "description": "Administrative center of the Kokang Self-Administered Zone on the China border, historically a hub for cross-border trade and gambling operations.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/myanmar-civil-war.html"
+  },
+  {
+    "id": "ACM-TWN-STR",
+    "slug": "taiwan-strait-tensions",
+    "titleEn": "Taiwan Strait Tensions",
+    "titleKo": "대만 해협 긴장 & 양안 위기",
+    "status": "Tensions",
+    "intensity": "Low",
+    "rawIntensity": "Elevated",
+    "regionEn": "East Asia",
+    "regionKo": "동아시아",
+    "mainTheaters": "대만 해협 중간선, 펑후제도, 방공식별구역",
+    "type": "Interstate standoff",
+    "trackedSince": "1949",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Taipei",
+        "type": "city",
+        "lat": 25.033,
+        "lon": 121.5654,
+        "description": "Capital of Taiwan and seat of its government, site of then-Speaker Nancy Pelosi's August 2022 visit that sharply raised cross-strait tensions.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kaohsiung",
+        "type": "port",
+        "lat": 22.6273,
+        "lon": 120.3014,
+        "description": "Taiwan's largest port and a major naval base on the island's southwest coast.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Kinmen Islands",
+        "type": "border",
+        "lat": 24.4491,
+        "lon": 118.3768,
+        "description": "Taiwan-administered islands lying just a few kilometers off the mainland Chinese coast, the site of armed confrontations during the 1954-55 and 1958 Taiwan Strait crises.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Matsu Islands",
+        "type": "border",
+        "lat": 26.1597,
+        "lon": 119.9282,
+        "description": "Taiwan-administered island group near Fuzhou on the Chinese mainland, garrisoned as a forward defense position.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Penghu Islands",
+        "type": "region",
+        "lat": 23.5654,
+        "lon": 119.5785,
+        "description": "Taiwan-administered archipelago roughly midway across the Taiwan Strait, used as a staging area for military exercises.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Pratas Island (Dongsha)",
+        "type": "base",
+        "lat": 20.7,
+        "lon": 116.7167,
+        "description": "Remote Taiwan-administered atoll in the northern South China Sea garrisoned by the Coast Guard Administration, considered a possible target for a Chinese pressure campaign short of a full invasion.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Xiamen",
+        "type": "city",
+        "lat": 24.4798,
+        "lon": 118.0894,
+        "description": "Mainland Chinese port city directly across the strait from Kinmen, used as a staging area for PLA exercises near Taiwan-held islands.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Taiwan Strait median line",
+        "type": "chokepoint",
+        "lat": 24.5,
+        "lon": 119.3,
+        "description": "Informal midpoint boundary between Taiwan and mainland China that Chinese military aircraft crossed only rarely before 2022 but now cross on a near-daily basis.",
+        "control": "Routinely crossed by PLA aircraft and vessels; no longer functions as an operational boundary",
+        "asOf": "2026-08-02"
+      }
+    ],
+    "url": "https://armedconflicts.org/taiwan-strait-tensions.html"
+  },
+  {
+    "id": "ACM-SCS-DIS",
+    "slug": "south-china-sea-disputes",
+    "titleEn": "South China Sea Disputes",
+    "titleKo": "남중국해 영유권 분쟁 (필리핀/베트남 vs 중국)",
+    "status": "Tensions",
+    "intensity": "Low",
+    "rawIntensity": "Elevated",
+    "regionEn": "Southeast Asia",
+    "regionKo": "동남아시아/해양",
+    "mainTheaters": "스카버러 암초, 세컨드 토마스 암초, 스프래틀리 군도",
+    "type": "Maritime dispute",
+    "trackedSince": "1947",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Scarborough Shoal",
+        "type": "region",
+        "lat": 15.1233,
+        "lon": 117.7644,
+        "description": "Reef claimed by both China and the Philippines, roughly 220 km from the Philippine coast; the scene of a 2012 standoff and repeated clashes since, including three incidents in a single week in July 2026.",
+        "control": "China maintains a de facto coast guard presence since the 2012 standoff; the Philippines continues to assert its claim",
+        "asOf": "2026-08-02"
+      },
+      {
+        "name": "Second Thomas Shoal (Ayungin)",
+        "type": "region",
+        "lat": 9.7147,
+        "lon": 115.8617,
+        "description": "Reef within the Philippines' claimed exclusive economic zone where a deliberately grounded Philippine navy ship, BRP Sierra Madre, maintains a small garrison; the site of a June 17, 2026 vessel collision.",
+        "control": "Philippines maintains a military outpost via the grounded BRP Sierra Madre; China Coast Guard vessels conduct regular harassment patrols nearby",
+        "asOf": "2026-08-02"
+      },
+      {
+        "name": "Woody Island (Yongxing)",
+        "type": "base",
+        "lat": 16.8342,
+        "lon": 112.3383,
+        "description": "Largest of the Paracel Islands, administered by China as the seat of Sansha City.",
+        "control": "China, which has militarized the island with fighter jets, cruise missiles, and a radar system",
+        "asOf": "2026-08-02"
+      },
+      {
+        "name": "Mischief Reef",
+        "type": "base",
+        "lat": 9.8917,
+        "lon": 115.5325,
+        "description": "Reef in the Spratly Islands, within the Philippines' claimed exclusive economic zone, where an artificial island with a military-capable airstrip has been built.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Fiery Cross Reef",
+        "type": "base",
+        "lat": 9.5443,
+        "lon": 112.8891,
+        "description": "Reef in the Spratly Islands developed into an artificial island with an airstrip, radar, and other military facilities.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Itu Aba (Taiping Island)",
+        "type": "base",
+        "lat": 10.3833,
+        "lon": 114.3667,
+        "description": "Largest naturally occurring island in the Spratly group, administered by Taiwan and garrisoned by its Coast Guard Administration.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Palawan",
+        "type": "port",
+        "lat": 9.8349,
+        "lon": 118.7384,
+        "description": "Philippine island province closest to the contested Spratly Islands, host to Philippine naval facilities that support resupply missions to outlying garrisons.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Subic Bay",
+        "type": "base",
+        "lat": 14.7942,
+        "lon": 120.2825,
+        "description": "Former US naval base on Luzon now used as a Philippine military and commercial port, increasingly hosting joint exercises with US and allied forces amid South China Sea tensions.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/south-china-sea-disputes.html"
+  },
+  {
+    "id": "ACM-ARM-AZE",
+    "slug": "armenia-azerbaijan-conflict",
+    "titleEn": "The Armenia–Azerbaijan Conflict",
+    "titleKo": "아르메니아-아제르바이잔 국경 분쟁",
+    "status": "Tensions",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "South Caucasus",
+    "regionKo": "코카서스",
+    "mainTheaters": "잔게주르 회랑, 국경 접경지",
+    "type": "Interstate",
+    "trackedSince": "1988",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Yerevan",
+        "type": "city",
+        "lat": 40.1792,
+        "lon": 44.4991,
+        "description": "Capital of Armenia and seat of its government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Baku",
+        "type": "city",
+        "lat": 40.4093,
+        "lon": 49.8671,
+        "description": "Capital of Azerbaijan and seat of its government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Stepanakert (Khankendi)",
+        "type": "city",
+        "lat": 39.8236,
+        "lon": 46.7503,
+        "description": "Former capital of the self-declared Republic of Artsakh, the area's ethnic Armenian population having largely left following Azerbaijan's September 2023 offensive.",
+        "control": "Azerbaijan, following the dissolution of the breakaway Nagorno-Karabakh administration",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Shusha (Shushi)",
+        "type": "city",
+        "lat": 39.7591,
+        "lon": 46.7524,
+        "description": "Historic hilltop town overlooking Stepanakert, captured by Azerbaijani forces during the 2020 Nagorno-Karabakh war.",
+        "control": "Azerbaijan",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Nakhchivan",
+        "type": "city",
+        "lat": 39.2089,
+        "lon": 45.4122,
+        "description": "Capital of the Nakhchivan Autonomous Republic, an Azerbaijani exclave separated from mainland Azerbaijan by Armenian territory.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Meghri / Zangezur corridor route",
+        "type": "border",
+        "lat": 38.8889,
+        "lon": 46.2364,
+        "description": "Southernmost Armenian town along the route of a proposed transit corridor that would link mainland Azerbaijan to the Nakhchivan exclave through Armenia's Syunik province; construction was planned to begin in 2026.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Tavush border region",
+        "type": "border",
+        "lat": 40.8804,
+        "lon": 45.15,
+        "description": "Undemarcated stretch of the Armenia-Azerbaijan frontier that has seen periodic border clashes and is subject to an ongoing demarcation process.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Goris",
+        "type": "city",
+        "lat": 39.5089,
+        "lon": 46.3414,
+        "description": "Armenian town in Syunik province that became a main reception point for ethnic Armenians leaving Nagorno-Karabakh in 2023.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/armenia-azerbaijan-conflict.html"
+  },
+  {
+    "id": "ACM-MEX-DRG",
+    "slug": "mexico-drug-war",
+    "titleEn": "The Mexican Drug War",
+    "titleKo": "멕시코 마약 카르텔 전쟁",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "North America",
+    "regionKo": "중남미",
+    "mainTheaters": "시날로아, 할리스코, 국경도시",
+    "type": "Criminal conflict",
+    "trackedSince": "2006",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Mexico City",
+        "type": "city",
+        "lat": 19.4326,
+        "lon": -99.1332,
+        "description": "Capital of Mexico and seat of the federal government directing national security policy against organized crime.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Culiacan",
+        "type": "city",
+        "lat": 24.8091,
+        "lon": -107.394,
+        "description": "Capital of Sinaloa state and the historic home base of the Sinaloa Cartel.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Guadalajara",
+        "type": "city",
+        "lat": 20.6597,
+        "lon": -103.3496,
+        "description": "Capital of Jalisco state, the region long associated with the Jalisco New Generation Cartel (CJNG), led for years by Nemesio Oseguera Cervantes ('El Mencho').",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Tijuana",
+        "type": "border",
+        "lat": 32.5149,
+        "lon": -117.0382,
+        "description": "Border city opposite San Diego and one of the world's busiest land border crossings, a longtime smuggling corridor into the United States.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Ciudad Juarez",
+        "type": "border",
+        "lat": 31.6904,
+        "lon": -106.4245,
+        "description": "Border city opposite El Paso, Texas, and a major crossing point that saw some of Mexico's worst cartel-related violence in the late 2000s and early 2010s.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Acapulco",
+        "type": "port",
+        "lat": 16.8531,
+        "lon": -99.8237,
+        "description": "Pacific resort port in Guerrero state; surrounding mountain areas of the state saw cartel attacks displace hundreds of families in 2026.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Nuevo Laredo",
+        "type": "border",
+        "lat": 27.4764,
+        "lon": -99.5164,
+        "description": "Border city opposite Laredo, Texas, and Mexico's busiest land freight crossing, long contested as a trafficking corridor.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Puerto Vallarta",
+        "type": "port",
+        "lat": 20.6534,
+        "lon": -105.2253,
+        "description": "Pacific coast resort city in Jalisco that saw coordinated arson, roadblocks, and lockdowns in a wave of retaliatory cartel violence in February 2026.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/mexico-drug-war.html"
+  },
+  {
+    "id": "ACM-COL-CON",
+    "slug": "colombia-conflict",
+    "titleEn": "The Colombia Conflict",
+    "titleKo": "콜롬비아 ELN 및 FARC 반군",
+    "status": "Active",
+    "intensity": "Medium",
+    "rawIntensity": "Medium",
+    "regionEn": "South America",
+    "regionKo": "남미",
+    "mainTheaters": "안데스 정글, 베네수엘라 국경",
+    "type": "Insurgency / criminal violence",
+    "trackedSince": "1964",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Bogota",
+        "type": "city",
+        "lat": 4.711,
+        "lon": -74.0721,
+        "description": "Capital of Colombia and seat of its government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Tibu",
+        "type": "city",
+        "lat": 8.6389,
+        "lon": -72.7333,
+        "description": "Municipality in the Catatumbo region of Norte de Santander, near the Venezuelan border, at the center of an armed-group offensive that displaced a large number of civilians beginning in January 2025.",
+        "control": "National Liberation Army (ELN), fighting to displace FARC dissident factions descended from the demobilized 33rd Front",
+        "asOf": "2025-03-26"
+      },
+      {
+        "name": "Cucuta",
+        "type": "border",
+        "lat": 7.8891,
+        "lon": -72.5079,
+        "description": "Capital of Norte de Santander and a major crossing point on the Colombia-Venezuela border, a gateway to the conflict-affected Catatumbo region.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Tumaco",
+        "type": "port",
+        "lat": 1.7986,
+        "lon": -78.7811,
+        "description": "Pacific port in Nariño department near the Ecuadorian border, a longstanding hub for cocaine trafficking and a zone of competition among armed groups.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Buenaventura",
+        "type": "port",
+        "lat": 3.8801,
+        "lon": -76.993,
+        "description": "Colombia's principal Pacific port, handling the bulk of the country's maritime trade and a recurring site of armed-group extortion and turf disputes.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Quibdo",
+        "type": "city",
+        "lat": 5.6947,
+        "lon": -76.6583,
+        "description": "Capital of Choco department, a Pacific lowland region with a strong presence of multiple armed and criminal groups competing over river and coastal trafficking routes.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Arauca",
+        "type": "border",
+        "lat": 7.0847,
+        "lon": -70.759,
+        "description": "Capital of Arauca department on the Venezuelan border, a region with a long-established ELN presence.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Puerto Asis",
+        "type": "border",
+        "lat": 0.5069,
+        "lon": -76.4972,
+        "description": "Municipality in Putumayo department near the Ecuadorian border, in a coca-growing region with a history of competition among armed groups.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/colombia-conflict.html"
+  },
+  {
+    "id": "ACM-HTI-GNG",
+    "slug": "haiti-gang-violence",
+    "titleEn": "The Haiti Crisis",
+    "titleKo": "아이티 갱단 폭력 위기",
+    "status": "Escalating",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "Caribbean",
+    "regionKo": "카리브해",
+    "mainTheaters": "포르토프랭스",
+    "type": "Gang conflict / state collapse",
+    "trackedSince": "2021",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Port-au-Prince",
+        "type": "city",
+        "lat": 18.5944,
+        "lon": -72.3074,
+        "description": "Capital of Haiti and seat of its government, largely emptied of state authority as armed gangs expanded through the city after 2023.",
+        "control": "Armed gangs hold an estimated 90 percent of the city",
+        "asOf": "2026-07-29"
+      },
+      {
+        "name": "Petion-Ville",
+        "type": "city",
+        "lat": 18.5125,
+        "lon": -72.2853,
+        "description": "Hillside suburb overlooking Port-au-Prince that historically housed much of the capital's wealthier population and foreign missions.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Cite Soleil",
+        "type": "region",
+        "lat": 18.5836,
+        "lon": -72.33,
+        "description": "Densely populated waterfront district of Port-au-Prince long associated with gang activity and among the areas hardest hit by the current crisis.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Varreux fuel terminal",
+        "type": "port",
+        "lat": 18.57,
+        "lon": -72.36,
+        "description": "Main fuel import terminal serving Port-au-Prince, blockaded by armed groups during a 2021-2022 fuel crisis that paralyzed much of the capital.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Cap-Haitien",
+        "type": "port",
+        "lat": 19.7592,
+        "lon": -72.2025,
+        "description": "Haiti's second-largest city and a northern port that has functioned as a relatively more stable hub as violence concentrated in the capital.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Gonaives",
+        "type": "city",
+        "lat": 19.45,
+        "lon": -72.6833,
+        "description": "Artibonite department city known as the birthplace of Haitian independence, in a region increasingly affected by expanding gang activity.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Port-de-Paix",
+        "type": "port",
+        "lat": 19.95,
+        "lon": -72.8333,
+        "description": "Northern coastal city and departmental capital on Haiti's Tortuga Channel.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Jeremie",
+        "type": "port",
+        "lat": 18.6413,
+        "lon": -74.1158,
+        "description": "Port city on Haiti's southern peninsula, comparatively less affected by gang violence than the capital region.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/haiti-gang-violence.html"
+  },
+  {
+    "id": "ACM-ECU-CON",
+    "slug": "ecuador-conflict",
+    "titleEn": "The Ecuador Crisis",
+    "titleKo": "에콰도르 치안 비상사태",
+    "status": "Active",
+    "intensity": "High",
+    "rawIntensity": "High",
+    "regionEn": "South America",
+    "regionKo": "남미",
+    "mainTheaters": "과야킬, 태평양 연안 마약루트",
+    "type": "Criminal conflict",
+    "trackedSince": "2021",
+    "revision": "2026-09-03",
+    "sources": [
+      "ACLED",
+      "UCDP",
+      "CFR Global Conflict Tracker"
+    ],
+    "locations": [
+      {
+        "name": "Quito",
+        "type": "city",
+        "lat": -0.1807,
+        "lon": -78.4678,
+        "description": "Capital of Ecuador and seat of its government.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Guayaquil",
+        "type": "port",
+        "lat": -2.1894,
+        "lon": -79.8891,
+        "description": "Ecuador's largest city and principal port, accounting for roughly a quarter of the country's recorded gang violence events.",
+        "control": "Contested among multiple gangs, including Los Lobos, Los Tiguerones, Los Fenix, and Los Igualitos",
+        "asOf": "2025-06-03"
+      },
+      {
+        "name": "Duran",
+        "type": "city",
+        "lat": -2.171,
+        "lon": -79.8362,
+        "description": "City adjacent to Guayaquil with one of Ecuador's highest homicide rates, part of the gang-related violence surge that led to a nationwide state of emergency in 2023.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Esmeraldas",
+        "type": "port",
+        "lat": 0.9682,
+        "lon": -79.6517,
+        "description": "Northern Pacific port near the Colombian border, one of the coastal provinces where the bulk of Ecuador's recorded gang violence has concentrated.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Manta",
+        "type": "port",
+        "lat": -0.9677,
+        "lon": -80.7089,
+        "description": "Major Pacific fishing and container port in Manabi province, a coastal region affected by rising gang violence since 2024.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Lago Agrio (Nueva Loja)",
+        "type": "border",
+        "lat": 0.0894,
+        "lon": -76.8875,
+        "description": "Capital of Sucumbios province near the Colombian border, in an oil-producing Amazon region where gang presence has expanded alongside illegal mining and cross-border trafficking.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Tulcan",
+        "type": "border",
+        "lat": 0.8118,
+        "lon": -77.7175,
+        "description": "Ecuadorian border city on the crossing to Colombia's Nariño department.",
+        "control": "",
+        "asOf": ""
+      },
+      {
+        "name": "Huaquillas",
+        "type": "border",
+        "lat": -3.4767,
+        "lon": -80.2331,
+        "description": "Ecuador's principal land border crossing with Peru, a route used for both legal trade and smuggling.",
+        "control": "",
+        "asOf": ""
+      }
+    ],
+    "url": "https://armedconflicts.org/ecuador-conflict.html"
+  }
+]
