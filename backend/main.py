@@ -160,9 +160,10 @@ async def test_llm_route(req: TestLLMRequest):
     return result
 
 # --- React Static Files Hosting ---
-FRONTEND_DIST = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
+FRONTEND_DIST = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist'))
 
 if os.path.exists(FRONTEND_DIST):
+    print(f"[FastAPI] React 프론트엔드 서빙 활성화: {FRONTEND_DIST}")
     app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIST, "assets")), name="assets")
 
     @app.get("/{full_path:path}")
@@ -171,6 +172,8 @@ if os.path.exists(FRONTEND_DIST):
         if os.path.exists(file_path) and os.path.isfile(file_path):
             return FileResponse(file_path)
         return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
+else:
+    print(f"[FastAPI] 경고: FRONTEND_DIST 폴더가 존재하지 않습니다: {FRONTEND_DIST}")
 
 if __name__ == '__main__':
     import uvicorn
