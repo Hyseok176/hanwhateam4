@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Lightbulb, Crosshair, MapPin, Newspaper, Map as MapIcon } from 'lucide-react';
+import { 
+  Lightbulb, Crosshair, MapPin, Newspaper, Map as MapIcon,
+  Thermometer, Droplets, Mountain, ShieldAlert, AlertTriangle,
+  Maximize2, X, Compass, ShieldCheck, CheckCircle2
+} from 'lucide-react';
 
 export default function RiskMap({ conflicts, selectedConflict, onSelectConflict }) {
   const mapRef = useRef(null);
@@ -9,6 +13,7 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
   const markersLayerRef = useRef(null);
   const subLocationsLayerRef = useRef(null);
   const [filterIntensity, setFilterIntensity] = useState('ALL');
+  const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
 
   // 지도 초기화
   useEffect(() => {
@@ -243,7 +248,115 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                   <div className={`score-badge ${badgeClass}`}>{c.intensity} 위기</div>
                 </div>
 
-                {/* Strategic Summary */}
+                {/* 1. Country Real Terrain Reconnaissance Photo */}
+                {c.terrainInfo?.terrainPhoto && (
+                  <div className="terrain-recon-card" onClick={() => setIsPhotoZoomed(true)}>
+                    <div className="recon-img-wrap">
+                      <img
+                        src={c.terrainInfo.terrainPhoto.url}
+                        alt={c.terrainInfo.terrainPhoto.caption}
+                        className="recon-img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=85';
+                        }}
+                      />
+                      <div className="recon-overlay-header">
+                        <span className="recon-badge">
+                          <Compass size={11} /> FIELD TERRAIN INTELLIGENCE
+                        </span>
+                        <button className="recon-zoom-btn" title="사진 확대">
+                          <Maximize2 size={12} />
+                        </button>
+                      </div>
+                      <div className="recon-overlay-footer">
+                        <div className="recon-caption">{c.terrainInfo.terrainPhoto.caption}</div>
+                        <div className="recon-loc">📍 {c.terrainInfo.terrainPhoto.location || c.regionKo}</div>
+                      </div>
+                    </div>
+                    <div className="recon-tags">
+                      {c.terrainInfo.terrainPhoto.tags?.map((tag, idx) => (
+                        <span key={idx} className="recon-tag-chip">#{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 2. Operational Environment Profile (Terrain & Meteorological Gauges) */}
+                {c.terrainInfo && (
+                  <div className="dossier-env-section">
+                    <div className="dossier-section-title">
+                      <Mountain size={14} className="text-orange" /> 전장 지형 및 작전 기상 제원
+                    </div>
+                    
+                    <div className="env-profile-box">
+                      <div className="env-terrain-header">
+                        <div className="env-terrain-type">
+                          <span className="env-type-badge">{c.terrainInfo.terrainType}</span>
+                          <span className="env-country-name">{c.terrainInfo.country}</span>
+                        </div>
+                        <p className="env-terrain-desc">{c.terrainInfo.terrainDescription}</p>
+                      </div>
+
+                      {/* Sensor Meters Grid */}
+                      <div className="env-gauges-grid">
+                        {/* Temp Gauge */}
+                        <div className="env-gauge-card">
+                          <div className="gauge-label">
+                            <Thermometer size={13} className="text-orange" /> 연간 기온 범위
+                          </div>
+                          <div className="gauge-val">
+                            <span className="temp-min">{c.terrainInfo.tempRange?.min}°C</span>
+                            <span className="temp-sep">~</span>
+                            <span className="temp-max">{c.terrainInfo.tempRange?.max}°C</span>
+                          </div>
+                          <div className="gauge-bar-wrap">
+                            <div className="gauge-bar-fill temp-bar" style={{
+                              width: `${Math.min(Math.max(((c.terrainInfo.tempRange?.max || 30) + 30) / 80 * 100, 20), 100)}%`
+                            }}></div>
+                          </div>
+                          <div className="gauge-sub">{c.terrainInfo.tempRange?.desc}</div>
+                        </div>
+
+                        {/* Humidity Gauge */}
+                        <div className="env-gauge-card">
+                          <div className="gauge-label">
+                            <Droplets size={13} className="text-cyan" /> 상대 습도 제원
+                          </div>
+                          <div className="gauge-val">
+                            <span className="hum-avg">평균 {c.terrainInfo.humidity?.avg}%</span>
+                            <span className="hum-sep">/</span>
+                            <span className="hum-max">최대 {c.terrainInfo.humidity?.max}%</span>
+                          </div>
+                          <div className="gauge-bar-wrap">
+                            <div className="gauge-bar-fill hum-bar" style={{
+                              width: `${c.terrainInfo.humidity?.max || 70}%`
+                            }}></div>
+                          </div>
+                          <div className="gauge-sub">{c.terrainInfo.humidity?.desc}</div>
+                        </div>
+                      </div>
+
+                      {/* Special Hazards Chips */}
+                      {c.terrainInfo.specialHazards && c.terrainInfo.specialHazards.length > 0 && (
+                        <div className="env-hazards-block">
+                          <div className="hazards-title">
+                            <AlertTriangle size={12} className="text-amber" /> 전장 특수 환경 위험 요인
+                          </div>
+                          <div className="hazards-list">
+                            {c.terrainInfo.specialHazards.map((h, i) => (
+                              <span key={i} className="hazard-chip">
+                                <span className="hazard-dot">•</span> {h}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. Strategic Summary */}
                 <div>
                   <div className="dossier-section-title">
                     <Lightbulb size={14} className="text-orange" /> 미래전략실 전략 요약
@@ -261,29 +374,94 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                   </p>
                 </div>
 
-                {/* Matched Hanwha Weapons */}
+                {/* 4. Matched Hanwha Weapons with Environmental & Operational Advisory */}
                 <div>
                   <div className="dossier-section-title">
-                    <Crosshair size={14} className="text-orange" /> 한화 방산 소요 무기 매칭 ({c.matchedWeapons?.length || 0}종)
+                    <Crosshair size={14} className="text-orange" /> 한화 방산 소요 무기 및 환경 호환성 평가 ({c.matchedWeapons?.length || 0}종)
                   </div>
                   {c.matchedWeapons && c.matchedWeapons.length > 0 ? (
-                    c.matchedWeapons.map(w => (
-                      <div className="weapon-match-card" key={w.weaponId}>
-                        <div className="wm-header">
-                          <div>
-                            <div className="wm-name">{w.nameKo}</div>
-                            <div className="wm-company">{w.company} • {w.category}</div>
+                    c.matchedWeapons.map(w => {
+                      const env = w.environmentalAssessment || {};
+                      const isEnvWarn = env.overallStatus === 'Warning';
+                      const isEnvCaution = env.overallStatus === 'Caution';
+                      const envBadgeClass = isEnvWarn ? 'env-badge-warn' : (isEnvCaution ? 'env-badge-caution' : 'env-badge-optimal');
+                      const envBadgeLabel = isEnvWarn ? '환경 위험 경고' : (isEnvCaution ? '운용 조건 주의' : '작전 환경 적합');
+
+                      return (
+                        <div className="weapon-match-card" key={w.weaponId}>
+                          <div className="wm-header">
+                            <div>
+                              <div className="wm-name">{w.nameKo}</div>
+                              <div className="wm-company">{w.company} • {w.category}</div>
+                            </div>
+                            <div className="wm-score-wrap">
+                              <span className={`wm-env-badge ${envBadgeClass}`}>
+                                {envBadgeLabel}
+                              </span>
+                              <div className="wm-score">매칭 적합도 {w.matchScore}%</div>
+                            </div>
                           </div>
-                          <div className="wm-score">매칭 적합도 {w.matchScore}%</div>
+                          <p className="wm-desc">{w.description}</p>
+                          
+                          {/* Military Operational Specs */}
+                          {w.operatingSpecs && (
+                            <div className="wm-mil-specs">
+                              <div className="spec-tag">
+                                <span className="st-lbl">운용온도:</span> <span className="st-val">{w.operatingSpecs.tempRange}</span>
+                              </div>
+                              <div className="spec-tag">
+                                <span className="st-lbl">방호/규격:</span> <span className="st-val">{w.operatingSpecs.protection}</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Environmental Assessment Box */}
+                          {env && (
+                            <div className="wm-env-eval-box">
+                              <div className="wm-env-row">
+                                <span className="env-metric">
+                                  <Thermometer size={11} className="text-orange" /> {env.tempDesc || '온도 적합'}
+                                </span>
+                                <span className="env-metric">
+                                  <Droplets size={11} className="text-cyan" /> {env.humidityDesc || '습도 적합'}
+                                </span>
+                                <span className="env-metric">
+                                  지형 적합: <strong>{env.terrainScore || 85}점</strong>
+                                </span>
+                              </div>
+
+                              {/* Field Advisories */}
+                              {env.fieldAdvisories && env.fieldAdvisories.length > 0 && (
+                                <div className="wm-advisory-block">
+                                  <div className="wm-advisory-title">
+                                    <ShieldAlert size={12} className="text-amber" /> 야전 운용 가이드 및 환경 유의사항
+                                  </div>
+                                  <ul className="wm-advisory-list">
+                                    {env.fieldAdvisories.map((adv, idx) => (
+                                      <li key={idx}>{adv}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+
+                              {/* Recommended Countermeasure Upgrade */}
+                              {env.countermeasurePackage && (
+                                <div className="wm-countermeasure">
+                                  <span className="cm-lbl">🛠️ 권장 환경 극복 패키지:</span>
+                                  <span className="cm-val">{env.countermeasurePackage}</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          <ul className="wm-reasons">
+                            {w.reasons.map((r, i) => (
+                              <li key={i}>{r}</li>
+                            ))}
+                          </ul>
                         </div>
-                        <p className="wm-desc">{w.description}</p>
-                        <ul className="wm-reasons">
-                          {w.reasons.map((r, i) => (
-                            <li key={i}>{r}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))
+                      );
+                    })
                   ) : (
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>매칭된 전용 소요 무기 데이터가 없습니다.</p>
                   )}
@@ -343,6 +521,55 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
           </div>
         </aside>
       </div>
+
+      {/* Terrain Photo Enlarged Inspection Modal */}
+      {isPhotoZoomed && c?.terrainInfo?.terrainPhoto && (
+        <div className="modal-overlay" onClick={() => setIsPhotoZoomed(false)}>
+          <div className="modal-card terrain-zoom-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-header-left">
+                <div className="report-badge">
+                  <Compass size={13} style={{ display: 'inline', marginRight: '4px' }} />
+                  FIELD RECONNAISSANCE INTELLIGENCE
+                </div>
+                <h3 className="modal-title">{c.terrainInfo.country} - 작전 지형 정찰 사진</h3>
+              </div>
+              <button className="modal-close-btn" onClick={() => setIsPhotoZoomed(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="modal-body" style={{ padding: '1rem' }}>
+              <div className="zoom-photo-frame">
+                <img
+                  src={c.terrainInfo.terrainPhoto.url}
+                  alt={c.terrainInfo.terrainPhoto.caption}
+                  className="zoom-img"
+                />
+                <div className="zoom-hud-reticle"></div>
+              </div>
+              <div className="zoom-meta-box">
+                <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.35rem', fontSize: '1rem' }}>
+                  {c.terrainInfo.terrainPhoto.caption}
+                </h4>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
+                  {c.terrainInfo.terrainDescription}
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <span className="score-badge badge-high" style={{ fontSize: '0.75rem' }}>
+                    지형 유형: {c.terrainInfo.terrainType}
+                  </span>
+                  <span className="score-badge badge-med" style={{ fontSize: '0.75rem' }}>
+                    기온 폭: {c.terrainInfo.tempRange?.min}°C ~ {c.terrainInfo.tempRange?.max}°C
+                  </span>
+                  <span className="score-badge badge-low" style={{ fontSize: '0.75rem' }}>
+                    상대 습도: 평균 {c.terrainInfo.humidity?.avg}% (최대 {c.terrainInfo.humidity?.max}%)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

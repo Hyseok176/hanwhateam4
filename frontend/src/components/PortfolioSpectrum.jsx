@@ -152,6 +152,31 @@ export default function PortfolioSpectrum({ portfolio }) {
 
                 <p className="pc-desc">{p.description}</p>
 
+                {/* Military Environmental Operational Specs */}
+                {p.operatingSpecs && (
+                  <div className="pc-operating-specs" style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '0.6rem 0.75rem',
+                    marginBottom: '0.75rem',
+                    fontSize: '0.73rem'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', color: 'var(--text-secondary)' }}>
+                      <span>🌡️ <strong>운용온도:</strong> {p.operatingSpecs.tempRange}</span>
+                      <span style={{ color: 'var(--text-muted)' }}>{p.operatingSpecs.standard?.split('/')[0]}</span>
+                    </div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', lineHeight: 1.4 }}>
+                      🛡️ <strong>방호/밀폐:</strong> {p.operatingSpecs.protection}
+                    </div>
+                    {p.operatingSpecs.countermeasurePackage && (
+                      <div style={{ color: 'var(--brand-orange)', fontSize: '0.7rem', marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span>🛠️ <strong>대응 킷:</strong> {p.operatingSpecs.countermeasurePackage}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Crosshair size={11} className="text-cyan" /> 소요 대응 전장 시나리오
                 </div>

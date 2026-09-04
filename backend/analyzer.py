@@ -6,6 +6,117 @@ from datetime import datetime
 import httpx
 from . import config
 
+def evaluate_environmental_fit(terrain_info: dict, weapon: dict) -> dict:
+    """전장 지형·기후(기온/습도/환경위협)와 무기체계 군용 규격(MIL-STD-810H)을 정밀 비교 평가하여 환경 적합도 및 야전 운용 주의사항을 도출"""
+    if not terrain_info or not weapon.get('operatingSpecs'):
+        return {
+            'overallStatus': 'Optimal',
+            'tempStatus': 'Optimal',
+            'tempDesc': '규격 충족',
+            'humidityStatus': 'Optimal',
+            'humidityDesc': '규격 충족',
+            'terrainScore': 85,
+            'fieldAdvisories': ['표준 전장 환경 수칙 준수 하에 정상 작전 전개 가능.'],
+            'fieldConstraints': weapon.get('operatingSpecs', {}).get('fieldConstraints', ''),
+            'countermeasurePackage': weapon.get('operatingSpecs', {}).get('countermeasurePackage', '기본 야전 정비 키트')
+        }
+
+    specs = weapon['operatingSpecs']
+    local_temp = terrain_info.get('tempRange', {'min': -10, 'max': 40})
+    local_hum = terrain_info.get('humidity', {'avg': 60, 'max': 85})
+    terrain_type = terrain_info.get('terrainType', '')
+    hazards = terrain_info.get('specialHazards', [])
+    weapon_fit_map = specs.get('terrainFit', {})
+
+    # 1. 운용 기온 평가
+    w_t_min = specs.get('tempMin', -40)
+    w_t_max = specs.get('tempMax', 50)
+    loc_t_min = local_temp.get('min', -10)
+    loc_t_max = local_temp.get('max', 40)
+
+    if loc_t_min < w_t_min or loc_t_max > w_t_max:
+        temp_status = 'Warning'
+        temp_text = f"한계치 초과 위험 (현지 {loc_t_min}°C ~ {loc_t_max}°C / 무기 보증 {w_t_min}°C ~ {w_t_max}°C)"
+    elif (loc_t_min - w_t_min <= 8) or (w_t_max - loc_t_max <= 5):
+        temp_status = 'Caution'
+        temp_text = f"주의 요망 (현지 {loc_t_min}°C ~ {loc_t_max}°C / 무기 보증 {w_t_min}°C ~ {w_t_max}°C)"
+    else:
+        temp_status = 'Optimal'
+        temp_text = f"완전 적합 (현지 {loc_t_min}°C ~ {loc_t_max}°C / 무기 보증 {w_t_min}°C ~ {w_t_max}°C)"
+
+    # 2. 습도 및 강수 평가
+    w_hum_max = specs.get('maxHumidity', 95)
+    loc_hum_max = local_hum.get('max', 85)
+    loc_hum_avg = local_hum.get('avg', 60)
+
+    if loc_hum_max > w_hum_max:
+        hum_status = 'Warning'
+        hum_text = f"초극고습 위험 (현지 최대 {loc_hum_max}% / 무기 한계 {w_hum_max}%)"
+    elif loc_hum_max >= 90 or (w_hum_max - loc_hum_max <= 5):
+        hum_status = 'Caution'
+        hum_text = f"주의 요망 (현지 최대 {loc_hum_max}% 극고습 / 무기 한계 {w_hum_max}%)"
+    else:
+        hum_status = 'Optimal'
+        hum_text = f"양호 (현지 평균 {loc_hum_avg}%~최대 {loc_hum_max}% / 무기 한계 {w_hum_max}%)"
+
+    # 3. 지형 적합도 점수 산출
+    terrain_score = 80
+    for key, score in weapon_fit_map.items():
+        if key in terrain_type:
+            terrain_score = max(terrain_score, score)
+
+    # 4. 현지 지형/기후 맞춤 야전 운용 지침(Advisory) 산출
+    advisories = []
+    
+    # (A) 정글/극고습
+    if any(k in terrain_type for k in ['정글', '밀림', '열대']) or loc_hum_max >= 90:
+        if weapon['id'] in ['K9_THUNDER', 'CHEONMU_MLRS', 'REDBACK_IFV', 'CHEONGUNG_II', 'CHEONHO_AAGW', 'BIHO_HYBRID']:
+            advisories.append(f"열대 정글의 초고온다습(상대습도 {loc_hum_max}%) 환경으로 전자광학(EO/IR) 조준경 렌즈 결로 및 배선 부식 위험이 큽니다. 질소 충전 밀폐 광학계 적용 및 방청 그리스 도포 주기를 50% 단축하십시오.")
+        if weapon['id'] == 'TAIPERS_MISSILE':
+            advisories.append("밀림 수목 캐노피 및 덩굴로 인해 유선 광섬유 케이블이 나뭇가지에 걸려 단선될 위험이 높으므로, 발사 전 '무선 RF 데이터링크 모드'로 사전 전환해야 합니다.")
+        if weapon['id'] == 'UGV_UNMANNED':
+            advisories.append("울창한 덤불 및 하층 식생에 자율주행 라이다(LiDAR) 센서 차폐가 발생할 수 있어, 영상 딥러닝 기반 자율주행 모드를 병행 운용해야 합니다.")
+
+    # (B) 사막/극고온/분진
+    if any(k in terrain_type for k in ['사막', '사헬']) or loc_t_max >= 44:
+        if any(w_id in weapon['id'] for w_id in ['K9', 'REDBACK', 'CHEONHO', 'TIGON', 'CHEONGUNG', 'L_SAM']):
+            advisories.append(f"주간 최고 {loc_t_max}°C의 살인적 폭염과 미세 규산염 모래 분진 침투로 인해 엔진 흡기 계통 마모 위험이 큽니다. '2중 사이클론 에어클리너(Air Pre-cleaner)' 및 사막형 고출력 냉각팩 장착이 필수적입니다.")
+        if 'LASER' in weapon['id']:
+            advisories.append("모래폭풍(Haboob/Shamal) 발생 시 공기 중 부유 입자로 인해 레이저 빔 산란이 발생해 사거리가 40% 이상 저하될 수 있으므로, 광학창 에어커튼을 상시 분사하십시오.")
+
+    # (C) 흑토/라스푸티차(연약지반)
+    if any('라스푸티차' in h for h in hazards) or '흑토' in terrain_type:
+        if weapon['id'] in ['K9_THUNDER', 'CHEONMU_MLRS']:
+            advisories.append("봄/가을 해빙기 흑토 라스푸티차(1m 심층 진흙 수렁) 통과 시 차체 침하를 방지하기 위해 '광폭 궤도 패드(Wide Track Pads)' 장착 및 K10/구난전차(ARV)와의 연계 전개가 요구됩니다.")
+        if weapon['id'] in ['CHEONHO_AAGW', 'TIGON_WHEELED_IFV']:
+            advisories.append("차륜형 장갑차는 심층 진흙 수렁에서 슬립 위험이 있으므로, 타이어 공기압 자동조절기(CTIS)를 'Mud 모드'로 설정하고 사전 정찰된 포장 도로망 위주로 기동하십시오.")
+
+    # (D) 고산/극저온/설원
+    if loc_t_min <= -20 or any(k in terrain_type for k in ['고산', '빙하', '설산']):
+        advisories.append(f"영하 {abs(loc_t_min)}°C 혹한 및 해발 3,000m+ 희박 산소로 인해 디젤 엔진 시동 지연 및 배터리 방전 위험이 있습니다. 보조동력장치(APU) 혹한기 예열 킷 가동 및 저온 작동유를 사용하십시오.")
+
+    # (E) 해양/해협/초고염분
+    if any(k in terrain_type for k in ['해양', '해협', '군도', '연안']):
+        if weapon['id'] in ['FFX_KDDX_FRIGATE', 'NAVAL_SYSTEMS', 'CHEONGUNG_II', 'KSS_III_SUBMARINE', 'GHOST_COMMANDER_MUMT']:
+            advisories.append("해풍에 동반된 초고염분 해무로 인한 센서 마스트 및 레이돔 부식 방지를 위해 '통합 담수 세척 스프링클러' 일일 세척 주기 엄수가 필수적입니다.")
+
+    if not advisories:
+        advisories.append(f"현지 전장 환경({terrain_type})에 본 무기체계의 군용 운용 규격이 안정적으로 부합하며, 통상적인 야전 예방 정비를 통해 최상의 가동률을 유지할 수 있습니다.")
+
+    overall = 'Warning' if (temp_status == 'Warning' or hum_status == 'Warning') else ('Caution' if (temp_status == 'Caution' or hum_status == 'Caution') else 'Optimal')
+
+    return {
+        'overallStatus': overall,
+        'tempStatus': temp_status,
+        'tempDesc': temp_text,
+        'humidityStatus': hum_status,
+        'humidityDesc': hum_text,
+        'terrainScore': terrain_score,
+        'fieldAdvisories': advisories,
+        'fieldConstraints': specs.get('fieldConstraints', ''),
+        'countermeasurePackage': specs.get('countermeasurePackage', '')
+    }
+
 def analyze_conflicts_and_weapons(conflicts: list[dict], news_list: list[dict]) -> list[dict]:
     matching_results = []
 
@@ -17,6 +128,25 @@ def analyze_conflicts_and_weapons(conflicts: list[dict], news_list: list[dict]) 
         region_ko = conflict.get('regionKo', '')
         intensity = conflict.get('intensity', 'Medium')
         locations = conflict.get('locations', [])
+
+        # 분쟁지 전장 지형 및 기후 프로파일 매핑
+        terrain_info = getattr(config, 'CONFLICT_TERRAIN_CLIMATE', {}).get(slug)
+        if not terrain_info:
+            terrain_info = {
+                'country': title_ko,
+                'countryEn': title_en,
+                'terrainType': '복합 지형 및 구릉',
+                'terrainDescription': f'{region_ko} 권역 내 전장 지형과 기상 조건이 상존하는 분쟁지.',
+                'tempRange': {'min': -10, 'max': 40, 'desc': '-10°C ~ 40°C'},
+                'humidity': {'avg': 60, 'max': 85, 'desc': '평균 60%'},
+                'specialHazards': ['기동 제약', '통신 및 시계 장애'],
+                'terrainPhoto': {
+                    'url': 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=85',
+                    'caption': f'{title_ko} 작전 권역 전장 지형',
+                    'location': region_ko,
+                    'tags': ['작전 지역', '복합 지형']
+                }
+            }
 
         search_terms = [slug, title_ko, title_en]
         for loc in locations:
@@ -48,7 +178,7 @@ def analyze_conflicts_and_weapons(conflicts: list[dict], news_list: list[dict]) 
         news_bonus = min(len(matched_news) * 3, 10)
         gri_score = min(round(base_score + loc_bonus + news_bonus), 99)
 
-        # 2. 소요 무기 매칭 (Weapons Requirement Matching)
+        # 2. 소요 무기 매칭 및 환경 적합성 평가
         matched_weapons = []
         conflict_type_text = f"{conflict.get('type', '')} {title_en} {title_ko}".lower()
 
@@ -99,6 +229,7 @@ def analyze_conflicts_and_weapons(conflicts: list[dict], news_list: list[dict]) 
                     break
 
             if match_score >= 40:
+                env_assessment = evaluate_environmental_fit(terrain_info, weapon)
                 matched_weapons.append({
                     'weaponId': weapon['id'],
                     'nameKo': weapon['nameKo'],
@@ -107,7 +238,9 @@ def analyze_conflicts_and_weapons(conflicts: list[dict], news_list: list[dict]) 
                     'matchScore': min(match_score, 98),
                     'reasons': list(dict.fromkeys(reasons)),
                     'description': weapon['description'],
-                    'threatScenarios': weapon['threatScenarios']
+                    'threatScenarios': weapon['threatScenarios'],
+                    'operatingSpecs': weapon.get('operatingSpecs', {}),
+                    'environmentalAssessment': env_assessment
                 })
 
         matched_weapons.sort(key=lambda x: x['matchScore'], reverse=True)
@@ -128,6 +261,7 @@ def analyze_conflicts_and_weapons(conflicts: list[dict], news_list: list[dict]) 
             'status': conflict.get('status', 'Active'),
             'locations': locations,
             'mainTheaters': conflict.get('mainTheaters', ''),
+            'terrainInfo': terrain_info,
             'matchedNewsCount': len(matched_news),
             'matchedNews': matched_news[:5],
             'matchedWeapons': matched_weapons,
@@ -225,9 +359,13 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
         # 최신 관련 뉴스 헤드라인 결합 (최대 2건)
         news_headlines = [f"'{n.get('title')}'" for n in r.get('matchedNews', [])[:2] if n.get('title')]
         news_str = f" [관련 뉴스: {', '.join(news_headlines)}]" if news_headlines else ""
+
+        t_info = r.get('terrainInfo') or {}
+        terrain_str = f"{t_info.get('terrainType', '복합 지형')} (기온: {t_info.get('tempRange', {}).get('desc', '온난')}, 습도: {t_info.get('humidity', {}).get('desc', '보통')}, 환경위협: {', '.join(t_info.get('specialHazards', ['작전 제약']))})" if t_info else ""
         
         theaters_context.append(
             f"- [{r.get('regionKo', '글로벌')}] {r['titleKo']} (GRI 지수: {r['griScore']}/100, 위험도: {r['intensity']})\n"
+            f"  * 전장 지형 및 기후: {terrain_str}\n"
             f"  * 핵심 위협 요인: {r.get('mainTheaters', '복합 비대칭 위협 및 화력 소모전')}{news_str}\n"
             f"  * 추천 무기체계: {weapons_str}"
         )
