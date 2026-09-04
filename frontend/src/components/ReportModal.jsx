@@ -46,12 +46,33 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
         </div>
 
         <div className="modal-body report-paper" ref={contentRef}>
-          {isLoading || !report ? (
-            <div className="loading-state" style={{ textAlign: 'center', padding: '3rem 1.5rem' }}>
+          {isLoading ? (
+            <div className="loading-state" style={{ textAlign: 'center', padding: '3.5rem 1.5rem' }}>
               <div className="fa-spin" style={{ display: 'inline-block', marginBottom: '1rem', color: 'var(--brand-orange)' }}>
                 <Brain size={42} />
               </div>
-              <p>선택된 AI 모델({activeModelName})로 지정학적 리스크 지수 및 최신 방산 뉴스를 결합하여 전략 분석을 생성하고 있습니다...</p>
+              <p style={{ fontSize: '0.92rem', color: 'var(--text-primary)', fontWeight: 600 }}>
+                선택된 AI 모델({activeModelName})로 지정학적 리스크 지수 및 최신 방산 뉴스를 결합하여 전략 분석을 생성하고 있습니다...
+              </p>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                전 세계 29개 분쟁 지역과 한화 18대 무기체계의 전장 운용 제원을 심층 분석 중입니다.
+              </p>
+            </div>
+          ) : !report ? (
+            <div className="loading-state" style={{ textAlign: 'center', padding: '3.5rem 1.5rem' }}>
+              <p style={{ fontSize: '0.92rem', color: 'var(--alert-red)', fontWeight: 700, marginBottom: '0.6rem' }}>
+                ⚠️ 보고서 데이터를 불러오지 못했습니다.
+              </p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1.2rem' }}>
+                일시적인 네트워크 지연이거나 서버 준비 중일 수 있습니다. 아래 버튼을 눌러 다시 시도해 주세요.
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() => onSelectModel && onSelectModel(activeModelName)}
+                style={{ padding: '0.5rem 1.2rem', fontWeight: 700 }}
+              >
+                🔄 다시 생성하기
+              </button>
             </div>
           ) : (
             <>

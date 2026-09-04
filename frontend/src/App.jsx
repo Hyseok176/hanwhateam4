@@ -108,11 +108,15 @@ export default function App() {
         body: JSON.stringify({ ...settings, model: targetModel })
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.report) {
         setReportData(data.report);
+      } else {
+        console.error('보고서 생성 실패:', data);
+        alert(`보고서 생성 중 문제가 발생했습니다: ${data.detail || '잠시 후 다시 시도해 주세요.'}`);
       }
     } catch (err) {
-      console.error('보고서 생성 실패:', err);
+      console.error('보고서 통신 실패:', err);
+      alert(`서버 연결 실패: ${err.message}`);
     } finally {
       setIsReportLoading(false);
     }

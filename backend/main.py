@@ -149,9 +149,14 @@ async def get_portfolio():
 @app.post('/api/report')
 async def create_report(req: ReportRequest):
     try:
+        if not state.matching:
+            print("[FastAPI] matching 데이터 부재로 자동 동기화 수행...")
+            await sync_and_analyze()
         report = await analyzer.generate_strategic_report(state.matching, state.news, req.model_dump())
         return {'success': True, 'report': report}
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post('/api/test-llm')

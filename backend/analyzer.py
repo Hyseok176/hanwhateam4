@@ -542,7 +542,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
             models_to_try.append(m)
 
     last_error = ''
-    async with httpx.AsyncClient(timeout=60.0) as client:
+    async with httpx.AsyncClient(timeout=30.0) as client:
         for model in models_to_try:
             try:
                 payload = build_openai_payload(model, [{'role': 'user', 'content': prompt}], is_json=True, max_tokens=3500)
@@ -576,8 +576,12 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
                 else:
                     last_error = f"HTTP {resp.status_code} ({model}): {resp.text}"
                     print(f"[OpenAI Call] 모델 {model} 실패: {last_error}")
+                    # 인증 오류(401, 403) 또는 사용량 초과(429) 시 다른 모델 시도 없이 즉시 중단
+                    if resp.status_code in (401, 403, 429):
+                        break
             except Exception as ex:
                 last_error = str(ex)
+                print(f"[OpenAI Call] 모델 {model} 예외: {ex}")
 
     raise ValueError(f"OpenAI GPT 호출 실패: {last_error}")
 
