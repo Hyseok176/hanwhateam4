@@ -11,19 +11,19 @@ const GOOGLE_TILE_LAYERS = {
   terrain: {
     id: 'terrain',
     label: '구글 지형도',
-    url: 'https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+    url: 'https://{s}.google.com/vt/lyrs=p&hl=ko&gl=KR&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   },
   roadmap: {
     id: 'roadmap',
     label: '구글 일반 지도',
-    url: 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+    url: 'https://{s}.google.com/vt/lyrs=m&hl=ko&gl=KR&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   },
   satellite: {
     id: 'satellite',
     label: '구글 위성 하이브리드',
-    url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+    url: 'https://{s}.google.com/vt/lyrs=y&hl=ko&gl=KR&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   }
 };
@@ -137,7 +137,7 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
       const marker = L.marker([lat, lon], { icon: customIcon });
 
       marker.bindTooltip(`
-        <div style="font-family: sans-serif; font-size: 12px; padding: 3px 6px; background: rgba(15, 23, 42, 0.95); color: #fff; border: 1.5px solid ${colorHex}; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.35);">
+        <div style="font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; font-size: 12px; font-weight: 700; padding: 4px 8px; background: #FFFFFF; color: #191F28; border: 1.5px solid ${colorHex}; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.12);">
           <strong style="color: ${colorHex};">[GRI ${conflict.griScore}]</strong> ${conflict.titleKo}
         </div>
       `, { direction: 'top', offset: [0, -size / 2] });
@@ -183,10 +183,10 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
 
       const subMarker = L.marker([loc.lat, loc.lon], { icon: subIcon });
       subMarker.bindPopup(`
-        <div style="font-family: sans-serif; font-size: 12px; color: #0E1626; max-width: 220px; padding: 2px;">
-          <strong style="color: #0F172A; font-size: 13px;">📍 ${loc.name}</strong>
-          <p style="margin: 4px 0 0; font-size: 11px; color: #475569; line-height: 1.4;">${loc.description || '주요 거점'}</p>
-          ${loc.control ? `<p style="margin: 4px 0 0; font-size: 11px; color: #D97706; font-weight: 600;"><strong>통제:</strong> ${loc.control}</p>` : ''}
+        <div style="font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; font-size: 12px; color: #191F28; max-width: 220px; padding: 2px;">
+          <strong style="color: #191F28; font-size: 13px;">📍 ${loc.name}</strong>
+          <p style="margin: 4px 0 0; font-size: 11px; color: #4E5968; line-height: 1.4;">${loc.description || '주요 거점'}</p>
+          ${loc.control ? `<p style="margin: 4px 0 0; font-size: 11px; color: #D97706; font-weight: 700;"><strong>통제:</strong> ${loc.control}</p>` : ''}
         </div>
       `);
 
@@ -323,8 +323,9 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                         alt={c.terrainInfo.terrainPhoto.caption}
                         className="recon-img"
                         loading="lazy"
+                        referrerPolicy="no-referrer"
                         onError={(e) => {
-                          e.target.src = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=85';
+                          e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/9/92/Granite-steppe_lands_of_Buh-3.jpg';
                         }}
                       />
                       <div className="recon-overlay-header">
@@ -469,15 +470,66 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                           </div>
                           <p className="wm-desc">{w.description}</p>
                           
-                          {/* Military Operational Specs */}
+                          {/* Military Operational Specs Grid */}
                           {w.operatingSpecs && (
-                            <div className="wm-mil-specs">
-                              <div className="spec-tag">
-                                <span className="st-lbl">운용온도:</span> <span className="st-val">{w.operatingSpecs.tempRange}</span>
+                            <div className="wm-mil-specs-box" style={{
+                              background: 'var(--bg-surface-elevated)',
+                              border: '1px solid var(--border-subtle)',
+                              borderRadius: 'var(--radius-md)',
+                              padding: '0.75rem 0.85rem',
+                              margin: '0.65rem 0'
+                            }}>
+                              <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(2, 1fr)',
+                                gap: '0.5rem',
+                                marginBottom: '0.4rem'
+                              }}>
+                                <div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
+                                    🌡️ 무기 보증 기온 (온도 제원)
+                                  </div>
+                                  <div style={{ fontSize: '0.8rem', color: 'var(--brand-orange)', fontWeight: 800 }}>
+                                    {w.operatingSpecs.tempRange}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
+                                    💧 무기 보증 습도 (습도 제원)
+                                  </div>
+                                  <div style={{ fontSize: '0.8rem', color: 'var(--radar-cyan)', fontWeight: 800 }}>
+                                    최대 {w.operatingSpecs.maxHumidity || 95}% RH (초극고습 내구성)
+                                  </div>
+                                </div>
+                                <div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
+                                    🛡️ 전장 군용 규격 / 방호
+                                  </div>
+                                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                                    {w.operatingSpecs.standard?.split('/')[0] || 'MIL-STD-810H'}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
+                                    🌲 주요 적합 전장 환경
+                                  </div>
+                                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                                    {w.operatingSpecs.primaryEnvironments ? w.operatingSpecs.primaryEnvironments.join(', ') : '전천후 전장 환경'}
+                                  </div>
+                                </div>
                               </div>
-                              <div className="spec-tag">
-                                <span className="st-lbl">방호/규격:</span> <span className="st-val">{w.operatingSpecs.protection}</span>
-                              </div>
+
+                              {w.operatingSpecs.protection && (
+                                <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.4rem', marginTop: '0.35rem', fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
+                                  🔰 <strong style={{ color: 'var(--text-primary)' }}>장갑 방호 및 화생방:</strong> {w.operatingSpecs.protection}
+                                </div>
+                              )}
+
+                              {w.operatingSpecs.fieldConstraints && (
+                                <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.4rem', marginTop: '0.35rem', fontSize: '0.74rem', color: 'var(--alert-amber)' }}>
+                                  ⚠️ <strong style={{ color: '#D97706' }}>전장 운용상 제약 및 주의사항:</strong> {w.operatingSpecs.fieldConstraints}
+                                </div>
+                              )}
                             </div>
                           )}
 
@@ -486,13 +538,13 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                             <div className="wm-env-eval-box">
                               <div className="wm-env-row">
                                 <span className="env-metric">
-                                  <Thermometer size={11} className="text-orange" /> {env.tempDesc || '온도 적합'}
+                                  <Thermometer size={12} className="text-orange" /> {env.tempDesc || '온도 적합'}
                                 </span>
                                 <span className="env-metric">
-                                  <Droplets size={11} className="text-cyan" /> {env.humidityDesc || '습도 적합'}
+                                  <Droplets size={12} className="text-cyan" /> {env.humidityDesc || '습도 적합'}
                                 </span>
                                 <span className="env-metric">
-                                  지형 적합: <strong>{env.terrainScore || 85}점</strong>
+                                  지형 적합: <strong style={{ color: 'var(--text-primary)' }}>{env.terrainScore || 85}점</strong>
                                 </span>
                               </div>
 
@@ -500,7 +552,7 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                               {env.fieldAdvisories && env.fieldAdvisories.length > 0 && (
                                 <div className="wm-advisory-block">
                                   <div className="wm-advisory-title">
-                                    <ShieldAlert size={12} className="text-amber" /> 야전 운용 가이드 및 환경 유의사항
+                                    <ShieldAlert size={13} className="text-amber" /> 전장 맞춤 야전 운용 가이드 및 정비 수칙
                                   </div>
                                   <ul className="wm-advisory-list">
                                     {env.fieldAdvisories.map((adv, idx) => (
@@ -538,13 +590,13 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                   <div className="dossier-section-title">
                     <MapPin size={14} className="text-cyan" /> 핵심 전선 및 감시 거점
                   </div>
-                  <div style={{ background: 'var(--bg-surface-elevated)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+                  <div style={{ background: 'var(--bg-surface-elevated)', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
                     {c.locations && c.locations.length > 0 ? (
                       c.locations.map((l, i) => (
-                        <div key={i} style={{ fontSize: '0.78rem', padding: '0.4rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        <div key={i} style={{ fontSize: '0.8rem', padding: '0.45rem 0', borderBottom: '1px solid var(--border-subtle)' }}>
                           <strong style={{ color: 'var(--radar-cyan)' }}>📍 {l.name}</strong>
                           <span style={{ color: 'var(--text-secondary)' }}> - {l.description || '주요 거점'}</span>
-                          {l.control && <div style={{ color: 'var(--alert-amber)', fontSize: '0.72rem', marginTop: '2px' }}>통제: {l.control}</div>}
+                          {l.control && <div style={{ color: 'var(--alert-amber)', fontSize: '0.74rem', marginTop: '2px', fontWeight: 600 }}>통제: {l.control}</div>}
                         </div>
                       ))
                     ) : (
@@ -610,6 +662,7 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
                   src={c.terrainInfo.terrainPhoto.url}
                   alt={c.terrainInfo.terrainPhoto.caption}
                   className="zoom-img"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="zoom-hud-reticle"></div>
               </div>

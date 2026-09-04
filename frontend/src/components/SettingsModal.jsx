@@ -1,17 +1,40 @@
 import React, { useState } from 'react';
 import { Settings, X, Check, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 
+const PRESET_MODELS = ['gpt-5.4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo'];
+
 export default function SettingsModal({ isOpen, onClose, settings, onSaveSettings }) {
   const initialProvider = settings.provider === 'gemini' ? 'openai' : (settings.provider || 'builtin');
   const [provider, setProvider] = useState(initialProvider);
   const [apiKey, setApiKey] = useState(settings.apiKey || '');
-  const [model, setModel] = useState(settings.model || 'gpt-4o-mini');
+  
+  const currentModel = settings.model || 'gpt-5.4-mini';
+  const isCustom = !PRESET_MODELS.includes(currentModel);
+  const [selectedPreset, setSelectedPreset] = useState(isCustom ? 'custom' : currentModel);
+  const [customModelName, setCustomModelName] = useState(isCustom ? currentModel : '');
+  const [model, setModel] = useState(currentModel);
   const [syncInterval, setSyncInterval] = useState(settings.syncInterval || 0);
 
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
   if (!isOpen) return null;
+
+  const handlePresetChange = (val) => {
+    setSelectedPreset(val);
+    setTestResult(null);
+    if (val === 'custom') {
+      setModel(customModelName.trim() || 'gpt-5.4-mini');
+    } else {
+      setModel(val);
+    }
+  };
+
+  const handleCustomModelChange = (val) => {
+    setCustomModelName(val);
+    setModel(val.trim() || 'gpt-5.4-mini');
+    setTestResult(null);
+  };
 
   const handleTestConnection = async () => {
     if (!apiKey.trim()) {
@@ -58,46 +81,66 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
         </div>
 
         <div className="modal-body">
-          <div className="form-group">
-            <label className="form-label">AI 분석 엔진 모드</label>
-            <select
-              className="form-select"
-              value={provider}
-              onChange={(e) => {
-                setProvider(e.target.value);
-                setTestResult(null);
-              }}
-              style={{ width: '100%' }}
-            >
-              <option value="builtin">내장 로컬 전략 분석 엔진 (Built-in Heuristic AI, 별도 키 불필요)</option>
-              <option value="openai">OpenAI GPT API (GPT-4o mini / GPT-4o)</option>
-            </select>
-            <small className="form-hint">
-              기본 내장 엔진은 인터넷/API키 없이도 29개 분쟁과 방산 뉴스를 결합하여 즉시 분석 보고서를 생성합니다.
-            </small>
+          {/* AI Engine Info Card */}
+          <div style={{
+            background: 'var(--brand-orange-light)',
+            border: '1px solid rgba(243, 115, 33, 0.25)',
+            borderRadius: 'var(--radius-md)',
+            padding: '0.85rem 1rem',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.75rem'
+          }}>
+            <div>
+              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--brand-orange)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Sparkles size={14} /> AI 전략 분석 엔진: OpenAI GPT
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                글로벌 29개 분쟁과 무기 제원을 실제 OpenAI LLM으로 심층 분석합니다.
+              </div>
+            </div>
+            <span className="score-badge badge-low" style={{ fontSize: '0.7rem', padding: '0.2rem 0.55rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
+              {model}
+            </span>
           </div>
 
-          {provider === 'openai' && (
-            <>
-              <div className="form-group">
-                <label className="form-label">OpenAI GPT 모델 선택</label>
-                <select
-                  className="form-select"
-                  value={model}
-                  onChange={(e) => {
-                    setModel(e.target.value);
-                    setTestResult(null);
-                  }}
+          <div className="form-group">
+            <label className="form-label">OpenAI GPT 모델 선택</label>
+            <select
+              className="form-select"
+              value={selectedPreset}
+              onChange={(e) => handlePresetChange(e.target.value)}
+              style={{ width: '100%' }}
+            >
+              <option value="gpt-5.4-mini">gpt-5.4-mini (최신 추천 - 최고 성능 & 고효율 전략 분석)</option>
+              <option value="gpt-4o">gpt-4o (플래그십 심층 안보 전략 분석)</option>
+              <option value="gpt-4o-mini">gpt-4o-mini (경량 고속 모드)</option>
+              <option value="gpt-3.5-turbo">gpt-3.5-turbo (기본 호환 모드)</option>
+              <option value="custom">직접 모델명 입력 (Custom Model)...</option>
+            </select>
+
+            {selectedPreset === 'custom' && (
+              <div style={{ marginTop: '0.4rem' }}>
+                <input
+                  type="text"
+                  className="form-input"
                   style={{ width: '100%' }}
-                >
-                  <option value="gpt-4o-mini">gpt-4o-mini (추천 - 빠르고 경제적, 고품질)</option>
-                  <option value="gpt-4o">gpt-4o (최고급 심층 안보 전략 분석)</option>
-                  <option value="gpt-3.5-turbo">gpt-3.5-turbo (기본 호환 모드)</option>
-                </select>
+                  placeholder="OpenAI 모델 ID 입력 (예: gpt-5.4-mini, o3-mini 등)"
+                  value={customModelName}
+                  onChange={(e) => handleCustomModelChange(e.target.value)}
+                />
                 <small className="form-hint">
-                  만약 API 키가 특정 모델에 404를 반환하면 시스템이 다른 모델로 자동 대체 시도합니다.
+                  사용 가능한 OpenAI 모델 식별자(ID)를 직접 입력할 수 있습니다.
                 </small>
               </div>
+            )}
+
+            <small className="form-hint" style={{ marginTop: '0.35rem', display: 'block' }}>
+              현재 설정된 활성 모델: <strong style={{ color: 'var(--brand-orange)', fontWeight: 700 }}>{model}</strong>
+            </small>
+          </div>
 
               <div className="form-group">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -157,8 +200,6 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
                   </div>
                 )}
               </div>
-            </>
-          )}
 
           <div className="form-group">
             <label className="form-label">자동 동기화 주기</label>

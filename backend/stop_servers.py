@@ -21,6 +21,9 @@ def stop_all_servers():
     except Exception as e:
         print(f'종료 중 오류: {e}')
 
+    # cloudflared 터널 프로세스 정리
+    os.system('taskkill /F /IM cloudflared.exe >nul 2>&1')
+
     if not killed:
         print('[안내] 현재 포트 8000 또는 5173에서 실행 중인 서버 프로세스가 없습니다.')
 

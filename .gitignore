@@ -19,3 +19,6 @@ Thumbs.db
 server_out.log
 git_runtime/
 scratch/
+tools/
+picture/
+deploy_public.bat

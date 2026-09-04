@@ -105,21 +105,97 @@ export default function MatchingMatrix({ matching, onSelectConflictAndNavigate }
                   </div>
                 </div>
 
+                {/* Conflict Battlefield Climate & Terrain Tag Strip */}
+                {item.terrainInfo && (
+                  <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '4px',
+                    margin: '0.4rem 0 0.6rem 0',
+                    fontSize: '0.69rem'
+                  }}>
+                    <span style={{
+                      background: 'rgba(255, 102, 0, 0.08)',
+                      color: 'var(--brand-orange)',
+                      border: '1px solid rgba(255, 102, 0, 0.25)',
+                      padding: '0.15rem 0.45rem',
+                      borderRadius: 'var(--radius-xs)'
+                    }}>
+                      ⛰️ {item.terrainInfo.terrainType}
+                    </span>
+                    {item.terrainInfo.tempRange && (
+                      <span style={{
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        color: 'var(--text-secondary)',
+                        border: '1px solid var(--border-subtle)',
+                        padding: '0.15rem 0.45rem',
+                        borderRadius: 'var(--radius-xs)',
+                        fontFamily: 'var(--font-mono)'
+                      }}>
+                        🌡️ {item.terrainInfo.tempRange.min}°C ~ {item.terrainInfo.tempRange.max}°C
+                      </span>
+                    )}
+                    {item.terrainInfo.humidity && (
+                      <span style={{
+                        background: 'rgba(0, 240, 255, 0.06)',
+                        color: 'var(--radar-cyan)',
+                        border: '1px solid rgba(0, 240, 255, 0.2)',
+                        padding: '0.15rem 0.45rem',
+                        borderRadius: 'var(--radius-xs)',
+                        fontFamily: 'var(--font-mono)'
+                      }}>
+                        💧 습도 {item.terrainInfo.humidity.avg}%
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 <p className="mc-summary">{item.strategicSummary}</p>
 
                 <div className="mc-weapons-section">
                   <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.4rem', fontFamily: 'var(--font-mono)' }}>
-                    추천 소요 무기 ({item.matchedWeapons.length}종)
+                    추천 소요 무기 및 군용 운용 규격 ({item.matchedWeapons.length}종)
                   </div>
-                  {item.matchedWeapons.slice(0, 3).map(w => (
-                    <div className="mc-weapon-item" key={w.weaponId}>
-                      <div>
-                        <div className="mc-w-name">{w.nameKo.split(' ')[0]}</div>
-                        <div className="mc-w-cat">{w.category}</div>
+                  {item.matchedWeapons.slice(0, 3).map(w => {
+                    const specs = w.operatingSpecs || {};
+                    const env = w.environmentalAssessment || {};
+                    const isEnvWarn = env.overallStatus === 'Warning';
+                    const isEnvCaution = env.overallStatus === 'Caution';
+                    const envBadgeClass = isEnvWarn ? 'env-badge-warn' : (isEnvCaution ? 'env-badge-caution' : 'env-badge-optimal');
+                    const envBadgeLabel = isEnvWarn ? '환경 위험' : (isEnvCaution ? '운용 주의' : '환경 적합');
+
+                    return (
+                      <div className="mc-weapon-item" key={w.weaponId} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '4px', padding: '0.5rem 0' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span className="mc-w-name">{w.nameKo.split(' ')[0]}</span>
+                            <span className="mc-w-cat">{w.category}</span>
+                            <span className={`wm-env-badge ${envBadgeClass}`} style={{ fontSize: '0.62rem', padding: '0.1rem 0.35rem' }}>
+                              {envBadgeLabel}
+                            </span>
+                          </div>
+                          <div className="mc-w-match">{w.matchScore}% 적합</div>
+                        </div>
+
+                        {specs.tempRange && (
+                          <div style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '6px',
+                            fontSize: '0.67rem',
+                            color: 'var(--text-muted)',
+                            background: 'rgba(255, 255, 255, 0.02)',
+                            padding: '0.2rem 0.4rem',
+                            borderRadius: 'var(--radius-xs)'
+                          }}>
+                            <span>🌡️ 보증 기온: <strong style={{ color: 'var(--text-secondary)' }}>{specs.tempRange}</strong></span>
+                            <span>💧 <strong style={{ color: 'var(--radar-cyan)' }}>최대 {specs.maxHumidity || 95}% RH</strong></span>
+                            <span>🛡️ <strong style={{ color: 'var(--text-muted)' }}>{specs.standard?.split('/')[0] || 'MIL-STD-810H'}</strong></span>
+                          </div>
+                        )}
                       </div>
-                      <div className="mc-w-match">{w.matchScore}% 적합</div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 <div className="mc-footer">

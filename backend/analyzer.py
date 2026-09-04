@@ -1,7 +1,10 @@
 # backend/analyzer.py
 # 지정학적 리스크 지수(GRI) 산출, 소요 무기 매칭 및 AI 전략 보고서 생성기 (FastAPI)
 
+import os
 import json
+import re
+import time
 from datetime import datetime
 import httpx
 from . import config
@@ -284,16 +287,75 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
     custom_config = custom_config or {}
     external_error = None
 
-    # 만약 OpenAI GPT 연동 설정이 있는 경우
-    if custom_config.get('apiKey') and custom_config.get('provider') == 'openai':
+    active_model = normalize_model_name(custom_config.get('model') or 'gpt-5.4-mini')
+    api_key = (custom_config.get('apiKey') or os.environ.get('OPENAI_API_KEY') or '').strip()
+
+    # OpenAI GPT 연동 시도 (API 키가 제공된 경우)
+    if api_key:
+        cfg = dict(custom_config)
+        cfg['apiKey'] = api_key
+        cfg['model'] = active_model
         try:
-            return await call_external_llm(custom_config, matching_data, top_high_risks)
+            return await call_external_llm(cfg, matching_data, top_high_risks)
         except Exception as e:
             external_error = str(e)
-            print(f'[Analyzer] OpenAI GPT 연동 실패, 내장 추론 엔진으로 폴백: {e}')
+            print(f'[Analyzer] OpenAI GPT({active_model}) 연동 실패: {e}')
 
     report_date = datetime.now().strftime('%Y년 %m월 %d일')
     high_count = len([m for m in matching_data if m['intensity'] == 'High'])
+
+    key_theaters_data = []
+    for t in top_high_risks:
+        top_w = t['matchedWeapons'][0] if t.get('matchedWeapons') else None
+        specs = top_w.get('operatingSpecs', {}) if top_w else {}
+        env = top_w.get('environmentalAssessment', {}) if top_w else {}
+        t_info = t.get('terrainInfo') or {}
+        w_name = top_w['nameKo'] if top_w else '한화 무기체계'
+
+        loc_t = t_info.get('tempRange', {})
+        loc_h = t_info.get('humidity', {})
+        t_desc = loc_t.get('desc', '온화')
+        h_desc = loc_h.get('desc', '보통')
+        
+        env_fit_str = (
+            f"현지 기후 환경(기온: {t_desc} [{loc_t.get('min', -10)}°C~{loc_t.get('max', 40)}°C] / "
+            f"습도: {h_desc} [평균 {loc_h.get('avg', 60)}%~최대 {loc_h.get('max', 85)}%]) 대비, "
+            f"{w_name}의 군용 운용 규격({specs.get('standard', 'MIL-STD-810H')}, 보증기온 {specs.get('tempRange', '-40°C~+50°C')}, "
+            f"한계습도 {specs.get('maxHumidity', 95)}%)은 {env.get('tempDesc', '규격 완전 적합')} 및 {env.get('humidityDesc', '습도 한계 충족')} 상태로 평가되었습니다."
+        )
+
+        terrain_type = t_info.get('terrainType', '전장 복합 지형')
+        doctrine_str = (
+            f"[{terrain_type}] 전장 환경에 맞춰 {w_name}은(는) "
+            f"현지 개활지 및 엄폐 지형을 활용한 고기동 분산 전개와 급속 사격 후 신속 진지 이탈(Shoot-and-Scoot) 교리를 철저히 이행합니다. "
+            f"또한 전장 네트워크(C4I) 및 초소형 SAR 위성·드론 정찰 자산과 연동하여 적의 비대칭 공격을 사전 무력화하는 정밀 타격 운용 방식을 채택합니다."
+        )
+
+        advisories = env.get('fieldAdvisories', [])
+        adv_text = " ".join(advisories[:2]) if advisories else specs.get('fieldConstraints', '표준 야전 군용 정비 지침을 철저히 준수함.')
+        pkg = env.get('countermeasurePackage', specs.get('countermeasurePackage', '기본 야전 정비 키트'))
+        cautions_str = f"{adv_text} 야전 운용 가동률 유지를 위해 [환경 극복 패키지: {pkg}]를 필히 적용해야 합니다."
+
+        key_theaters_data.append({
+            'theater': t['titleKo'],
+            'region': t['regionKo'],
+            'griScore': t['griScore'],
+            'intensity': t['intensity'],
+            'threatProfile': t.get('mainTheaters', ''),
+            'matchedHanwhaSolution': [w['nameKo'] for w in t['matchedWeapons'][:3]],
+            'environmentalFitAnalysis': env_fit_str,
+            'operationalDoctrine': doctrine_str,
+            'operationalCautions': cautions_str,
+            'strategicImplication': f"전장 환경 및 위협 특성에 따라 {w_name} 중심의 패키지 수출과 현지 창정비·합작생산(MRO/Co-production) 거점화 구축을 최우선 추진함."
+        })
+
+    is_key_missing = not bool(api_key)
+    telemetry_status = 'api_key_required' if is_key_missing else ('error_fallback' if external_error else 'success')
+    status_msg = (
+        'OpenAI API 키 미입력 (설정에서 키를 입력하시면 실시간 GPT AI 심층 분석이 활성화됩니다)'
+        if is_key_missing else
+        f'API 연결 실패로 인한 기초 데이터 분석 ({external_error})'
+    )
 
     return {
         'title': '한화 방산 미래전략실 글로벌 안보 리스크 & 소요 무기 매칭 분석 보고서',
@@ -305,17 +367,7 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
             "인도-태평양 및 대만 해협/남중국해 긴장 고조에 따라 도서 방어용 CTM-290 전술유도탄, 소형 SAR 정찰위성 및 해양 무인체계(UGV/USV) 수요가 신규 전략 축으로 부상하고 있습니다.",
             "미국 방산 생태계의 생산 능력 한계(안두릴·타타 사례)로 인해 동맹국 기반 공동 생산(Co-production) 및 MRO 협력 모델이 한화 방산의 글로벌 시장 침투 핵심 레버리지로 작동할 전망입니다."
         ],
-        'keyTheaters': [
-            {
-                'theater': t['titleKo'],
-                'region': t['regionKo'],
-                'griScore': t['griScore'],
-                'intensity': t['intensity'],
-                'threatProfile': t['mainTheaters'],
-                'matchedHanwhaSolution': [w['nameKo'] for w in t['matchedWeapons'][:3]],
-                'strategicImplication': f"전장 환경 요인에 따라 {t['matchedWeapons'][0]['nameKo'] if t['matchedWeapons'] else '한화 핵심 화력체계'} 중심의 패키지 수출 및 현지 조립/유지보수(MRO) 파트너십 구축이 유망함."
-            } for t in top_high_risks
-        ],
+        'keyTheaters': key_theaters_data,
         'strategicRecommendations': [
             {
                 'pillar': '화력/기동 (Land Systems)',
@@ -335,16 +387,46 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
             }
         ],
         'telemetry': {
-            'provider': '내장 전략 엔진 (Built-in Heuristic AI)',
-            'model': 'Hanwha Strategic Engine v2.0',
+            'provider': 'OpenAI',
+            'model': active_model,
             'isExternal': False,
             'isFallback': external_error is not None,
+            'status': telemetry_status,
+            'statusMessage': status_msg,
             'externalError': external_error,
             'promptTokens': 0,
             'outputTokens': 0,
             'totalTokens': 0
         }
     }
+
+def normalize_model_name(model: str) -> str:
+    if not model:
+        return 'gpt-5.4-mini'
+    m = model.strip()
+    # gpt5.4-mini, gpt5.4 -> gpt-5.4-mini 등 오타 및 접두사 보정
+    if m.startswith('gpt') and not m.startswith('gpt-'):
+        m = 'gpt-' + m[3:]
+    return m
+
+def build_openai_payload(model: str, messages: list, is_json: bool = True, max_tokens: int = 3500):
+    payload = {
+        'model': model,
+        'messages': messages,
+    }
+    if is_json:
+        payload['response_format'] = {'type': 'json_object'}
+    
+    # reasoning 계열(o1, o3 등)을 제외하고 temperature 적용
+    if not (model.startswith('o1') or model.startswith('o3')):
+        payload['temperature'] = 0.7
+
+    # gpt-5 및 o-series 모델은 max_completion_tokens 권장, 이전 모델은 max_tokens
+    if model.startswith(('o1', 'o3', 'gpt-5')):
+        payload['max_completion_tokens'] = max_tokens
+    else:
+        payload['max_tokens'] = max_tokens
+    return payload
 
 async def call_external_llm(custom_config: dict, matching_data: list[dict], top_risks: list[dict]) -> dict:
     import time
@@ -353,9 +435,20 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
     # 상위 분쟁지별 상세 위협 맥락 및 뉴스 동향 구성
     theaters_context = []
     for r in top_risks[:6]:
-        weapons = [f"{w['nameKo']}({w.get('company', '한화')})" for w in r.get('matchedWeapons', [])[:3]]
-        weapons_str = ", ".join(weapons) if weapons else "복합 화력/방호 체계"
-        
+        weapons_details = []
+        for w in r.get('matchedWeapons', [])[:3]:
+            specs = w.get('operatingSpecs', {})
+            env = w.get('environmentalAssessment', {})
+            adv_list = env.get('fieldAdvisories', [])
+            adv_str = '; '.join(adv_list[:2]) if adv_list else specs.get('fieldConstraints', '표준 군용 수칙 준수')
+            weapons_details.append(
+                f"    * {w['nameKo']}({w.get('company', '한화')}): [보증기온: {specs.get('tempRange', '-40°C~+50°C')} / 한계습도: {specs.get('maxHumidity', 95)}% / 군용규격: {specs.get('standard', 'MIL-STD-810H')}] "
+                f"[환경평가: 기온={env.get('tempDesc', '적합')}, 습도={env.get('humidityDesc', '적합')}, 지형적합={env.get('terrainScore', 85)}점] "
+                f"[야전제약: {specs.get('fieldConstraints', '없음')}] [권장대응킷: {env.get('countermeasurePackage', '기본 킷')}] "
+                f"[현장주의점: {adv_str}]"
+            )
+        weapons_block = "\n".join(weapons_details) if weapons_details else "    * 복합 화력/방호 체계"
+
         # 최신 관련 뉴스 헤드라인 결합 (최대 2건)
         news_headlines = [f"'{n.get('title')}'" for n in r.get('matchedNews', [])[:2] if n.get('title')]
         news_str = f" [관련 뉴스: {', '.join(news_headlines)}]" if news_headlines else ""
@@ -365,28 +458,31 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
         
         theaters_context.append(
             f"- [{r.get('regionKo', '글로벌')}] {r['titleKo']} (GRI 지수: {r['griScore']}/100, 위험도: {r['intensity']})\n"
-            f"  * 전장 지형 및 기후: {terrain_str}\n"
+            f"  * 전장 지형 및 기후 제원: {terrain_str}\n"
             f"  * 핵심 위협 요인: {r.get('mainTheaters', '복합 비대칭 위협 및 화력 소모전')}{news_str}\n"
-            f"  * 추천 무기체계: {weapons_str}"
+            f"  * 매칭 무기체계 및 군용 운용/환경 제원:\n{weapons_block}"
         )
     theaters_text = "\n".join(theaters_context)
 
     prompt = f"""당신은 한화그룹 방산 부문(한화에어로스페이스, 한화시스템, 한화오션) 미래전략실의 수석 안보/방산 전략 컨설턴트입니다.
-제공된 전 세계 분쟁 데이터와 소요 무기 매칭 결과를 분석하여, 그룹 최고경영진(C-Level) 및 각 계열사 사업본부장에게 보고할 최고 수준의 '심층 방산 전략 인텔리전스 보고서'를 JSON 포맷으로 작성하십시오.
+제공된 전 세계 분쟁 데이터, 전장 지형·기후(온도/습도/환경위협), 그리고 한화 무기체계의 군용 규격(MIL-STD-810H, 보증온도, 한계습도, 야전제약)을 종합 분석하여 최고경영진(C-Level) 및 계열사 사업본부장에게 보고할 최고 수준의 '심층 방산 전략 인텔리전스 보고서'를 JSON 포맷으로 작성하십시오.
 
-[분석 대상 핵심 분쟁 및 무기 매칭 현황]
+[분석 대상 핵심 분쟁 및 무기 운용/환경 제원 현황]
 {theaters_text}
 
 [작성 및 서술 원칙 - 반드시 준수]
-1. 분량을 절대 축약하지 말고, 전문적인 군사 전략 및 방위산업 비즈니스 용어를 활용하여 각 섹션을 길고 상세하게 작성하십시오.
-2. 'executiveSummary': 총 4~5개 항목으로 구성하십시오. 각 항목은 단순 단문이 아니라 [지정학적 위기 메커니즘 - 글로벌 방산 공급망 병목 현상 - 한화 3사의 사업적 수주 기회 및 대응책]을 체계적으로 서술하여, '각 항목당 반드시 3~4문장 이상의 심층 단락(최소 150자 이상)'으로 작성하십시오.
-3. 'keyTheaters': 제공된 상위 고위험 분쟁지들에 대해 각각 다음을 포함하십시오:
+1. 분량을 절대 축약하지 말고, 전문적인 군사 전략, 무기 운용 교리 및 방위산업 비즈니스 용어를 활용하여 각 섹션을 길고 상세하게 작성하십시오.
+2. 'executiveSummary': 총 4~5개 항목으로 구성하십시오. 각 항목은 [지정학적 위기 메커니즘 - 극한 환경 극복 및 방산 공급망 병목 - 한화 3사의 사업적 수주 기회 및 대응책]을 체계적으로 서술하여, '각 항목당 반드시 3~4문장 이상의 심층 단락(최소 150자 이상)'으로 작성하십시오.
+3. 'keyTheaters': 제공된 상위 고위험 분쟁지들에 대해 각각 다음 항목을 '심층적이고 전문적인 군사·방산 용어로 상세히 작성'하십시오:
    - 'theater': 분쟁명
    - 'region': 권역명
    - 'griScore': 정수 (예: 95)
    - 'intensity': 'High' 또는 'Medium'
    - 'matchedHanwhaSolution': 추천 무기체계 2~3종 배열
-   - 'strategicImplication': 해당 전장의 위협 양상(드론·미사일 복합공격, 탄약 소모율 등)과 이에 대응하는 한화 무기체계의 전술적 기대 효과, 현지 생산·MRO 거점화 전략을 '반드시 3~4문장 이상의 완성된 심층 단락'으로 상세 기술하십시오.
+   - 'environmentalFitAnalysis': 현지 기후(기온/습도/특수위협)와 무기체계 보증 규격(MIL-STD-810H, -40~50°C, 95% 습도 등)의 정밀 매칭 분석 및 한계치 검토를 2~3문장 이상으로 기술하십시오.
+   - 'operationalDoctrine': 해당 전장의 지형(개활 스텝, 사막 모래, 험준 산악, 열대 정글, 해협 등)과 기상 특성에 최적화된 '무기체계 실전 운용 방식 및 전술 교리(기동 방식, 사격 진지 선정, 엄폐 및 센서 운용 등)'를 3~4문장 이상으로 상세 기술하십시오.
+   - 'operationalCautions': 극한 전장 환경(혹한 결빙, 50도 혹서, 라스푸티차 진흙탕, 하부브 모래폭풍, 95% 극고습 염무 등)에서 무기체계의 가동률 저하 및 기능 고장을 방지하기 위한 '야전 운용상 필수 주의사항 및 정비 지침(APU 예열, 광학계 질소 충전/결로 방지, 흡기 필터 주기 세척, 궤도 패드 교체, 담수 세척 등)'을 3~4문장 이상으로 명확히 기술하십시오.
+   - 'strategicImplication': 해당 전장의 위협 양상과 무기체계의 전술적 기대 효과, 현지 생산·MRO 거점화 전략을 3~4문장 이상의 완성된 심층 단락으로 기술하십시오.
 4. 'strategicRecommendations': 한화 3사(에어로스페이스, 시스템, 오션)의 통합 시너지를 반영한 4대 핵심 전략을 수립하십시오:
    - 4개 분야: [화력·기동 체계 (한화에어로스페이스)], [다층 복합방공 및 우주 C4I (한화시스템)], [해양 안보 및 특수함정 (한화오션)], [글로벌 공급망(GVC) 및 G2G 패키지 금융]
    - 각 항목의 'action'은 단순한 구호가 아니라 G2G 정부간 협력, 현지 합작법인(JV), 나토 규격 호환, 부품 국산화 등 '구체적인 실행 로드맵을 3~4문장 이상'으로 상세 기술하십시오.
@@ -407,6 +503,9 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
       "griScore": 95,
       "intensity": "High",
       "matchedHanwhaSolution": ["K9A2 자주포", "천무 MLRS"],
+      "environmentalFitAnalysis": "현지 기온 및 습도 대비 MIL-STD-810H 보증 스펙 매칭 분석...",
+      "operationalDoctrine": "전장 지형 및 기상 특성을 고려한 최적의 무기 기동 및 사격 운용 교리 3~4문장...",
+      "operationalCautions": "혹한/혹서/진흙탕 등 야전 운용 시 고장 방지를 위한 필수 주의사항 및 정비 수칙 3~4문장...",
       "strategicImplication": "전술 교리 및 한화 솔루션 매칭 심층 분석 3~4문장..."
     }}
   ],
@@ -431,14 +530,14 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
 }}"""
 
     api_key = (custom_config.get('apiKey') or '').strip()
-    model_pref = (custom_config.get('model') or '').strip()
+    model_pref = normalize_model_name(custom_config.get('model'))
 
     if not api_key:
         raise ValueError('OpenAI API 키가 입력되지 않았습니다.')
 
     # 404 모델 에러 방지: 사용자 지정 모델 우선, 없거나 404면 대체 모델 순차 시도
     models_to_try = [model_pref] if model_pref else []
-    for m in ['gpt-4o-mini', 'gpt-4o', 'gpt-3.5-turbo']:
+    for m in ['gpt-5.4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo']:
         if m not in models_to_try:
             models_to_try.append(m)
 
@@ -446,19 +545,14 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
     async with httpx.AsyncClient(timeout=60.0) as client:
         for model in models_to_try:
             try:
+                payload = build_openai_payload(model, [{'role': 'user', 'content': prompt}], is_json=True, max_tokens=3500)
                 resp = await client.post(
                     'https://api.openai.com/v1/chat/completions',
                     headers={
                         'Authorization': f'Bearer {api_key}',
                         'Content-Type': 'application/json'
                     },
-                    json={
-                        'model': model,
-                        'messages': [{'role': 'user', 'content': prompt}],
-                        'response_format': {'type': 'json_object'},
-                        'max_tokens': 3500,
-                        'temperature': 0.7
-                    }
+                    json=payload
                 )
                 if resp.status_code == 200:
                     data = resp.json()
@@ -489,8 +583,9 @@ async def test_llm_connection(api_key: str, model_pref: str = None) -> dict:
     if not api_key:
         return {'success': False, 'message': 'API 키가 입력되지 않았습니다.'}
 
+    model_pref = normalize_model_name(model_pref)
     models_to_try = [model_pref] if model_pref else []
-    for m in ['gpt-4o-mini', 'gpt-4o', 'gpt-3.5-turbo']:
+    for m in ['gpt-5.4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo']:
         if m not in models_to_try:
             models_to_try.append(m)
 
@@ -498,17 +593,14 @@ async def test_llm_connection(api_key: str, model_pref: str = None) -> dict:
     async with httpx.AsyncClient(timeout=15.0) as client:
         for model in models_to_try:
             try:
+                payload = build_openai_payload(model, [{'role': 'user', 'content': 'Say hello in Korean in 3 words'}], is_json=False, max_tokens=20)
                 resp = await client.post(
                     'https://api.openai.com/v1/chat/completions',
                     headers={
                         'Authorization': f'Bearer {api_key}',
                         'Content-Type': 'application/json'
                     },
-                    json={
-                        'model': model,
-                        'messages': [{'role': 'user', 'content': 'Say hello in Korean in 3 words'}],
-                        'max_tokens': 15
-                    }
+                    json=payload
                 )
                 if resp.status_code == 200:
                     data = resp.json()

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Copy, Printer, X, Brain, ListChecks, Globe, Shield, Sparkles, Activity } from 'lucide-react';
+import { Copy, Printer, X, Brain, ListChecks, Globe, Shield, Sparkles, Activity, Crosshair, Compass, AlertTriangle, Thermometer } from 'lucide-react';
 
 export default function ReportModal({ isOpen, onClose, report, isLoading }) {
   const contentRef = useRef(null);
@@ -67,41 +67,45 @@ export default function ReportModal({ isOpen, onClose, report, isLoading }) {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   gap: '0.6rem',
-                  background: 'rgba(255, 102, 0, 0.05)',
-                  border: '1px solid rgba(255, 102, 0, 0.2)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '0.55rem 0.9rem',
+                  background: report.telemetry.totalTokens > 0 ? 'rgba(4, 192, 158, 0.08)' : 'var(--brand-orange-light)',
+                  border: `1px solid ${report.telemetry.totalTokens > 0 ? 'rgba(4, 192, 158, 0.25)' : 'rgba(243, 115, 33, 0.25)'}`,
+                  borderRadius: 'var(--radius-md)',
+                  padding: '0.65rem 1rem',
                   fontSize: '0.78rem',
-                  marginBottom: '1.25rem',
+                  marginBottom: '1.5rem',
                   color: 'var(--text-secondary)'
                 }}>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                     <Sparkles size={14} className="text-orange" />
-                    <span>분석 엔진: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.provider}</strong></span>
-                    <span className="score-badge badge-low" style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem' }}>
-                      {report.telemetry.model}
+                    <span>AI 모델: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.provider || 'OpenAI'}</strong></span>
+                    <span className="score-badge badge-low" style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', fontWeight: 700 }}>
+                      {report.telemetry.model || 'gpt-5.4-mini'}
                     </span>
-                    {report.telemetry.isFallback && (
-                      <span style={{ color: '#ffb300', marginLeft: '4px', fontSize: '0.7rem' }}>
-                        (API 연결 지연으로 내장 엔진 분석 적용됨)
+                    {report.telemetry.totalTokens > 0 ? (
+                      <span style={{ color: 'var(--alert-green)', fontWeight: 600, fontSize: '0.72rem' }}>
+                        ● 실시간 AI 심층 추론 완료
+                      </span>
+                    ) : (
+                      <span style={{ color: 'var(--brand-orange)', fontWeight: 600, fontSize: '0.72rem' }}>
+                        ● OpenAI API 키 대기 중 (기초 데이터 요약)
                       </span>
                     )}
                   </div>
 
                   {report.telemetry.totalTokens > 0 ? (
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem' }}>
                       <span>입력: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.promptTokens?.toLocaleString()}</strong> 토큰</span>
                       <span style={{ color: 'var(--border-subtle)' }}>|</span>
                       <span>출력: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.outputTokens?.toLocaleString()}</strong> 토큰</span>
                       <span style={{ color: 'var(--border-subtle)' }}>|</span>
-                      <span style={{ color: 'var(--radar-cyan)', fontWeight: 700 }}>총 {report.telemetry.totalTokens?.toLocaleString()} 토큰</span>
+                      <span style={{ color: 'var(--brand-orange)', fontWeight: 700 }}>총 {report.telemetry.totalTokens?.toLocaleString()} 토큰</span>
                       {report.telemetry.latencyMs && (
                         <span style={{ color: 'var(--text-muted)' }}>({report.telemetry.latencyMs}ms)</span>
                       )}
                     </div>
                   ) : (
                     <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                      내장 지정학적 리스크 지수(GRI) 및 매칭 휴리스틱 추론 완료
+                      상단 [⚙️ AI 설정]에서 OpenAI API Key를 입력하시면 실제 {report.telemetry.model || 'gpt-5.4-mini'} 심층 추론이 실행됩니다.
                     </div>
                   )}
                 </div>
@@ -157,6 +161,154 @@ export default function ReportModal({ isOpen, onClose, report, isLoading }) {
                   ))}
                 </tbody>
               </table>
+
+              {/* 2-1. Key Theaters Tactical Doctrine & Field Operational Guidelines */}
+              <div style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
+                <h3 style={{
+                  fontSize: '0.95rem',
+                  color: 'var(--brand-orange)',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  marginBottom: '0.85rem'
+                }}>
+                  <Crosshair size={16} /> 전구별 심층 전술 교리 · 운용 방식 및 야전 환경 극복 지침
+                </h3>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {report.keyTheaters?.map((t, idx) => (
+                    <div
+                      key={idx}
+                      className="theater-doctrine-card"
+                      style={{
+                        background: 'var(--bg-surface)',
+                        border: '1px solid var(--border-subtle)',
+                        borderLeft: `4px solid ${t.intensity === 'High' ? 'var(--alert-red)' : t.intensity === 'Medium' ? 'var(--alert-amber)' : 'var(--radar-cyan)'}`,
+                        borderRadius: 'var(--radius-md)',
+                        padding: '1.1rem 1.25rem',
+                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)'
+                      }}
+                    >
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexWrap: 'wrap',
+                        gap: '0.6rem',
+                        marginBottom: '0.85rem',
+                        paddingBottom: '0.65rem',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.06)'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                            {t.theater}
+                          </span>
+                          <span style={{ fontSize: '0.78rem', color: 'var(--brand-orange)', fontWeight: 600 }}>
+                            ({t.region})
+                          </span>
+                          <span className={`score-badge ${t.intensity === 'High' ? 'badge-high' : t.intensity === 'Medium' ? 'badge-med' : 'badge-low'}`} style={{ fontSize: '0.7rem' }}>
+                            GRI {t.griScore} • {t.intensity}
+                          </span>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                          {(Array.isArray(t.matchedHanwhaSolution) ? t.matchedHanwhaSolution : [t.matchedHanwhaSolution]).map((sol, sIdx) => (
+                            <span key={sIdx} style={{
+                              background: 'rgba(0, 240, 255, 0.08)',
+                              border: '1px solid rgba(0, 240, 255, 0.25)',
+                              color: 'var(--radar-cyan)',
+                              padding: '0.2rem 0.55rem',
+                              borderRadius: 'var(--radius-xs)',
+                              fontSize: '0.72rem',
+                              fontWeight: 600
+                            }}>
+                              {sol}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {/* 1. Operational Doctrine */}
+                        {t.operationalDoctrine && (
+                          <div style={{
+                            background: 'rgba(255, 102, 0, 0.04)',
+                            border: '1px solid rgba(255, 102, 0, 0.18)',
+                            borderRadius: 'var(--radius-sm)',
+                            padding: '0.75rem 0.9rem'
+                          }}>
+                            <div style={{
+                              fontSize: '0.78rem',
+                              fontWeight: 700,
+                              color: 'var(--brand-orange)',
+                              marginBottom: '0.35rem',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px'
+                            }}>
+                              <Compass size={14} /> 🎯 실전 운용 방식 및 전술 교리 (Operational Doctrine)
+                            </div>
+                            <p style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.65, margin: 0 }}>
+                              {t.operationalDoctrine}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* 2. Field Advisories & Cautions */}
+                        {t.operationalCautions && (
+                          <div style={{
+                            background: 'rgba(255, 179, 0, 0.04)',
+                            border: '1px solid rgba(255, 179, 0, 0.2)',
+                            borderRadius: 'var(--radius-sm)',
+                            padding: '0.75rem 0.9rem'
+                          }}>
+                            <div style={{
+                              fontSize: '0.78rem',
+                              fontWeight: 700,
+                              color: '#ffb300',
+                              marginBottom: '0.35rem',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px'
+                            }}>
+                              <AlertTriangle size={14} /> ⚠️ 야전 운용상 주의사항 및 환경 극복 가이드 (Field Advisories & Maintenance)
+                            </div>
+                            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
+                              {t.operationalCautions}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* 3. Environmental Fit Analysis */}
+                        {t.environmentalFitAnalysis && (
+                          <div style={{
+                            background: 'rgba(0, 240, 255, 0.04)',
+                            border: '1px solid rgba(0, 240, 255, 0.18)',
+                            borderRadius: 'var(--radius-sm)',
+                            padding: '0.75rem 0.9rem'
+                          }}>
+                            <div style={{
+                              fontSize: '0.78rem',
+                              fontWeight: 700,
+                              color: 'var(--radar-cyan)',
+                              marginBottom: '0.35rem',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px'
+                            }}>
+                              <Thermometer size={14} /> 🌡️ 군용 규격(보증 기온 -40~+50°C / 허용 습도 95% RH) 대비 전장 적합도 분석
+                            </div>
+                            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
+                              {t.environmentalFitAnalysis}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               {/* 3. Strategic Pillars */}
               <h2 className="report-sec-heading">

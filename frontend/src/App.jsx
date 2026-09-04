@@ -26,9 +26,9 @@ export default function App() {
   // Saved Settings
   const savedProvider = localStorage.getItem('ai_provider');
   const [settings, setSettings] = useState({
-    provider: savedProvider === 'gemini' ? 'openai' : (savedProvider || 'builtin'),
+    provider: 'openai',
     apiKey: localStorage.getItem('ai_api_key') || '',
-    model: localStorage.getItem('ai_model') || 'gpt-4o-mini',
+    model: localStorage.getItem('ai_model') || 'gpt-5.4-mini',
     syncInterval: Number(localStorage.getItem('ai_sync_interval') || '0')
   });
 
@@ -122,7 +122,7 @@ export default function App() {
     setSettings(newSettings);
     localStorage.setItem('ai_provider', newSettings.provider);
     localStorage.setItem('ai_api_key', newSettings.apiKey);
-    localStorage.setItem('ai_model', newSettings.model || 'gpt-4o-mini');
+    localStorage.setItem('ai_model', newSettings.model || 'gpt-5.4-mini');
     localStorage.setItem('ai_sync_interval', String(newSettings.syncInterval));
     alert('⚙️ 설정이 저장되었습니다.');
   };
