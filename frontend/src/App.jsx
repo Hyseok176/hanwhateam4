@@ -28,7 +28,7 @@ export default function App() {
   const [settings, setSettings] = useState({
     provider: 'openai',
     apiKey: localStorage.getItem('ai_api_key') || '',
-    model: localStorage.getItem('ai_model') || 'gpt-5.4-mini',
+    model: localStorage.getItem('ai_model') || 'gpt-4o',
     syncInterval: Number(localStorage.getItem('ai_sync_interval') || '0')
   });
 
@@ -97,14 +97,15 @@ export default function App() {
   };
 
   // AI 전략 보고서 모달 열기
-  const handleOpenReport = async () => {
+  const handleOpenReport = async (overrideModel) => {
     setIsReportOpen(true);
     setIsReportLoading(true);
+    const targetModel = overrideModel || settings.model || 'gpt-4o';
     try {
       const res = await fetch('/api/report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(settings)
+        body: JSON.stringify({ ...settings, model: targetModel })
       });
       const data = await res.json();
       if (data.success) {
@@ -117,12 +118,20 @@ export default function App() {
     }
   };
 
+  // 보고서 모달 내부에서 모델 직접 변경 시
+  const handleModelChangeFromReport = (newModel) => {
+    const updated = { ...settings, model: newModel };
+    setSettings(updated);
+    localStorage.setItem('ai_model', newModel);
+    handleOpenReport(newModel);
+  };
+
   // 설정 저장
   const handleSaveSettings = (newSettings) => {
     setSettings(newSettings);
     localStorage.setItem('ai_provider', newSettings.provider);
     localStorage.setItem('ai_api_key', newSettings.apiKey);
-    localStorage.setItem('ai_model', newSettings.model || 'gpt-5.4-mini');
+    localStorage.setItem('ai_model', newSettings.model || 'gpt-4o');
     localStorage.setItem('ai_sync_interval', String(newSettings.syncInterval));
     alert('⚙️ 설정이 저장되었습니다.');
   };
@@ -183,6 +192,8 @@ export default function App() {
         onClose={() => setIsReportOpen(false)}
         report={reportData}
         isLoading={isReportLoading}
+        currentModel={settings.model || 'gpt-4o'}
+        onSelectModel={handleModelChangeFromReport}
       />
 
       {/* Settings Modal */}

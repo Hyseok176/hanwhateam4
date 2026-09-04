@@ -74,12 +74,12 @@ app.add_middleware(
 class ReportRequest(BaseModel):
     provider: Optional[str] = 'openai'
     apiKey: Optional[str] = ''
-    model: Optional[str] = 'gpt-5.4-mini'
+    model: Optional[str] = 'gpt-4o'
     syncInterval: Optional[int] = 0
 
 class TestLLMRequest(BaseModel):
     apiKey: str
-    model: Optional[str] = 'gpt-5.4-mini'
+    model: Optional[str] = 'gpt-4o'
 
 # --- REST API 엔드포인트 ---
 

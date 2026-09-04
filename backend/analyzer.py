@@ -287,7 +287,7 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
     custom_config = custom_config or {}
     external_error = None
 
-    active_model = normalize_model_name(custom_config.get('model') or 'gpt-5.4-mini')
+    active_model = normalize_model_name(custom_config.get('model') or 'gpt-4o')
     api_key = (custom_config.get('apiKey') or os.environ.get('OPENAI_API_KEY') or '').strip()
 
     # OpenAI GPT 연동 시도 (API 키가 제공된 경우)
@@ -358,9 +358,10 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
     )
 
     return {
-        'title': '한화 방산 미래전략실 글로벌 안보 리스크 & 소요 무기 매칭 분석 보고서',
+        'title': f'한화 방산 미래전략실 글로벌 안보 리스크 & 소요 무기 매칭 AI 전략 보고서 ({active_model})',
         'generatedAt': datetime.utcnow().isoformat() + 'Z',
         'displayDate': report_date,
+        'modelUsed': active_model,
         'executiveSummary': [
             f"전 세계 29개 주요 분쟁 지역 중 고위험(High Intensity) 분쟁은 총 {high_count}개 권역으로 집계되었습니다.",
             "우크라이나-러시아 및 중동(이스라엘·이란·홍해) 전선의 장기화로 인해 NATO 및 중동 동맹국을 중심으로 'K9 자주포', '천무 MLRS', '천궁-II 방공망'의 즉시 조달 수요가 최고조를 유지하고 있습니다.",
@@ -402,9 +403,8 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
 
 def normalize_model_name(model: str) -> str:
     if not model:
-        return 'gpt-5.4-mini'
+        return 'gpt-4o'
     m = model.strip()
-    # gpt5.4-mini, gpt5.4 -> gpt-5.4-mini 등 오타 및 접두사 보정
     if m.startswith('gpt') and not m.startswith('gpt-'):
         m = 'gpt-' + m[3:]
     return m
@@ -536,8 +536,8 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
         raise ValueError('OpenAI API 키가 입력되지 않았습니다.')
 
     # 404 모델 에러 방지: 사용자 지정 모델 우선, 없거나 404면 대체 모델 순차 시도
-    models_to_try = [model_pref] if model_pref else []
-    for m in ['gpt-5.4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo']:
+    models_to_try = [model_pref] if model_pref else ['gpt-4o']
+    for m in ['gpt-4o', 'gpt-4o-mini', 'o3-mini', 'gpt-3.5-turbo']:
         if m not in models_to_try:
             models_to_try.append(m)
 
@@ -560,9 +560,12 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
                     content_str = data['choices'][0]['message']['content']
                     cleaned = clean_llm_json(content_str)
                     report = json.loads(cleaned)
+                    report['title'] = f"한화 방산 미래전략실 글로벌 안보 리스크 & 소요 무기 매칭 AI 전략 보고서 ({model})"
                     report['telemetry'] = {
                         'provider': 'OpenAI GPT',
                         'model': model,
+                        'requestedModel': model_pref,
+                        'isFallback': model != model_pref,
                         'promptTokens': usage.get('prompt_tokens', 0),
                         'outputTokens': usage.get('completion_tokens', 0),
                         'totalTokens': usage.get('total_tokens', 0),
@@ -584,8 +587,8 @@ async def test_llm_connection(api_key: str, model_pref: str = None) -> dict:
         return {'success': False, 'message': 'API 키가 입력되지 않았습니다.'}
 
     model_pref = normalize_model_name(model_pref)
-    models_to_try = [model_pref] if model_pref else []
-    for m in ['gpt-5.4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo']:
+    models_to_try = [model_pref] if model_pref else ['gpt-4o']
+    for m in ['gpt-4o', 'gpt-4o-mini', 'o3-mini', 'gpt-3.5-turbo']:
         if m not in models_to_try:
             models_to_try.append(m)
 

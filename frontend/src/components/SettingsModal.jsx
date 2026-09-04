@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Settings, X, Check, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 
-const PRESET_MODELS = ['gpt-5.4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo'];
+const PRESET_MODELS = ['gpt-4o', 'gpt-4o-mini', 'o3-mini', 'o1-mini', 'gpt-3.5-turbo'];
 
 export default function SettingsModal({ isOpen, onClose, settings, onSaveSettings }) {
-  const initialProvider = settings.provider === 'gemini' ? 'openai' : (settings.provider || 'builtin');
+  const initialProvider = settings.provider === 'gemini' ? 'openai' : (settings.provider || 'openai');
   const [provider, setProvider] = useState(initialProvider);
   const [apiKey, setApiKey] = useState(settings.apiKey || '');
   
-  const currentModel = settings.model || 'gpt-5.4-mini';
+  const currentModel = settings.model || 'gpt-4o';
   const isCustom = !PRESET_MODELS.includes(currentModel);
   const [selectedPreset, setSelectedPreset] = useState(isCustom ? 'custom' : currentModel);
   const [customModelName, setCustomModelName] = useState(isCustom ? currentModel : '');
@@ -18,13 +18,27 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
+  useEffect(() => {
+    if (isOpen) {
+      const cur = settings.model || 'gpt-4o';
+      setApiKey(settings.apiKey || '');
+      setProvider(settings.provider === 'gemini' ? 'openai' : (settings.provider || 'openai'));
+      setModel(cur);
+      const custom = !PRESET_MODELS.includes(cur);
+      setSelectedPreset(custom ? 'custom' : cur);
+      setCustomModelName(custom ? cur : '');
+      setSyncInterval(settings.syncInterval || 0);
+      setTestResult(null);
+    }
+  }, [isOpen, settings]);
+
   if (!isOpen) return null;
 
   const handlePresetChange = (val) => {
     setSelectedPreset(val);
     setTestResult(null);
     if (val === 'custom') {
-      setModel(customModelName.trim() || 'gpt-5.4-mini');
+      setModel(customModelName.trim() || 'gpt-4o');
     } else {
       setModel(val);
     }
@@ -32,7 +46,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
 
   const handleCustomModelChange = (val) => {
     setCustomModelName(val);
-    setModel(val.trim() || 'gpt-5.4-mini');
+    setModel(val.trim() || 'gpt-4o');
     setTestResult(null);
   };
 
@@ -114,9 +128,10 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
               onChange={(e) => handlePresetChange(e.target.value)}
               style={{ width: '100%' }}
             >
-              <option value="gpt-5.4-mini">gpt-5.4-mini (최신 추천 - 최고 성능 & 고효율 전략 분석)</option>
-              <option value="gpt-4o">gpt-4o (플래그십 심층 안보 전략 분석)</option>
-              <option value="gpt-4o-mini">gpt-4o-mini (경량 고속 모드)</option>
+              <option value="gpt-4o">gpt-4o (플래그십 심층 안보 전략 분석 - 추천)</option>
+              <option value="gpt-4o-mini">gpt-4o-mini (경량 고속 안보 분석)</option>
+              <option value="o3-mini">o3-mini (차세대 고급 추론 분석)</option>
+              <option value="o1-mini">o1-mini (심층 논리 추론 분석)</option>
               <option value="gpt-3.5-turbo">gpt-3.5-turbo (기본 호환 모드)</option>
               <option value="custom">직접 모델명 입력 (Custom Model)...</option>
             </select>
@@ -127,7 +142,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
                   type="text"
                   className="form-input"
                   style={{ width: '100%' }}
-                  placeholder="OpenAI 모델 ID 입력 (예: gpt-5.4-mini, o3-mini 등)"
+                  placeholder="OpenAI 모델 ID 입력 (예: gpt-4o, gpt-4o-mini, o3-mini 등)"
                   value={customModelName}
                   onChange={(e) => handleCustomModelChange(e.target.value)}
                 />
