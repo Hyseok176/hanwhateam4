@@ -216,18 +216,80 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
     import time
     start_time = time.time()
 
-    prompt = f"""당신은 한화그룹 방산 부문(한화에어로스페이스, 한화시스템, 한화오션) 미래전략실의 수석 안보/방산 전략 컨설턴트입니다.
-제공된 전 세계 29개 분쟁 데이터와 최신 데일리방산 뉴스 분석 결과를 바탕으로, 경영진 보고용 최고급 전략 보고서를 JSON 포맷으로 작성하십시오.
+    # 상위 분쟁지별 상세 위협 맥락 및 뉴스 동향 구성
+    theaters_context = []
+    for r in top_risks[:6]:
+        weapons = [f"{w['nameKo']}({w.get('company', '한화')})" for w in r.get('matchedWeapons', [])[:3]]
+        weapons_str = ", ".join(weapons) if weapons else "복합 화력/방호 체계"
+        
+        # 최신 관련 뉴스 헤드라인 결합 (최대 2건)
+        news_headlines = [f"'{n.get('title')}'" for n in r.get('matchedNews', [])[:2] if n.get('title')]
+        news_str = f" [관련 뉴스: {', '.join(news_headlines)}]" if news_headlines else ""
+        
+        theaters_context.append(
+            f"- [{r.get('regionKo', '글로벌')}] {r['titleKo']} (GRI 지수: {r['griScore']}/100, 위험도: {r['intensity']})\n"
+            f"  * 핵심 위협 요인: {r.get('mainTheaters', '복합 비대칭 위협 및 화력 소모전')}{news_str}\n"
+            f"  * 추천 무기체계: {weapons_str}"
+        )
+    theaters_text = "\n".join(theaters_context)
 
-[분석 데이터 요약]
-- 고위험 분쟁: {'; '.join([f"{r['titleKo']} (GRI: {r['griScore']}, 추천무기: {', '.join([w['nameKo'] for w in r['matchedWeapons'][:2]])})" for r in top_risks])}
+    prompt = f"""당신은 한화그룹 방산 부문(한화에어로스페이스, 한화시스템, 한화오션) 미래전략실의 수석 안보/방산 전략 컨설턴트입니다.
+제공된 전 세계 분쟁 데이터와 소요 무기 매칭 결과를 분석하여, 그룹 최고경영진(C-Level) 및 각 계열사 사업본부장에게 보고할 최고 수준의 '심층 방산 전략 인텔리전스 보고서'를 JSON 포맷으로 작성하십시오.
+
+[분석 대상 핵심 분쟁 및 무기 매칭 현황]
+{theaters_text}
+
+[작성 및 서술 원칙 - 반드시 준수]
+1. 분량을 절대 축약하지 말고, 전문적인 군사 전략 및 방위산업 비즈니스 용어를 활용하여 각 섹션을 길고 상세하게 작성하십시오.
+2. 'executiveSummary': 총 4~5개 항목으로 구성하십시오. 각 항목은 단순 단문이 아니라 [지정학적 위기 메커니즘 - 글로벌 방산 공급망 병목 현상 - 한화 3사의 사업적 수주 기회 및 대응책]을 체계적으로 서술하여, '각 항목당 반드시 3~4문장 이상의 심층 단락(최소 150자 이상)'으로 작성하십시오.
+3. 'keyTheaters': 제공된 상위 고위험 분쟁지들에 대해 각각 다음을 포함하십시오:
+   - 'theater': 분쟁명
+   - 'region': 권역명
+   - 'griScore': 정수 (예: 95)
+   - 'intensity': 'High' 또는 'Medium'
+   - 'matchedHanwhaSolution': 추천 무기체계 2~3종 배열
+   - 'strategicImplication': 해당 전장의 위협 양상(드론·미사일 복합공격, 탄약 소모율 등)과 이에 대응하는 한화 무기체계의 전술적 기대 효과, 현지 생산·MRO 거점화 전략을 '반드시 3~4문장 이상의 완성된 심층 단락'으로 상세 기술하십시오.
+4. 'strategicRecommendations': 한화 3사(에어로스페이스, 시스템, 오션)의 통합 시너지를 반영한 4대 핵심 전략을 수립하십시오:
+   - 4개 분야: [화력·기동 체계 (한화에어로스페이스)], [다층 복합방공 및 우주 C4I (한화시스템)], [해양 안보 및 특수함정 (한화오션)], [글로벌 공급망(GVC) 및 G2G 패키지 금융]
+   - 각 항목의 'action'은 단순한 구호가 아니라 G2G 정부간 협력, 현지 합작법인(JV), 나토 규격 호환, 부품 국산화 등 '구체적인 실행 로드맵을 3~4문장 이상'으로 상세 기술하십시오.
 
 반드시 마크다운 백틱(```json) 없이 유효한 순수 JSON 포맷으로만 응답하십시오:
 {{
-  "title": "보고서 제목",
-  "executiveSummary": ["핵심요약 1", "핵심요약 2", "핵심요약 3"],
-  "keyTheaters": [{{"theater": "분쟁명", "region": "지역", "griScore": 90, "intensity": "High", "matchedHanwhaSolution": ["무기1", "무기2"], "strategicImplication": "전략적 시사점"}}],
-  "strategicRecommendations": [{{"pillar": "분야", "action": "실행전략"}}]
+  "title": "2026-2030 글로벌 안보 위기 심층 분석 및 한화 방산 3사 통합 수출·전략 대응 보고서",
+  "executiveSummary": [
+    "경영진 요약 심층 분석 문단 1 (3~4문장 이상으로 상세 서술)",
+    "경영진 요약 심층 분석 문단 2 (3~4문장 이상으로 상세 서술)",
+    "경영진 요약 심층 분석 문단 3 (3~4문장 이상으로 상세 서술)",
+    "경영진 요약 심층 분석 문단 4 (3~4문장 이상으로 상세 서술)"
+  ],
+  "keyTheaters": [
+    {{
+      "theater": "분쟁명",
+      "region": "지역",
+      "griScore": 95,
+      "intensity": "High",
+      "matchedHanwhaSolution": ["K9A2 자주포", "천무 MLRS"],
+      "strategicImplication": "전술 교리 및 한화 솔루션 매칭 심층 분석 3~4문장..."
+    }}
+  ],
+  "strategicRecommendations": [
+    {{
+      "pillar": "화력·기동 체계 (한화에어로스페이스)",
+      "action": "현지 생산 및 탄약 공급망 구축 로드맵 3~4문장..."
+    }},
+    {{
+      "pillar": "다층 복합방공 및 우주 C4I (한화시스템)",
+      "action": "다층 방공망 및 저궤도 위성 C4I 통합 제안 3~4문장..."
+    }},
+    {{
+      "pillar": "해양 안보 및 특수함정 (한화오션)",
+      "action": "잠수함/호위함 패키지 및 현지 MRO 클러스터 구축 3~4문장..."
+    }},
+    {{
+      "pillar": "글로벌 공급망(GVC) 및 G2G 패키지 금융",
+      "action": "정부 주도 수출금융 및 글로벌 파트너십 전략 3~4문장..."
+    }}
+  ]
 }}"""
 
     api_key = (custom_config.get('apiKey') or '').strip()
@@ -243,7 +305,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
             models_to_try.append(m)
 
     last_error = ''
-    async with httpx.AsyncClient(timeout=45.0) as client:
+    async with httpx.AsyncClient(timeout=60.0) as client:
         for model in models_to_try:
             try:
                 resp = await client.post(
@@ -255,7 +317,9 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
                     json={
                         'model': model,
                         'messages': [{'role': 'user', 'content': prompt}],
-                        'response_format': {'type': 'json_object'}
+                        'response_format': {'type': 'json_object'},
+                        'max_tokens': 3500,
+                        'temperature': 0.7
                     }
                 )
                 if resp.status_code == 200:
