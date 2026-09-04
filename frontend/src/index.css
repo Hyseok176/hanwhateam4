@@ -418,18 +418,23 @@ body {
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  align-items: flex-start;
+  gap: 0.55rem;
   pointer-events: auto;
+  width: fit-content;
+  max-width: fit-content;
 }
 
 .map-filter-group, .map-legend, .map-style-switcher {
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  padding: 0.4rem 0.85rem;
-  display: flex;
+  padding: 0.35rem 0.75rem;
+  display: inline-flex;
+  width: fit-content;
+  max-width: fit-content;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   backdrop-filter: blur(12px);
   box-shadow: var(--shadow-card);
 }

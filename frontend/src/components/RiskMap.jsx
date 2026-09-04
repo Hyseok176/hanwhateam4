@@ -270,6 +270,7 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
             </div>
 
             <div className="map-legend">
+              <span className="overlay-label">표시 범례:</span>
               <span className="legend-item"><span className="legend-dot dot-high"></span> 고위험(High)</span>
               <span className="legend-item"><span className="legend-dot dot-med"></span> 중위험(Medium)</span>
               <span className="legend-item"><span className="legend-dot dot-low"></span> 저위험(Low)</span>
