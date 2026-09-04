@@ -7,12 +7,35 @@ import {
   Maximize2, X, Compass, ShieldCheck, CheckCircle2
 } from 'lucide-react';
 
+const GOOGLE_TILE_LAYERS = {
+  terrain: {
+    id: 'terrain',
+    label: '구글 지형도',
+    url: 'https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  },
+  roadmap: {
+    id: 'roadmap',
+    label: '구글 일반 지도',
+    url: 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  },
+  satellite: {
+    id: 'satellite',
+    label: '구글 위성 하이브리드',
+    url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  }
+};
+
 export default function RiskMap({ conflicts, selectedConflict, onSelectConflict }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersLayerRef = useRef(null);
   const subLocationsLayerRef = useRef(null);
+  const tileLayerRef = useRef(null);
   const [filterIntensity, setFilterIntensity] = useState('ALL');
+  const [mapStyle, setMapStyle] = useState('terrain');
   const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
 
   // 지도 초기화
@@ -23,16 +46,16 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
       center: [25.0, 35.0],
       zoom: 3,
       minZoom: 2,
-      maxZoom: 12,
+      maxZoom: 18,
       zoomControl: false,
       attributionControl: false
     });
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd',
-      maxZoom: 19
+    tileLayerRef.current = L.tileLayer(GOOGLE_TILE_LAYERS.terrain.url, {
+      subdomains: GOOGLE_TILE_LAYERS.terrain.subdomains,
+      maxZoom: 20
     }).addTo(map);
 
     markersLayerRef.current = L.layerGroup().addTo(map);
@@ -44,6 +67,20 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
       mapInstanceRef.current = null;
     };
   }, []);
+
+  // 맵 스타일 전환 핸들러
+  const handleStyleChange = (styleKey) => {
+    if (styleKey === mapStyle || !mapInstanceRef.current) return;
+    setMapStyle(styleKey);
+    if (tileLayerRef.current) {
+      mapInstanceRef.current.removeLayer(tileLayerRef.current);
+    }
+    const targetLayer = GOOGLE_TILE_LAYERS[styleKey];
+    tileLayerRef.current = L.tileLayer(targetLayer.url, {
+      subdomains: targetLayer.subdomains,
+      maxZoom: 20
+    }).addTo(mapInstanceRef.current);
+  };
 
   // 마커 렌더링
   useEffect(() => {
@@ -80,17 +117,17 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
 
       const isHigh = conflict.intensity === 'High';
       const isMed = conflict.intensity === 'Medium';
-      const colorHex = isHigh ? '#FF3B30' : isMed ? '#FF9500' : '#00F0FF';
+      const colorHex = isHigh ? '#EF4444' : isMed ? '#F59E0B' : '#10B981';
       const size = isHigh ? 28 : isMed ? 22 : 18;
 
       const customIcon = L.divIcon({
         className: 'tactical-marker-wrap',
         html: `
           <div style="position: relative; width: ${size}px; height: ${size}px; cursor: pointer;">
-            <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: ${colorHex}; opacity: 0.9; box-shadow: 0 0 12px ${colorHex}; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 800;">
+            <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: ${colorHex}; border: 2.5px solid #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: ${size > 22 ? '11px' : '9px'}; font-weight: 800; font-family: sans-serif;">
               ${conflict.griScore || ''}
             </div>
-            <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid ${colorHex}; animation: map-pulse-${isHigh ? 'high' : 'med'} 2s infinite ease-out;"></div>
+            ${isHigh || isMed ? `<div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid ${colorHex}; animation: map-pulse-${isHigh ? 'high' : 'med'} 2s infinite ease-out;"></div>` : ''}
           </div>
         `,
         iconSize: [size, size],
@@ -100,7 +137,7 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
       const marker = L.marker([lat, lon], { icon: customIcon });
 
       marker.bindTooltip(`
-        <div style="font-family: sans-serif; font-size: 11px; padding: 2px 4px; background: #0E1626; color: #fff; border: 1px solid ${colorHex}; border-radius: 4px;">
+        <div style="font-family: sans-serif; font-size: 12px; padding: 3px 6px; background: rgba(15, 23, 42, 0.95); color: #fff; border: 1.5px solid ${colorHex}; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.35);">
           <strong style="color: ${colorHex};">[GRI ${conflict.griScore}]</strong> ${conflict.titleKo}
         </div>
       `, { direction: 'top', offset: [0, -size / 2] });
@@ -139,17 +176,17 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
 
       const subIcon = L.divIcon({
         className: 'sub-loc-marker',
-        html: `<div style="width: 10px; height: 10px; border-radius: 50%; background: #00F0FF; border: 2px solid #0E1626; box-shadow: 0 0 8px #00F0FF;"></div>`,
+        html: `<div style="width: 10px; height: 10px; border-radius: 50%; background: #0284C7; border: 2px solid #FFFFFF; box-shadow: 0 1px 5px rgba(0,0,0,0.5);"></div>`,
         iconSize: [10, 10],
         iconAnchor: [5, 5]
       });
 
       const subMarker = L.marker([loc.lat, loc.lon], { icon: subIcon });
       subMarker.bindPopup(`
-        <div style="font-family: sans-serif; font-size: 12px; color: #0E1626; max-width: 200px;">
-          <strong>📍 ${loc.name}</strong>
-          <p style="margin: 4px 0 0; font-size: 11px; color: #4B5563;">${loc.description || '주요 거점'}</p>
-          ${loc.control ? `<p style="margin: 4px 0 0; font-size: 10px; color: #D97706;"><strong>통제:</strong> ${loc.control}</p>` : ''}
+        <div style="font-family: sans-serif; font-size: 12px; color: #0E1626; max-width: 220px; padding: 2px;">
+          <strong style="color: #0F172A; font-size: 13px;">📍 ${loc.name}</strong>
+          <p style="margin: 4px 0 0; font-size: 11px; color: #475569; line-height: 1.4;">${loc.description || '주요 거점'}</p>
+          ${loc.control ? `<p style="margin: 4px 0 0; font-size: 11px; color: #D97706; font-weight: 600;"><strong>통제:</strong> ${loc.control}</p>` : ''}
         </div>
       `);
 
@@ -175,6 +212,35 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
 
           {/* Overlay Controls */}
           <div className="map-controls-overlay">
+            {/* Google Map Style Switcher */}
+            <div className="map-style-switcher">
+              <span className="overlay-label">지도 테마:</span>
+              <button
+                type="button"
+                className={`style-btn ${mapStyle === 'terrain' ? 'active' : ''}`}
+                onClick={() => handleStyleChange('terrain')}
+                title="구글 지형도 (등고선 및 자연 지형)"
+              >
+                ⛰️ 구글 지형도
+              </button>
+              <button
+                type="button"
+                className={`style-btn ${mapStyle === 'roadmap' ? 'active' : ''}`}
+                onClick={() => handleStyleChange('roadmap')}
+                title="구글 일반 지도 (선명한 도로 및 지명)"
+              >
+                🗺️ 구글 일반
+              </button>
+              <button
+                type="button"
+                className={`style-btn ${mapStyle === 'satellite' ? 'active' : ''}`}
+                onClick={() => handleStyleChange('satellite')}
+                title="구글 위성 지도 (실제 위성 사진 및 도로 라벨)"
+              >
+                🛰️ 구글 위성
+              </button>
+            </div>
+
             <div className="map-filter-group">
               <span className="overlay-label">위험도:</span>
               <button

@@ -387,16 +387,50 @@ body {
   pointer-events: auto;
 }
 
-.map-filter-group, .map-legend {
-  background: var(--bg-glass);
+.map-filter-group, .map-legend, .map-style-switcher {
+  background: rgba(15, 23, 42, 0.88);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-sm);
   padding: 0.4rem 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.map-style-switcher {
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.style-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #E2E8F0;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.style-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.style-btn.active {
+  background: #2563EB;
+  color: #FFFFFF;
+  border-color: #60A5FA;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
+  font-weight: 700;
 }
 
 .overlay-label {
