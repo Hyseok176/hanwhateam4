@@ -1999,31 +1999,40 @@ body {
 }
 
 .report-pillars-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 1.25rem;
 }
 
 .pillar-card {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 1.15rem;
+  padding: 1.35rem 1.6rem;
   box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.pillar-card:hover {
+  border-color: rgba(243, 115, 33, 0.35);
+  box-shadow: var(--shadow-card);
 }
 
 .pillar-title {
   font-weight: 800;
-  font-size: 0.92rem;
+  font-size: 0.98rem;
   color: var(--brand-orange);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .pillar-action {
-  font-size: 0.84rem;
-  color: var(--text-secondary);
-  line-height: 1.55;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.7;
 }
 
 /* Terrain Zoom Modal */

@@ -572,19 +572,29 @@ export default function ReportDocument({ report, contentRef }) {
       </section>
 
       {/* ========================================================= */}
-      {/* 제 6 장: 한화 방산 부문 4대 전략적 실행 제언               */}
+      {/* 제 6 장: 한화 방산 3사 전략적 실행 제언                   */}
       {/* ========================================================= */}
       <section className="report-doc-section" style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.75rem', marginBottom: '2.5rem' }}>
         <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Shield size={18} className="text-orange" /> 제 6 장: 한화 방산 부문 4대 전략적 실행 제언
+          <Shield size={18} className="text-orange" /> 제 6 장: 한화 방산 3사 전략적 실행 제언
         </h2>
-        <div className="report-pillars-grid">
-          {report.strategicRecommendations?.map((r, idx) => (
-            <div className="pillar-card" key={idx} style={{ padding: '1.2rem' }}>
-              <div className="pillar-title" style={{ fontSize: '0.92rem', fontWeight: 800 }}>{r.pillar}</div>
-              <div className="pillar-action" style={{ fontSize: '0.84rem', lineHeight: 1.65 }}>{r.action}</div>
-            </div>
-          ))}
+        <div className="report-pillars-grid" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.25rem' }}>
+          {(report.strategicRecommendations || [])
+            .filter(r => {
+              const p = r.pillar || '';
+              return !p.includes('공급망') && !p.includes('GVC') && !p.includes('금융') && !p.includes('ECA');
+            })
+            .map((r, idx) => (
+              <div className="pillar-card" key={idx} style={{ padding: '1.35rem 1.6rem' }}>
+                <div className="pillar-title" style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Building2 size={16} className="text-orange" />
+                  <span>{r.pillar}</span>
+                </div>
+                <div className="pillar-action" style={{ fontSize: '0.88rem', lineHeight: 1.7, color: 'var(--text-primary)' }}>
+                  {r.action}
+                </div>
+              </div>
+            ))}
         </div>
       </section>
 

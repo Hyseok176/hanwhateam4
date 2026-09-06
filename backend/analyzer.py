@@ -580,7 +580,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
    - operationalDoctrine: 1차 저지선, 2차 반격선 구축, 초소형 SAR 위성(시스템) ➡️ 전술 C4I ➡️ K9/천무(에어로스페이스) 타격 연동 및 UGV 유무인 복합(MUMT) 실전 교리를 3~4개 장문 단락으로 상세 기술
    - operationalCautions: 극한 기후(혹한, 50도 혹서, 라스푸티차 진흙, 사막 모래폭풍) 극복을 위한 엔진 예열/냉각 주기, 특수 방청 및 야전 정비 지침을 실전 엔지니어링 수준으로 서술 (2~3개 장문 단락)
    - strategicImplication: 현지 면허생산(TOT), 거점 정비창(MRO), 인접국 연계 수출 교두보 효과 및 2026~2030 사업 추진 타임라인을 상세 서술 (2~3개 장문 단락)
-3. 'strategicRecommendations': 한화 3사 4대 전략(화력·기동, 다층 방공/C4I, 해양/특수함정, 글로벌 GVC/ECA 금융)별로 단기(2026 즉각 조치) ➡️ 중기(2027~2028 현지화 및 MRO) ➡️ 장기(2029~2030 생태계 구축) 3단계 로드맵을 풍부하게 기술하십시오. (각 항목 4~5문장 이상)
+3. 'strategicRecommendations': 한화 방산 3사 핵심 전략(화력·기동[한화에어로스페이스], 다층 복합방공/C4I[한화시스템], 해양/특수함정[한화오션])별로 단기(2026 즉각 조치) ➡️ 중기(2027~2028 현지화 및 MRO) ➡️ 장기(2029~2030 생태계 구축) 3단계 로드맵을 풍부하게 기술하십시오. (각 항목 4~5문장 이상)
 
 반드시 마크다운 백틱 없이 순수한 JSON 포맷으로만 응답하십시오:
 {{
@@ -656,11 +656,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
     {{
       "pillar": "해양 안보 및 특수함정 (한화오션)",
       "action": "단기/중기/장기 실행 로드맵 (4~5문장)..."
-    }},
-    {{
-      "pillar": "글로벌 공급망(GVC) 및 G2G 패키지 금융",
-      "action": "단기/중기/장기 실행 로드맵 (4~5문장)..."
-    }}
+    }
   ]
 }}"""
 
@@ -828,10 +824,6 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
             {
                 'pillar': '해양 및 감시정찰 (한화오션)',
                 'action': '동남아·중남미 연안 경비 및 대만해협 대응을 위한 초소형 SAR 위성 데이터 링크 + 차세대 함정 전투체계 패키지화'
-            },
-            {
-                'pillar': '글로벌 공급망 및 공동생산 (GVC & ECA)',
-                'action': '미국·인도·호주 등 오커스(AUKUS)/쿼드(QUAD) 권역 내 현지 방산 파트너십 및 KEXIM 수출금융 연계 조달 시장 선점'
             }
         ],
         'telemetry': {
