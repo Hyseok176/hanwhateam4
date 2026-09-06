@@ -2,10 +2,11 @@ import React, { useRef, useState } from 'react';
 import {
   Copy, Printer, X, Brain, ListChecks, Globe, Shield, Sparkles, Activity,
   Crosshair, Compass, AlertTriangle, Thermometer, Cpu, Clock, ExternalLink,
-  FileText, Landmark, Building2, CheckCircle2, ChevronRight, Layers, ShieldCheck
+  FileText, Landmark, Building2, CheckCircle2, ChevronRight, Layers, ShieldCheck,
+  RefreshCw
 } from 'lucide-react';
 
-export default function ReportModal({ isOpen, onClose, report, isLoading, currentModel, onSelectModel }) {
+export default function ReportModal({ isOpen, onClose, report, isLoading, currentModel, onSelectModel, onRegenerate }) {
   const contentRef = useRef(null);
   const [activeTab, setActiveTab] = useState('1pager'); // '1pager' | 'theaters' | 'all'
 
@@ -39,6 +40,16 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
           </div>
 
           <div className="modal-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              className="btn btn-sm btn-primary"
+              onClick={() => onRegenerate && onRegenerate(activeModelName)}
+              disabled={isLoading}
+              title="최신 기사 및 분쟁 데이터를 바탕으로 보고서를 새로 생성합니다 (OpenAI 토큰 소모)"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+            >
+              <RefreshCw size={13} className={isLoading ? 'fa-spin' : ''} />
+              <span>{isLoading ? '분석 중...' : '새로 분석'}</span>
+            </button>
             <button className="btn btn-sm btn-outline" onClick={handleCopy} title="보고서 전문 클립보드 복사">
               <Copy size={13} /> 복사
             </button>
@@ -105,6 +116,11 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                     </div>
                     <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '2px' }}>
                       분석 모델: <strong style={{ color: 'var(--brand-orange)' }}>{report.telemetry?.model || activeModelName || 'GPT-5.4'}</strong>
+                      {report.generatedAt && (
+                        <span style={{ marginLeft: '6px', color: 'var(--text-secondary)' }}>
+                          ({new Date(report.generatedAt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })} 생성됨)
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -167,11 +183,11 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
 
                       {report.telemetry.totalTokens > 0 ? (
                         <span style={{ color: 'var(--alert-green)', fontWeight: 600, fontSize: '0.74rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                          ● 실시간 AI 분석 완료
+                          ● 분석 완료 (캐시 보관됨)
                         </span>
                       ) : (
                         <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.74rem' }}>
-                          ● 정규 분석 데이터
+                          ● 정규 분석 데이터 (캐시)
                         </span>
                       )}
                     </div>

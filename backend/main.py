@@ -18,6 +18,8 @@ class ServerState:
     matching: list[dict] = []
     last_synced_at: Optional[str] = None
     is_syncing: bool = False
+    cached_report: Optional[dict] = None
+    cached_report_model: Optional[str] = None
 
 state = ServerState()
 
@@ -32,6 +34,9 @@ async def sync_and_analyze():
         state.conflicts = data['conflicts']
         state.matching = analyzer.analyze_conflicts_and_weapons(state.conflicts, state.news)
         state.last_synced_at = data['updatedAt']
+        # 새 뉴스/분쟁 수집 시 다음 번 분석은 최신 뉴스를 반영할 수 있도록 캐시 무효화
+        state.cached_report = None
+        state.cached_report_model = None
         print(f'[FastAPI] 동기화 완료: 뉴스 {len(state.news)}건, 분쟁 {len(state.conflicts)}건, 매칭 {len(state.matching)}건')
     except Exception as e:
         print(f'[FastAPI] 동기화 오류: {e}')
@@ -76,6 +81,7 @@ class ReportRequest(BaseModel):
     apiKey: Optional[str] = ''
     model: Optional[str] = 'gpt-5.4'
     syncInterval: Optional[int] = 0
+    forceRefresh: Optional[bool] = False
 
 class TestLLMRequest(BaseModel):
     apiKey: str
@@ -149,11 +155,19 @@ async def get_portfolio():
 @app.post('/api/report')
 async def create_report(req: ReportRequest):
     try:
+        target_model = req.model or 'gpt-5.4'
+        # 강제 새로고침이 아니고, 동일 모델의 캐시 보고서가 있을 경우 LLM 호출 없이 반환 (토큰 소모 방지)
+        if not req.forceRefresh and state.cached_report and state.cached_report_model == target_model:
+            print(f"[FastAPI] 기존 {target_model} 캐시 보고서 즉시 반환 (불필요한 토큰 소모 방지)")
+            return {'success': True, 'report': state.cached_report, 'cached': True}
+
         if not state.matching:
             print("[FastAPI] matching 데이터 부재로 자동 동기화 수행...")
             await sync_and_analyze()
         report = await analyzer.generate_strategic_report(state.matching, state.news, req.model_dump())
-        return {'success': True, 'report': report}
+        state.cached_report = report
+        state.cached_report_model = target_model
+        return {'success': True, 'report': report, 'cached': False}
     except Exception as e:
         import traceback
         traceback.print_exc()

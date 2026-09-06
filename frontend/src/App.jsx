@@ -19,7 +19,14 @@ export default function App() {
 
   // Modals state
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [reportData, setReportData] = useState(null);
+  const [reportData, setReportData] = useState(() => {
+    try {
+      const cached = localStorage.getItem('cached_strategic_report');
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
+    }
+  });
   const [isReportLoading, setIsReportLoading] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -96,9 +103,8 @@ export default function App() {
     }
   };
 
-  // AI 전략 보고서 모달 열기
-  const handleOpenReport = async (overrideModel) => {
-    setIsReportOpen(true);
+  // AI 전략 보고서 생성 (실제 API 호출 및 캐싱)
+  const generateReport = async (overrideModel, forceRefresh = true) => {
     setIsReportLoading(true);
     const targetModel = (typeof overrideModel === 'string' && overrideModel.trim())
       ? overrideModel.trim()
@@ -111,12 +117,18 @@ export default function App() {
           provider: settings.provider || 'openai',
           apiKey: settings.apiKey || '',
           model: targetModel,
-          syncInterval: Number(settings.syncInterval || 0)
+          syncInterval: Number(settings.syncInterval || 0),
+          forceRefresh: forceRefresh
         })
       });
       const data = await res.json();
       if (data.success && data.report) {
         setReportData(data.report);
+        try {
+          localStorage.setItem('cached_strategic_report', JSON.stringify(data.report));
+        } catch (e) {
+          console.warn('보고서 로컬 캐싱 실패:', e);
+        }
       } else {
         console.error('보고서 생성 실패:', data);
         alert(`보고서 생성 중 문제가 발생했습니다: ${data.detail || '잠시 후 다시 시도해 주세요.'}`);
@@ -129,12 +141,37 @@ export default function App() {
     }
   };
 
+  // AI 전략 보고서 모달 열기 (기존 캐시 보고서가 있으면 API 호출 없이 즉시 열람하여 토큰 소모 방지)
+  const handleOpenReport = (overrideModel) => {
+    setIsReportOpen(true);
+    const targetModel = (typeof overrideModel === 'string' && overrideModel.trim())
+      ? overrideModel.trim()
+      : (settings.model || 'gpt-5.4');
+
+    // 이미 생성된 보고서가 있다면 토큰 소모 없이 즉시 열기
+    if (reportData) {
+      // 단, 특정 모델로 명시적 요청되었는데 현재 캐시와 모델이 다른 경우에만 새로 생성
+      if (overrideModel && typeof overrideModel === 'string' && reportData.modelUsed !== targetModel) {
+        generateReport(targetModel, true);
+      }
+      return;
+    }
+
+    // 캐시된 보고서가 아예 없는 최초 1회에만 생성
+    generateReport(targetModel, false);
+  };
+
+  // 보고서 모달 내부에서 "새로 분석" 버튼 클릭 시 (의도적인 최신 데이터 재분석)
+  const handleRegenerateReport = (modelToUse) => {
+    generateReport(modelToUse || settings.model || 'gpt-5.4', true);
+  };
+
   // 보고서 모달 내부에서 모델 직접 변경 시
   const handleModelChangeFromReport = (newModel) => {
     const updated = { ...settings, model: newModel };
     setSettings(updated);
     localStorage.setItem('ai_model', newModel);
-    handleOpenReport(newModel);
+    generateReport(newModel, true);
   };
 
   // 설정 저장
@@ -205,6 +242,7 @@ export default function App() {
         isLoading={isReportLoading}
         currentModel={settings.model || 'gpt-5.4'}
         onSelectModel={handleModelChangeFromReport}
+        onRegenerate={handleRegenerateReport}
       />
 
       {/* Settings Modal */}
