@@ -46,7 +46,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
 
   const handleCustomModelChange = (val) => {
     setCustomModelName(val);
-    setModel(val.trim() || 'gpt-4o');
+    setModel(val.trim() || 'gpt-5.4');
     setTestResult(null);
   };
 

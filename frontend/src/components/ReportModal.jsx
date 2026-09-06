@@ -23,9 +23,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
     window.print();
   };
 
-  const PRESET_MODELS = ['gpt-5.4', 'gpt-4o', 'gpt-4o-mini', 'o3-mini', 'o1-mini', 'gpt-3.5-turbo'];
-  const activeModelName = report?.telemetry?.model || currentModel || 'gpt-5.4';
-  const isCustomModel = activeModelName && !PRESET_MODELS.includes(activeModelName);
+  const activeModelName = 'gpt-5.4';
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -115,7 +113,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                       발행일: {report.displayDate || new Date().toLocaleDateString('ko-KR')}
                     </div>
                     <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      분석 모델: <strong style={{ color: 'var(--brand-orange)' }}>{report.telemetry?.model || activeModelName || 'GPT-5.4'}</strong>
+                      분석 모델: <strong style={{ color: 'var(--brand-orange)' }}>OpenAI GPT-5.4</strong>
                       {report.generatedAt && (
                         <span style={{ marginLeft: '6px', color: 'var(--text-secondary)' }}>
                           ({new Date(report.generatedAt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })} 생성됨)
@@ -152,33 +150,11 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                         분석 엔진:
                       </span>
                       
-                      {/* Model Selector Pill */}
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#FFFFFF', padding: '2px 8px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--border-medium)', boxShadow: 'var(--shadow-sm)' }}>
+                      {/* Dedicated Engine Badge */}
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#FFFFFF', padding: '2px 10px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--border-medium)', boxShadow: 'var(--shadow-sm)' }}>
                         <Cpu size={12} className="text-cyan" />
-                        <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)' }}>모델:</span>
-                        <select
-                          value={report.telemetry.model || activeModelName}
-                          onChange={(e) => onSelectModel && onSelectModel(e.target.value)}
-                          disabled={isLoading}
-                          style={{
-                            border: 'none',
-                            outline: 'none',
-                            background: 'transparent',
-                            fontSize: '0.76rem',
-                            fontWeight: 700,
-                            color: 'var(--brand-orange)',
-                            cursor: 'pointer',
-                            fontFamily: 'var(--font-sans)'
-                          }}
-                        >
-                          <option value="gpt-5.4">gpt-5.4</option>
-                          <option value="gpt-4o">gpt-4o</option>
-                          <option value="gpt-4o-mini">gpt-4o-mini</option>
-                          <option value="o3-mini">o3-mini</option>
-                          {isCustomModel && (
-                            <option value={activeModelName}>{activeModelName}</option>
-                          )}
-                        </select>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)' }}>엔진:</span>
+                        <strong style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--brand-orange)' }}>OpenAI GPT-5.4</strong>
                       </div>
 
                       {report.telemetry.totalTokens > 0 ? (

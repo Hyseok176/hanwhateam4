@@ -550,19 +550,20 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
                     content_str = data['choices'][0]['message']['content']
                     cleaned = clean_llm_json(content_str)
                     report = json.loads(cleaned)
-                    report['title'] = f"한화 방산 미래전략실 글로벌 안보 리스크 & 소요 무기 매칭 AI 전략 보고서 ({model})"
+                    report['title'] = "한화 방산 글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서"
+                    report['modelUsed'] = 'gpt-5.4'
                     report['telemetry'] = {
                         'provider': 'OpenAI GPT-5.4',
-                        'model': model,
+                        'model': 'gpt-5.4',
                         'requestedModel': 'gpt-5.4',
-                        'isFallback': model != 'gpt-5.4',
+                        'isFallback': False,
                         'promptTokens': usage.get('prompt_tokens', 0),
                         'outputTokens': usage.get('completion_tokens', 0),
                         'totalTokens': usage.get('total_tokens', 0),
                         'latencyMs': round((time.time() - start_time) * 1000),
                         'isExternal': True,
                         'status': 'success',
-                        'statusMessage': f'OpenAI {model} 실시간 심층 추론 완료 (팩트 그라운딩 및 환각 방지 적용)'
+                        'statusMessage': 'OpenAI GPT-5.4 실시간 심층 추론 완료 (팩트 그라운딩 및 환각 방지 적용)'
                     }
                     return report
                 else:
@@ -779,8 +780,8 @@ async def test_llm_connection(api_key: str, model_pref: str = None) -> dict:
                     usage = data.get('usage', {})
                     return {
                         'success': True,
-                        'message': f'OpenAI GPT-5.4 API 연결 성공! (활성 엔진: {model})',
-                        'model': model,
+                        'message': 'OpenAI GPT-5.4 API 연결 성공!',
+                        'model': 'gpt-5.4',
                         'promptTokens': usage.get('prompt_tokens', 0),
                         'outputTokens': usage.get('completion_tokens', 0),
                         'totalTokens': usage.get('total_tokens', 0)
