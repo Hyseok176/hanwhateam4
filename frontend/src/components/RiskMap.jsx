@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
-  Lightbulb, Crosshair, MapPin, Newspaper, Map as MapIcon,
+  Crosshair, MapPin, Newspaper, Map as MapIcon,
   Thermometer, Droplets, Mountain, ShieldAlert, AlertTriangle,
-  Maximize2, X, Compass, ShieldCheck, CheckCircle2
+  Compass, ShieldCheck, FileText, Shield, Satellite
 } from 'lucide-react';
 
 const GOOGLE_TILE_LAYERS = {
@@ -59,7 +59,6 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
   const isInitialLoadRef = useRef(true);
   const [filterIntensity, setFilterIntensity] = useState('ALL');
   const [mapStyle, setMapStyle] = useState('terrain');
-  const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
 
   // 지도 초기화
   useEffect(() => {
@@ -266,7 +265,7 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
       const subMarker = L.marker([loc.lat, loc.lon], { icon: subIcon });
       subMarker.bindPopup(`
         <div style="font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; font-size: 12px; color: #191F28; max-width: 220px; padding: 2px;">
-          <strong style="color: #191F28; font-size: 13px;">📍 ${loc.name}</strong>
+          <strong style="color: #191F28; font-size: 13px;">[거점] ${loc.name}</strong>
           <p style="margin: 4px 0 0; font-size: 11px; color: #4E5968; line-height: 1.4;">${loc.description || '주요 거점'}</p>
           ${loc.control ? `<p style="margin: 4px 0 0; font-size: 11px; color: #D97706; font-weight: 700;"><strong>통제:</strong> ${loc.control}</p>` : ''}
         </div>
@@ -330,24 +329,27 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                 className={`style-btn ${mapStyle === 'terrain' ? 'active' : ''}`}
                 onClick={() => handleStyleChange('terrain')}
                 title="구글 지형도 (등고선 및 산악 음영 강조 • 한국어 지명)"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
               >
-                ⛰️ 구글 지형도
+                <Mountain size={12} /> 구글 지형도
               </button>
               <button
                 type="button"
                 className={`style-btn ${mapStyle === 'roadmap' ? 'active' : ''}`}
                 onClick={() => handleStyleChange('roadmap')}
                 title="구글 일반 지도 (선명한 도로 및 행정 구역 • 한국어 지명)"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
               >
-                🗺️ 구글 일반
+                <MapIcon size={12} /> 구글 일반
               </button>
               <button
                 type="button"
                 className={`style-btn ${mapStyle === 'satellite' ? 'active' : ''}`}
                 onClick={() => handleStyleChange('satellite')}
                 title="구글 위성 지도 (실제 고해상도 위성 사진 및 주요 도로 • 한국어 지명)"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
               >
-                🛰️ 구글 위성
+                <Satellite size={12} /> 구글 위성
               </button>
             </div>
 
@@ -425,42 +427,7 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                   <div className={`score-badge ${badgeClass}`}>{c.intensity} 위기</div>
                 </div>
 
-                {/* 1. Country Real Terrain Reconnaissance Photo */}
-                {c.terrainInfo?.terrainPhoto && (
-                  <div className="terrain-recon-card" onClick={() => setIsPhotoZoomed(true)}>
-                    <div className="recon-img-wrap">
-                      <img
-                        src={c.terrainInfo.terrainPhoto.url}
-                        alt={c.terrainInfo.terrainPhoto.caption}
-                        className="recon-img"
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/9/92/Granite-steppe_lands_of_Buh-3.jpg';
-                        }}
-                      />
-                      <div className="recon-overlay-header">
-                        <span className="recon-badge">
-                          <Compass size={11} /> FIELD TERRAIN INTELLIGENCE
-                        </span>
-                        <button className="recon-zoom-btn" title="사진 확대">
-                          <Maximize2 size={12} />
-                        </button>
-                      </div>
-                      <div className="recon-overlay-footer">
-                        <div className="recon-caption">{c.terrainInfo.terrainPhoto.caption}</div>
-                        <div className="recon-loc">📍 {c.terrainInfo.terrainPhoto.location || c.regionKo}</div>
-                      </div>
-                    </div>
-                    <div className="recon-tags">
-                      {c.terrainInfo.terrainPhoto.tags?.map((tag, idx) => (
-                        <span key={idx} className="recon-tag-chip">#{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* 2. Operational Environment Profile (Terrain & Meteorological Gauges) */}
+                {/* 1. Operational Environment Profile (Terrain & Meteorological Gauges) */}
                 {c.terrainInfo && (
                   <div className="dossier-env-section">
                     <div className="dossier-section-title">
@@ -534,10 +501,10 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                   </div>
                 )}
 
-                {/* 3. Strategic Summary */}
+                {/* 2. Strategic Summary */}
                 <div>
                   <div className="dossier-section-title">
-                    <Lightbulb size={14} className="text-orange" /> 미래전략실 전략 요약
+                    <FileText size={14} className="text-orange" /> 미래전략실 전략 브리핑
                   </div>
                   <p style={{
                     fontSize: '0.82rem',
@@ -552,7 +519,7 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                   </p>
                 </div>
 
-                {/* 4. Matched Hanwha Weapons with Environmental & Operational Advisory */}
+                {/* 3. Matched Hanwha Weapons with Environmental & Operational Advisory */}
                 <div>
                   <div className="dossier-section-title">
                     <Crosshair size={14} className="text-orange" /> 한화 방산 소요 무기 및 환경 호환성 평가 ({c.matchedWeapons?.length || 0}종)
@@ -597,32 +564,32 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                                 marginBottom: '0.4rem'
                               }}>
                                 <div>
-                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
-                                    🌡️ 무기 보증 기온 (온도 제원)
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <Thermometer size={12} className="text-orange" /> 운용 보증 기온
                                   </div>
                                   <div style={{ fontSize: '0.8rem', color: 'var(--brand-orange)', fontWeight: 800 }}>
                                     {w.operatingSpecs.tempRange}
                                   </div>
                                 </div>
                                 <div>
-                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
-                                    💧 무기 보증 습도 (습도 제원)
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <Droplets size={12} className="text-cyan" /> 상대 습도 한계
                                   </div>
                                   <div style={{ fontSize: '0.8rem', color: 'var(--radar-cyan)', fontWeight: 800 }}>
                                     최대 {w.operatingSpecs.maxHumidity || 95}% RH (초극고습 내구성)
                                   </div>
                                 </div>
                                 <div>
-                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
-                                    🛡️ 전장 군용 규격 / 방호
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <Shield size={12} className="text-orange" /> 군용 표준 규격
                                   </div>
                                   <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
                                     {w.operatingSpecs.standard?.split('/')[0] || 'MIL-STD-810H'}
                                   </div>
                                 </div>
                                 <div>
-                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600 }}>
-                                    🌲 주요 적합 전장 환경
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <Compass size={12} className="text-cyan" /> 적합 전장 환경
                                   </div>
                                   <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
                                     {w.operatingSpecs.primaryEnvironments ? w.operatingSpecs.primaryEnvironments.join(', ') : '전천후 전장 환경'}
@@ -632,13 +599,13 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
 
                               {w.operatingSpecs.protection && (
                                 <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.4rem', marginTop: '0.35rem', fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-                                  🔰 <strong style={{ color: 'var(--text-primary)' }}>장갑 방호 및 화생방:</strong> {w.operatingSpecs.protection}
+                                  ■ <strong style={{ color: 'var(--text-primary)' }}>장갑 방호 및 화생방:</strong> {w.operatingSpecs.protection}
                                 </div>
                               )}
 
                               {w.operatingSpecs.fieldConstraints && (
                                 <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.4rem', marginTop: '0.35rem', fontSize: '0.74rem', color: 'var(--alert-amber)' }}>
-                                  ⚠️ <strong style={{ color: '#D97706' }}>전장 운용상 제약 및 주의사항:</strong> {w.operatingSpecs.fieldConstraints}
+                                  ■ <strong style={{ color: '#D97706' }}>전장 운용상 제약 및 주의사항:</strong> {w.operatingSpecs.fieldConstraints}
                                 </div>
                               )}
                             </div>
@@ -676,7 +643,7 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                               {/* Recommended Countermeasure Upgrade */}
                               {env.countermeasurePackage && (
                                 <div className="wm-countermeasure">
-                                  <span className="cm-lbl">🛠️ 권장 환경 극복 패키지:</span>
+                                  <span className="cm-lbl">■ 환경 극복 패키지:</span>
                                   <span className="cm-val">{env.countermeasurePackage}</span>
                                 </div>
                               )}
@@ -705,7 +672,7 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                     {c.locations && c.locations.length > 0 ? (
                       c.locations.map((l, i) => (
                         <div key={i} style={{ fontSize: '0.8rem', padding: '0.45rem 0', borderBottom: '1px solid var(--border-subtle)' }}>
-                          <strong style={{ color: 'var(--radar-cyan)' }}>📍 {l.name}</strong>
+                          <strong style={{ color: 'var(--radar-cyan)' }}>• {l.name}</strong>
                           <span style={{ color: 'var(--text-secondary)' }}> - {l.description || '주요 거점'}</span>
                           {l.control && <div style={{ color: 'var(--alert-amber)', fontSize: '0.74rem', marginTop: '2px', fontWeight: 600 }}>통제: {l.control}</div>}
                         </div>
@@ -750,56 +717,6 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
           </div>
         </aside>
       </div>
-
-      {/* Terrain Photo Enlarged Inspection Modal */}
-      {isPhotoZoomed && c?.terrainInfo?.terrainPhoto && (
-        <div className="modal-overlay" onClick={() => setIsPhotoZoomed(false)}>
-          <div className="modal-card terrain-zoom-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div className="modal-header-left">
-                <div className="report-badge">
-                  <Compass size={13} style={{ display: 'inline', marginRight: '4px' }} />
-                  FIELD RECONNAISSANCE INTELLIGENCE
-                </div>
-                <h3 className="modal-title">{c.terrainInfo.country} - 작전 지형 정찰 사진</h3>
-              </div>
-              <button className="modal-close-btn" onClick={() => setIsPhotoZoomed(false)}>
-                <X size={20} />
-              </button>
-            </div>
-            <div className="modal-body" style={{ padding: '1rem' }}>
-              <div className="zoom-photo-frame">
-                <img
-                  src={c.terrainInfo.terrainPhoto.url}
-                  alt={c.terrainInfo.terrainPhoto.caption}
-                  className="zoom-img"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="zoom-hud-reticle"></div>
-              </div>
-              <div className="zoom-meta-box">
-                <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.35rem', fontSize: '1rem' }}>
-                  {c.terrainInfo.terrainPhoto.caption}
-                </h4>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
-                  {c.terrainInfo.terrainDescription}
-                </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <span className="score-badge badge-high" style={{ fontSize: '0.75rem' }}>
-                    지형 유형: {c.terrainInfo.terrainType}
-                  </span>
-                  <span className="score-badge badge-med" style={{ fontSize: '0.75rem' }}>
-                    기온 폭: {c.terrainInfo.tempRange?.min}°C ~ {c.terrainInfo.tempRange?.max}°C
-                  </span>
-                  <span className="score-badge badge-low" style={{ fontSize: '0.75rem' }}>
-                    상대 습도: 평균 {c.terrainInfo.humidity?.avg}% (최대 {c.terrainInfo.humidity?.max}%)
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

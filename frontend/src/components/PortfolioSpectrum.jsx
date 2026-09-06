@@ -163,15 +163,15 @@ export default function PortfolioSpectrum({ portfolio }) {
                     fontSize: '0.73rem'
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', color: 'var(--text-secondary)' }}>
-                      <span>🌡️ <strong>운용온도:</strong> {p.operatingSpecs.tempRange}</span>
+                      <span>■ <strong>운용온도:</strong> {p.operatingSpecs.tempRange}</span>
                       <span style={{ color: 'var(--text-muted)' }}>{p.operatingSpecs.standard?.split('/')[0]}</span>
                     </div>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', lineHeight: 1.4 }}>
-                      🛡️ <strong>방호/밀폐:</strong> {p.operatingSpecs.protection}
+                      ■ <strong>방호/밀폐:</strong> {p.operatingSpecs.protection}
                     </div>
                     {p.operatingSpecs.countermeasurePackage && (
                       <div style={{ color: 'var(--brand-orange)', fontSize: '0.7rem', marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <span>🛠️ <strong>대응 킷:</strong> {p.operatingSpecs.countermeasurePackage}</span>
+                        <span>■ <strong>대응 킷:</strong> {p.operatingSpecs.countermeasurePackage}</span>
                       </div>
                     )}
                   </div>

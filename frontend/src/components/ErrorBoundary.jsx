@@ -1,4 +1,5 @@
 import React from 'react';
+import { ShieldAlert } from 'lucide-react';
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -42,7 +43,9 @@ export default class ErrorBoundary extends React.Component {
             maxWidth: '520px',
             boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🛡️</div>
+            <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+              <ShieldAlert size={48} className="text-orange" />
+            </div>
             <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '12px', color: '#F1F5F9' }}>
               화면을 표시하는 중 일시적인 오류가 발생했습니다
             </h2>

@@ -121,7 +121,7 @@ export default function MatchingMatrix({ matching, onSelectConflictAndNavigate }
                       padding: '0.15rem 0.45rem',
                       borderRadius: 'var(--radius-xs)'
                     }}>
-                      ⛰️ {item.terrainInfo.terrainType}
+                      {item.terrainInfo.terrainType}
                     </span>
                     {item.terrainInfo.tempRange && (
                       <span style={{
@@ -132,7 +132,7 @@ export default function MatchingMatrix({ matching, onSelectConflictAndNavigate }
                         borderRadius: 'var(--radius-xs)',
                         fontFamily: 'var(--font-mono)'
                       }}>
-                        🌡️ {item.terrainInfo.tempRange.min}°C ~ {item.terrainInfo.tempRange.max}°C
+                        기온: {item.terrainInfo.tempRange.min}°C ~ {item.terrainInfo.tempRange.max}°C
                       </span>
                     )}
                     {item.terrainInfo.humidity && (
@@ -144,7 +144,7 @@ export default function MatchingMatrix({ matching, onSelectConflictAndNavigate }
                         borderRadius: 'var(--radius-xs)',
                         fontFamily: 'var(--font-mono)'
                       }}>
-                        💧 습도 {item.terrainInfo.humidity.avg}%
+                        습도: {item.terrainInfo.humidity.avg}%
                       </span>
                     )}
                   </div>
@@ -188,9 +188,9 @@ export default function MatchingMatrix({ matching, onSelectConflictAndNavigate }
                             padding: '0.2rem 0.4rem',
                             borderRadius: 'var(--radius-xs)'
                           }}>
-                            <span>🌡️ 보증 기온: <strong style={{ color: 'var(--text-secondary)' }}>{specs.tempRange}</strong></span>
-                            <span>💧 <strong style={{ color: 'var(--radar-cyan)' }}>최대 {specs.maxHumidity || 95}% RH</strong></span>
-                            <span>🛡️ <strong style={{ color: 'var(--text-muted)' }}>{specs.standard?.split('/')[0] || 'MIL-STD-810H'}</strong></span>
+                            <span>보증 기온: <strong style={{ color: 'var(--text-secondary)' }}>{specs.tempRange}</strong></span>
+                            <span>습도 한계: <strong style={{ color: 'var(--radar-cyan)' }}>최대 {specs.maxHumidity || 95}% RH</strong></span>
+                            <span>규격: <strong style={{ color: 'var(--text-muted)' }}>{specs.standard?.split('/')[0] || 'MIL-STD-810H'}</strong></span>
                           </div>
                         )}
                       </div>

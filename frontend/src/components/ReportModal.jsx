@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import {
-  Copy, Printer, X, Crosshair, ShieldCheck, RefreshCw
+  Copy, Printer, X, Crosshair, ShieldCheck, RefreshCw, AlertTriangle
 } from 'lucide-react';
 import ReportDocument from './ReportDocument';
 
@@ -72,8 +72,8 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
             </div>
           ) : !report ? (
             <div className="loading-state" style={{ textAlign: 'center', padding: '3.5rem 1.5rem' }}>
-              <p style={{ fontSize: '0.92rem', color: 'var(--alert-red)', fontWeight: 700, marginBottom: '0.6rem' }}>
-                ⚠️ 보고서 데이터를 불러오지 못했습니다.
+              <p style={{ fontSize: '0.92rem', color: 'var(--alert-red)', fontWeight: 700, marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <AlertTriangle size={16} /> 보고서 데이터를 불러오지 못했습니다.
               </p>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1.2rem' }}>
                 일시적인 네트워크 지연이거나 서버 준비 중일 수 있습니다. 아래 버튼을 눌러 다시 시도해 주세요.

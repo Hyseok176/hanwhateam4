@@ -25,7 +25,7 @@ export default function ReportDocument({ report, contentRef }) {
           <div>
             <div className="report-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginBottom: '0.4rem' }}>
               <ShieldCheck size={13} className="text-orange" />
-              <span>HANWHA DEFENSE STRATEGIC INTELLIGENCE • CLASSIFIED</span>
+              <span>HANWHA DEFENSE STRATEGIC INTELLIGENCE REPORT</span>
             </div>
             <h1 className="report-doc-title" style={{ fontSize: '1.45rem', fontWeight: 800, margin: '0 0 0.4rem 0', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
               {report.title || '글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서 (전문)'}
@@ -36,57 +36,11 @@ export default function ReportDocument({ report, contentRef }) {
               <span>연계 체계: 한화 3사(에어로스페이스·시스템·오션) 포트폴리오</span>
             </div>
           </div>
-          <div style={{ textAlign: 'right', minWidth: '180px' }}>
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-              발행일: {report.displayDate || new Date().toLocaleDateString('ko-KR')}
-            </div>
-            <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: '3px' }}>
-              문서 번호: <strong style={{ color: 'var(--text-secondary)' }}>HDF-2026-SR09</strong>
-              <span style={{ marginLeft: '6px', color: 'var(--brand-orange)', fontWeight: 700 }}>[대외비]</span>
+          <div style={{ textAlign: 'right', minWidth: '150px' }}>
+            <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              기준일: {report.displayDate || new Date().toLocaleDateString('ko-KR')}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* 2. Official Classification & Document Metadata Bar */}
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '0.75rem',
-        background: 'var(--bg-surface-elevated)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--radius-sm)',
-        padding: '0.65rem 1rem',
-        marginBottom: '1.75rem',
-        fontSize: '0.76rem',
-        color: 'var(--text-secondary)'
-      }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          <ShieldCheck size={14} className="text-orange" />
-          <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>보안 등급:</span>
-          <span style={{
-            background: 'rgba(237, 109, 0, 0.1)',
-            border: '1px solid rgba(237, 109, 0, 0.3)',
-            color: 'var(--brand-orange)',
-            padding: '1px 8px',
-            borderRadius: 'var(--radius-xs)',
-            fontWeight: 800,
-            fontSize: '0.72rem'
-          }}>
-            대외비 (CONFIDENTIAL)
-          </span>
-          <span style={{ color: 'var(--border-subtle)' }}>•</span>
-          <span>소관: 미래전략실 전략인텔리전스 센터</span>
-        </div>
-
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ color: 'var(--alert-green)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            ● 데이터 정합성 검증 완료
-          </span>
-          <span style={{ color: 'var(--border-subtle)' }}>|</span>
-          <span>분석 범위: <strong style={{ color: 'var(--text-primary)' }}>글로벌 29개 분쟁 전구</strong></span>
         </div>
       </div>
 
@@ -600,22 +554,9 @@ export default function ReportDocument({ report, contentRef }) {
       }}>
         <div>
           <div style={{ fontWeight: 800, color: 'var(--text-primary)', marginBottom: '3px' }}>
-            한화 방산 미래전략실 전략 인텔리전스 센터 (Hanwha Defense Future Strategy Office)
+            한화 방산 미래전략실 전략 인텔리전스 (Hanwha Defense Future Strategy Office)
           </div>
-          <div>본 보고서는 대외비 안보 전략 문서이며, 허가되지 않은 무단 전재 및 배포를 금합니다.</div>
-        </div>
-        <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{
-            border: '1px solid var(--brand-orange)',
-            color: 'var(--brand-orange)',
-            padding: '4px 10px',
-            borderRadius: 'var(--radius-xs)',
-            fontWeight: 800,
-            fontSize: '0.72rem',
-            letterSpacing: '0.05em'
-          }}>
-            OFFICIAL APPROVED
-          </div>
+          <div>본 보고서는 실시간 글로벌 분쟁 데이터와 한화 방산 포트폴리오를 기반으로 작성되었습니다.</div>
         </div>
       </footer>
     </div>

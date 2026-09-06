@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   ArrowLeft, Copy, Printer, RefreshCw,
-  Crosshair, ShieldCheck, ExternalLink
+  Crosshair, ShieldCheck, ExternalLink, AlertTriangle
 } from 'lucide-react';
 import ReportDocument from './ReportDocument';
 
@@ -121,21 +121,6 @@ export default function ReportPageView({ onBack }) {
         </div>
 
         <div className="report-page-topbar-right">
-          {/* 보안 등급 뱃지 */}
-          <div className="engine-badge-pill" style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            background: 'rgba(237, 109, 0, 0.08)',
-            border: '1px solid rgba(237, 109, 0, 0.28)',
-            padding: '4px 12px',
-            borderRadius: 'var(--radius-pill)',
-            fontSize: '0.76rem'
-          }}>
-            <ShieldCheck size={13} className="text-orange" />
-            <span style={{ color: 'var(--text-muted)' }}>보안구분:</span>
-            <strong style={{ color: 'var(--brand-orange)' }}>대외비 (CONFIDENTIAL)</strong>
-          </div>
 
           <button
             className="btn btn-sm btn-primary"
@@ -187,8 +172,8 @@ export default function ReportPageView({ onBack }) {
             </div>
           ) : errorMessage ? (
             <div className="report-page-error-card">
-              <p style={{ fontSize: '1rem', color: 'var(--alert-red)', fontWeight: 800, marginBottom: '0.75rem' }}>
-                ⚠️ 보고서 데이터를 불러오지 못했습니다.
+              <p style={{ fontSize: '1rem', color: 'var(--alert-red)', fontWeight: 800, marginBottom: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <AlertTriangle size={18} /> 보고서 데이터를 불러오지 못했습니다.
               </p>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
                 {errorMessage}
