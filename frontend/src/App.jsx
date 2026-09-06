@@ -111,7 +111,7 @@ export default function App() {
       if (data.success) {
         await loadData();
         if (manual) {
-          alert('✅ 최신 방산 뉴스(데일리방산) 및 글로벌 29개 분쟁 데이터가 성공적으로 동기화되었습니다.');
+          alert('최신 방산 뉴스(데일리방산) 및 글로벌 29개 분쟁 데이터가 성공적으로 동기화되었습니다.');
         }
       }
     } catch (err) {

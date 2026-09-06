@@ -72,7 +72,7 @@ export default function ReportPageView({ onBack }) {
   const handleCopy = () => {
     if (contentRef.current) {
       navigator.clipboard.writeText(contentRef.current.innerText);
-      alert('📋 한화 방산 미래전략실 공식 전략 보고서 전문이 클립보드에 복사되었습니다.');
+      alert('한화 방산 미래전략실 공식 전략 보고서 전문이 클립보드에 복사되었습니다.');
     }
   };
 
@@ -202,7 +202,7 @@ export default function ReportPageView({ onBack }) {
                 onClick={() => fetchReport(true)}
                 style={{ padding: '0.6rem 1.4rem', fontWeight: 700 }}
               >
-                🔄 다시 시도하기
+                다시 시도하기
               </button>
             </div>
           ) : report ? (
@@ -234,7 +234,7 @@ export default function ReportPageView({ onBack }) {
                     disabled={isLoading}
                     style={{ whiteSpace: 'nowrap', fontWeight: 700, padding: '0.35rem 0.85rem' }}
                   >
-                    🚀 최신 심층 분석 실행
+                    최신 심층 분석 실행
                   </button>
                 </div>
               )}
