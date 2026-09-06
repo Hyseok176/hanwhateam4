@@ -632,6 +632,161 @@ body {
 .badge-med { background: rgba(255, 149, 0, 0.1); color: var(--alert-amber); border: 1px solid rgba(255, 149, 0, 0.25); }
 .badge-low { background: rgba(49, 130, 246, 0.1); color: var(--radar-cyan); border: 1px solid rgba(49, 130, 246, 0.25); }
 
+.report-theaters-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  background: var(--bg-surface);
+}
+
+.report-theaters-table {
+  width: 100%;
+  min-width: 960px;
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 0.82rem;
+  table-layout: fixed;
+  background: var(--bg-surface);
+}
+
+.report-theaters-table th {
+  background: var(--bg-surface-elevated);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.report-theaters-table th.col-theater,
+.report-theaters-table td.col-theater {
+  width: 18%;
+  min-width: 160px;
+}
+
+.report-theaters-table th.col-gri,
+.report-theaters-table td.col-gri {
+  width: 12%;
+  min-width: 100px;
+  text-align: center;
+}
+
+.report-theaters-table th.col-momentum,
+.report-theaters-table td.col-momentum {
+  width: 15%;
+  min-width: 120px;
+  text-align: center;
+}
+
+.report-theaters-table th.col-solution,
+.report-theaters-table td.col-solution {
+  width: 26%;
+  min-width: 220px;
+}
+
+.report-theaters-table th.col-implication,
+.report-theaters-table td.col-implication {
+  width: 29%;
+  min-width: 240px;
+}
+
+.report-theaters-table td {
+  padding: 0.95rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  word-break: break-word;
+}
+
+.report-theaters-table tr:last-child td {
+  border-bottom: none;
+}
+
+.report-gri-tag-wrap {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.report-gri-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.report-gri-tag.tag-high {
+  background: rgba(240, 68, 82, 0.1);
+  color: var(--alert-red);
+  border: 1px solid rgba(240, 68, 82, 0.25);
+}
+.report-gri-tag.tag-med {
+  background: rgba(255, 149, 0, 0.1);
+  color: var(--alert-amber);
+  border: 1px solid rgba(255, 149, 0, 0.25);
+}
+.report-gri-tag.tag-low {
+  background: rgba(49, 130, 246, 0.1);
+  color: var(--radar-cyan);
+  border: 1px solid rgba(49, 130, 246, 0.25);
+}
+
+.report-gri-tag .gri-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+/* 전황 모멘텀 배지 (3열 겹침 방지) */
+.report-momentum-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+.report-momentum-badge.momentum-high {
+  background: rgba(240, 68, 82, 0.1);
+  border: 1px solid rgba(240, 68, 82, 0.28);
+  color: var(--alert-red);
+}
+.report-momentum-badge.momentum-normal {
+  background: rgba(49, 130, 246, 0.1);
+  border: 1px solid rgba(49, 130, 246, 0.28);
+  color: var(--radar-cyan);
+}
+
+/* 한화 추천 솔루션 태그 래퍼 (4열 겹침 방지) */
+.report-solution-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.report-solution-tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  color: var(--radar-cyan);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .dossier-section-title {
   font-size: 0.82rem;
   font-weight: 800;
@@ -1761,8 +1916,19 @@ body {
   line-height: 1.65;
 }
 
+.report-theaters-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  background: var(--bg-surface);
+}
+
 .report-theaters-table {
   width: 100%;
+  min-width: 960px;
   border-collapse: collapse;
   margin: 0;
   font-size: 0.82rem;
@@ -1770,11 +1936,37 @@ body {
   background: var(--bg-surface);
 }
 
-.report-theaters-table th:nth-child(1) { width: 18%; }
-.report-theaters-table th:nth-child(2) { width: 14%; text-align: center; }
-.report-theaters-table th:nth-child(3) { width: 14%; text-align: center; }
-.report-theaters-table th:nth-child(4) { width: 24%; }
-.report-theaters-table th:nth-child(5) { width: 30%; }
+.report-theaters-table th.col-theater,
+.report-theaters-table td.col-theater {
+  width: 18%;
+  min-width: 160px;
+}
+
+.report-theaters-table th.col-gri,
+.report-theaters-table td.col-gri {
+  width: 12%;
+  min-width: 100px;
+  text-align: center;
+}
+
+.report-theaters-table th.col-momentum,
+.report-theaters-table td.col-momentum {
+  width: 15%;
+  min-width: 120px;
+  text-align: center;
+}
+
+.report-theaters-table th.col-solution,
+.report-theaters-table td.col-solution {
+  width: 26%;
+  min-width: 220px;
+}
+
+.report-theaters-table th.col-implication,
+.report-theaters-table td.col-implication {
+  width: 29%;
+  min-width: 240px;
+}
 
 .report-theaters-table th {
   background: var(--bg-surface-elevated);
@@ -1841,6 +2033,47 @@ body {
 .report-gri-tag .gri-val {
   font-size: 0.95rem;
   font-weight: 800;
+}
+
+/* 전황 모멘텀 배지 (3열 겹침 방지) */
+.report-momentum-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+.report-momentum-badge.momentum-high {
+  background: rgba(240, 68, 82, 0.1);
+  border: 1px solid rgba(240, 68, 82, 0.28);
+  color: var(--alert-red);
+}
+.report-momentum-badge.momentum-normal {
+  background: rgba(49, 130, 246, 0.1);
+  border: 1px solid rgba(49, 130, 246, 0.28);
+  color: var(--radar-cyan);
+}
+
+/* 한화 추천 솔루션 태그 래퍼 (4열 겹침 방지) */
+.report-solution-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.report-solution-tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  color: var(--radar-cyan);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .report-pillars-grid {

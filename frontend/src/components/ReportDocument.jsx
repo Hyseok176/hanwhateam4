@@ -2,12 +2,14 @@ import React from 'react';
 import {
   Brain, ListChecks, Globe, Shield, Sparkles,
   Crosshair, Compass, AlertTriangle, Thermometer, Cpu, Clock, ExternalLink,
-  FileText, Landmark, Building2, Layers, ShieldCheck
+  FileText, Building2, ShieldCheck
 } from 'lucide-react';
 
 /**
  * AI 전략 보고서 전문(Full Document) 렌더링 컴포넌트
- * 탭 분할 없이 제1부부터 제7부까지 단일 문서 형태로 연속 출력됩니다.
+ * - 제 1 장부터 제 6 장까지 정연한 6단계 전략 위계로 구성
+ * - 제 4 장(글로벌 중점 감시 전구 종합 분석 매트릭스): 열 겹침 방지 및 너비 최적화
+ * - 제 4 부(ECA 수출금융 일반론) 완전 삭제
  */
 export default function ReportDocument({ report, contentRef }) {
   if (!report) return null;
@@ -111,11 +113,11 @@ export default function ReportDocument({ report, contentRef }) {
       )}
 
       {/* ========================================================= */}
-      {/* 제 1 부: 경영진 거시 총평 및 총괄 요약                     */}
+      {/* 제 1 장: 경영진 거시 총평 및 총괄 요약                     */}
       {/* ========================================================= */}
       <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
         <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Globe size={18} className="text-orange" /> 제 1 부: 경영진 거시 총평 및 총괄 요약 (Executive Summary)
+          <Globe size={18} className="text-orange" /> 제 1 장: 경영진 거시 총평 및 총괄 브리핑 (Executive Summary)
         </h2>
 
         {/* Macro Key Takeaway Box */}
@@ -159,12 +161,12 @@ export default function ReportDocument({ report, contentRef }) {
       </section>
 
       {/* ========================================================= */}
-      {/* 제 2 부: 3대 긴급 감시 전구 및 속보 전황                  */}
+      {/* 제 2 장: 3대 긴급 감시 전구 및 속보 전황                  */}
       {/* ========================================================= */}
       {report.executive1Pager?.urgentTheaters && (
         <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
           <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <AlertTriangle size={18} className="text-red" /> 제 2 부: 3대 긴급 감시 전구 및 속보 전황 (Top 3 Flash Triggers)
+            <AlertTriangle size={18} className="text-red" /> 제 2 장: 3대 긴급 감시 전구 및 속보 전황 (Top 3 Flashpoints)
           </h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
             실시간 데일리방산 속보 및 분쟁 지수(GRI)를 바탕으로 급격한 전황 악화가 관측된 최우선 감시 구역입니다.
@@ -212,12 +214,12 @@ export default function ReportDocument({ report, contentRef }) {
       )}
 
       {/* ========================================================= */}
-      {/* 제 3 부: 한화 방산 3사 전사 실무 과제 & 수주 파이프라인    */}
+      {/* 제 3 장: 한화 방산 3사 전사 실무 과제 & 수주 파이프라인    */}
       {/* ========================================================= */}
       {report.executive1Pager?.affiliateActionMatrix && (
         <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
           <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Building2 size={18} className="text-orange" /> 제 3 부: 한화 방산 3사 즉시 추진 과제 & 수주 파이프라인 임팩트
+            <Building2 size={18} className="text-orange" /> 제 3 장: 한화 방산 3사 즉시 추진 과제 & 수주 파이프라인 임팩트
           </h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
             지정학 리스크를 실제 수출 기회로 전환하기 위한 계열사별(에어로스페이스·시스템·오션) 전사 과제입니다.
@@ -259,66 +261,40 @@ export default function ReportDocument({ report, contentRef }) {
         </section>
       )}
 
-      {/* ========================================================= */}
-      {/* 제 4 부: 한국수출입은행·무역보험공사 수출금융(ECA) 지원책 */}
-      {/* ========================================================= */}
-      {report.executive1Pager?.exportFinancingECA && (
-        <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
-          <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Landmark size={18} className="text-cyan" /> 제 4 부: 한국수출입은행·무역보험공사 수출금융(ECA) 및 G2G 협력 전략
-          </h2>
-          <div style={{
-            background: 'rgba(0, 240, 255, 0.04)',
-            border: '1px solid rgba(0, 240, 255, 0.2)',
-            borderRadius: 'var(--radius-md)',
-            padding: '1.15rem 1.35rem'
-          }}>
-            <p style={{ fontSize: '0.84rem', color: 'var(--text-primary)', lineHeight: 1.75, margin: 0 }}>
-              {report.executive1Pager.exportFinancingECA}
-            </p>
-          </div>
-        </section>
-      )}
-
       {/* Page break marker for Print */}
       <div className="page-break" style={{ height: '1px', margin: '2rem 0', borderBottom: '2px dashed var(--border-subtle)' }} />
 
       {/* ========================================================= */}
-      {/* 제 5 부: 글로벌 중점 감시 전구 종합 현황 (5열 테이블)       */}
+      {/* 제 4 장: 글로벌 중점 감시 전구 종합 분석 매트릭스 (5열 테이블) */}
       {/* ========================================================= */}
       <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
         <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Globe size={18} /> 제 5 부: 글로벌 중점 감시 전구 종합 현황 & 소요 무기 매칭 매트릭스
+          <Globe size={18} /> 제 4 장: 글로벌 중점 감시 전구 종합 분석 매트릭스 (Matching Matrix)
         </h2>
         <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
           글로벌 29개 분쟁 데이터와 GRI 지수, 실시간 방산 뉴스를 교차 분석한 종합 매트릭스입니다.
         </p>
 
-        <div style={{
-          overflowX: 'auto',
-          WebkitOverflowScrolling: 'touch',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-subtle)',
-          boxShadow: 'var(--shadow-sm)'
-        }}>
+        {/* 가로 스크롤 및 열 너비 겹침 방지 최적화 래퍼 */}
+        <div className="report-theaters-table-wrapper">
           <table className="report-theaters-table">
             <thead>
               <tr>
-                <th>분쟁 전구</th>
-                <th>GRI 위험도</th>
-                <th>전황 모멘텀</th>
-                <th>한화 추천 솔루션</th>
-                <th>전략적 시사점</th>
+                <th className="col-theater">분쟁 전구</th>
+                <th className="col-gri">GRI 위험도</th>
+                <th className="col-momentum">전황 모멘텀</th>
+                <th className="col-solution">한화 추천 솔루션</th>
+                <th className="col-implication">전략적 시사점</th>
               </tr>
             </thead>
             <tbody>
               {report.keyTheaters?.map((t, idx) => (
                 <tr key={idx}>
-                  <td>
-                    <strong style={{ color: 'var(--text-primary)', fontSize: '0.86rem', display: 'block' }}>{t.theater}</strong>
-                    <span style={{ color: 'var(--brand-orange)', fontSize: '0.74rem', fontWeight: 600 }}>{t.region}</span>
+                  <td className="col-theater">
+                    <strong className="theater-name" style={{ color: 'var(--text-primary)', fontSize: '0.86rem', display: 'block' }}>{t.theater}</strong>
+                    <span className="theater-region" style={{ color: 'var(--brand-orange)', fontSize: '0.74rem', fontWeight: 600 }}>{t.region}</span>
                   </td>
-                  <td className="col-gri" style={{ textAlign: 'center' }}>
+                  <td className="col-gri">
                     <div className="report-gri-tag-wrap">
                       <span className={`report-gri-tag ${t.intensity === 'High' ? 'tag-high' : t.intensity === 'Medium' ? 'tag-med' : 'tag-low'}`}>
                         <span className="gri-val">{t.griScore}</span>
@@ -327,39 +303,21 @@ export default function ReportDocument({ report, contentRef }) {
                       </span>
                     </div>
                   </td>
-                  <td style={{ textAlign: 'center' }}>
-                    <span style={{
-                      display: 'inline-block',
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      padding: '3px 8px',
-                      borderRadius: 'var(--radius-pill)',
-                      background: t.intensity === 'High' ? 'rgba(255, 68, 68, 0.08)' : 'rgba(0, 240, 255, 0.08)',
-                      border: `1px solid ${t.intensity === 'High' ? 'rgba(255, 68, 68, 0.25)' : 'rgba(0, 240, 255, 0.25)'}`,
-                      color: t.intensity === 'High' ? 'var(--alert-red)' : 'var(--radar-cyan)',
-                      whiteSpace: 'nowrap'
-                    }}>
+                  <td className="col-momentum">
+                    <span className={`report-momentum-badge ${t.intensity === 'High' ? 'momentum-high' : 'momentum-normal'}`}>
                       {t.riskMomentum || (t.intensity === 'High' ? '전황 격화' : '지속 대치')}
                     </span>
                   </td>
-                  <td>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                  <td className="col-solution">
+                    <div className="report-solution-tags-wrap">
                       {(Array.isArray(t.matchedHanwhaSolution) ? t.matchedHanwhaSolution : [t.matchedHanwhaSolution]).map((sol, sIdx) => (
-                        <span key={sIdx} style={{
-                          background: 'rgba(0, 240, 255, 0.06)',
-                          border: '1px solid rgba(0, 240, 255, 0.2)',
-                          color: 'var(--radar-cyan)',
-                          padding: '2px 6px',
-                          borderRadius: 'var(--radius-xs)',
-                          fontSize: '0.72rem',
-                          fontWeight: 600
-                        }}>
+                        <span key={sIdx} className="report-solution-tag">
                           {sol}
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', lineHeight: 1.5 }}>
+                  <td className="col-implication">
                     {t.strategicImplication}
                   </td>
                 </tr>
@@ -370,11 +328,11 @@ export default function ReportDocument({ report, contentRef }) {
       </section>
 
       {/* ========================================================= */}
-      {/* 제 6 부: 전구별 심층 안보 인텔리전스, 전황 타임라인 & 가이드 */}
+      {/* 제 5 장: 전구별 심층 안보 인텔리전스, 전황 타임라인 & 가이드 */}
       {/* ========================================================= */}
       <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
         <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Crosshair size={18} className="text-orange" /> 제 6 부: 전구별 심층 안보 인텔리전스, 전황 타임라인 & 무기체계 스펙 가이드
+          <Crosshair size={18} className="text-orange" /> 제 5 장: 전구별 심층 안보 인텔리전스, 전황 타임라인 & 무기체계 스펙 가이드
         </h2>
         <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
           각 전구의 실제 뉴스 타임라인, 작전 교리, 환경 규격 및 야전 운용 가이드를 종합 수록하였습니다.
@@ -633,11 +591,11 @@ export default function ReportDocument({ report, contentRef }) {
       </section>
 
       {/* ========================================================= */}
-      {/* 제 7 부: 한화 방산 부문 4대 전략적 실행 제언               */}
+      {/* 제 6 장: 한화 방산 부문 4대 전략적 실행 제언               */}
       {/* ========================================================= */}
       <section className="report-doc-section" style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.75rem', marginBottom: '2.5rem' }}>
         <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Shield size={18} className="text-orange" /> 제 7 부: 한화 방산 부문 4대 전략적 실행 제언
+          <Shield size={18} className="text-orange" /> 제 6 장: 한화 방산 부문 4대 전략적 실행 제언
         </h2>
         <div className="report-pillars-grid">
           {report.strategicRecommendations?.map((r, idx) => (
