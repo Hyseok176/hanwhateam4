@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  ArrowLeft, Copy, Printer, RefreshCw, Brain,
-  Crosshair, ShieldCheck, ExternalLink, Cpu
+  ArrowLeft, Copy, Printer, RefreshCw,
+  Crosshair, ShieldCheck, ExternalLink
 } from 'lucide-react';
 import ReportDocument from './ReportDocument';
 
@@ -121,27 +121,27 @@ export default function ReportPageView({ onBack }) {
         </div>
 
         <div className="report-page-topbar-right">
-          {/* OpenAI GPT-5.4 전용 엔진 뱃지 */}
+          {/* 보안 등급 뱃지 */}
           <div className="engine-badge-pill" style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            background: 'rgba(255, 255, 255, 0.06)',
-            border: '1px solid var(--border-medium)',
+            background: 'rgba(237, 109, 0, 0.08)',
+            border: '1px solid rgba(237, 109, 0, 0.28)',
             padding: '4px 12px',
             borderRadius: 'var(--radius-pill)',
             fontSize: '0.76rem'
           }}>
-            <Cpu size={13} className="text-cyan" />
-            <span style={{ color: 'var(--text-muted)' }}>엔진:</span>
-            <strong style={{ color: 'var(--brand-orange)' }}>OpenAI GPT-5.4</strong>
+            <ShieldCheck size={13} className="text-orange" />
+            <span style={{ color: 'var(--text-muted)' }}>보안구분:</span>
+            <strong style={{ color: 'var(--brand-orange)' }}>대외비 (CONFIDENTIAL)</strong>
           </div>
 
           <button
             className="btn btn-sm btn-primary"
             onClick={() => fetchReport(true)}
             disabled={isLoading}
-            title="최신 방산 뉴스 및 분쟁 데이터를 바탕으로 보고서를 새로 생성합니다 (OpenAI 토큰 소모)"
+            title="최신 방산 뉴스 및 분쟁 데이터를 바탕으로 보고서를 새로 분석합니다"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
           >
             <RefreshCw size={14} className={isLoading ? 'fa-spin' : ''} />
@@ -176,10 +176,10 @@ export default function ReportPageView({ onBack }) {
           {isLoading ? (
             <div className="report-page-loading-card">
               <div className="fa-spin" style={{ display: 'inline-block', marginBottom: '1.25rem', color: 'var(--brand-orange)' }}>
-                <Brain size={52} />
+                <Crosshair size={46} />
               </div>
               <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: 800, marginBottom: '0.5rem' }}>
-                OpenAI GPT-5.4 전략 인텔리전스 엔진으로 보고서 전문을 생성하고 있습니다...
+                전략 인텔리전스 시스템으로 보고서 전문을 분석·편철하고 있습니다...
               </h3>
               <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.6 }}>
                 글로벌 29개 분쟁 전구와 실시간 데일리방산 뉴스 타임라인, 한화 3사(에어로스페이스·시스템·오션) 무기체계 스펙을 종합 매칭 중입니다.

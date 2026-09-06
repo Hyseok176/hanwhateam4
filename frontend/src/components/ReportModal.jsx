@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import {
-  Copy, Printer, X, Brain, ShieldCheck, RefreshCw, Cpu
+  Copy, Printer, X, Crosshair, ShieldCheck, RefreshCw
 } from 'lucide-react';
 import ReportDocument from './ReportDocument';
 
@@ -39,7 +39,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
               className="btn btn-sm btn-primary"
               onClick={() => onRegenerate && onRegenerate(activeModelName)}
               disabled={isLoading}
-              title="최신 기사 및 분쟁 데이터를 바탕으로 보고서를 새로 생성합니다 (OpenAI 토큰 소모)"
+              title="최신 기사 및 분쟁 데이터를 바탕으로 보고서를 새로 분석합니다"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
             >
               <RefreshCw size={13} className={isLoading ? 'fa-spin' : ''} />
@@ -61,10 +61,10 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
           {isLoading ? (
             <div className="loading-state" style={{ textAlign: 'center', padding: '3.5rem 1.5rem' }}>
               <div className="fa-spin" style={{ display: 'inline-block', marginBottom: '1rem', color: 'var(--brand-orange)' }}>
-                <Brain size={42} />
+                <Crosshair size={36} />
               </div>
               <p style={{ fontSize: '0.96rem', color: 'var(--text-primary)', fontWeight: 700 }}>
-                전략 인텔리전스 엔진으로 실시간 안보 데이터 및 방산 전략 보고서를 생성하고 있습니다...
+                전략 인텔리전스 시스템으로 실시간 안보 데이터 및 방산 전략 보고서를 편철하고 있습니다...
               </p>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
                 데일리방산 뉴스 타임라인과 한화 3사 주요 무기체계 스펙을 종합 분석 중입니다.

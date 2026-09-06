@@ -189,7 +189,7 @@ export default function App() {
     localStorage.setItem('ai_api_key', newSettings.apiKey);
     localStorage.setItem('ai_model', newSettings.model || 'gpt-5.4');
     localStorage.setItem('ai_sync_interval', String(newSettings.syncInterval));
-    alert('⚙️ 설정이 저장되었습니다.');
+    alert('시스템 설정이 정상적으로 저장되었습니다.');
   };
 
   // 매트릭스에서 선택 후 지도 탭으로 전환

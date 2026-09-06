@@ -38,15 +38,15 @@ export default function Header({ status, isSyncing, onSync, onOpenReport, onOpen
 
       {/* Actions */}
       <div className="header-actions">
-        <button className="btn btn-outline" onClick={onOpenSettings} title="AI / LLM 설정">
-          <Settings size={15} /> <span>AI 설정</span>
+        <button className="btn btn-outline" onClick={onOpenSettings} title="분석 엔진 및 시스템 설정">
+          <Settings size={15} /> <span>시스템 설정</span>
         </button>
         <button className="btn btn-outline" onClick={onSync} disabled={isSyncing} title="최신 뉴스 및 분쟁 데이터 수집">
           <RefreshCw size={15} className={isSyncing ? 'fa-spin' : ''} />
           <span>{isSyncing ? '동기화 중...' : '실시간 동기화'}</span>
         </button>
-        <button className="btn btn-primary" onClick={() => onOpenReport && onOpenReport()} title="경영진 보고용 AI 브리핑 리포트">
-          <FileText size={15} /> <span>AI 전략 보고서</span>
+        <button className="btn btn-primary" onClick={() => onOpenReport && onOpenReport()} title="경영진 보고용 전략 인텔리전스 리포트 전문 열람">
+          <FileText size={15} /> <span>전략 보고서 전문</span>
         </button>
       </div>
     </header>

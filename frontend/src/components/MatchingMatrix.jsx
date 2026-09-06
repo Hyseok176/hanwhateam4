@@ -34,7 +34,7 @@ export default function MatchingMatrix({ matching, onSelectConflictAndNavigate }
             <Crosshair className="text-orange" size={22} /> 글로벌 분쟁별 한화 방산 소요 무기 매칭 매트릭스
           </h2>
           <p className="section-desc">
-            전 세계 29개 분쟁지의 전장 환경·위협 요인과 한화 방산 핵심 포트폴리오를 AI 상관관계 매칭한 결과입니다.
+            전 세계 29개 분쟁지의 전장 환경·위협 요인과 한화 방산 핵심 포트폴리오를 전략 인텔리전스 상관관계로 정밀 매칭한 결과입니다.
           </p>
         </div>
 

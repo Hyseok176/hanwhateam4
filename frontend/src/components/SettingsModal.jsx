@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, X, Check, AlertCircle, Loader2, Sparkles } from 'lucide-react';
+import { Settings, X, Check, AlertCircle, Loader2, Shield } from 'lucide-react';
 
 export default function SettingsModal({ isOpen, onClose, settings, onSaveSettings }) {
   const [provider, setProvider] = useState('openai');
@@ -22,7 +22,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
 
   const handleTestConnection = async () => {
     if (!apiKey.trim()) {
-      setTestResult({ success: false, message: 'OpenAI API 키를 먼저 입력해 주세요.' });
+      setTestResult({ success: false, message: 'API 인증 키를 먼저 입력해 주세요.' });
       return;
     }
     setIsTesting(true);
@@ -31,12 +31,12 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
       const res = await fetch('/api/test-llm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apiKey: apiKey.trim(), model: 'gpt-5.4' })
+        body: JSON.stringify({ provider, apiKey: apiKey.trim() })
       });
       const data = await res.json();
       setTestResult(data);
     } catch (err) {
-      setTestResult({ success: false, message: `통신 오류: ${err.message}` });
+      setTestResult({ success: false, message: `연결 테스트 실패: ${err.message}` });
     } finally {
       setIsTesting(false);
     }
@@ -57,7 +57,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
       <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '540px' }}>
         <div className="modal-header">
           <h2 className="modal-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Settings className="text-orange" size={20} /> AI & 분석 엔진 설정
+            <Settings className="text-orange" size={20} /> 분석 엔진 및 시스템 설정
           </h2>
           <button className="modal-close-btn" onClick={onClose}>
             <X size={20} />
@@ -79,11 +79,11 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
           }}>
             <div>
               <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={14} className="text-orange" />
-                <span>AI 전략 분석 엔진</span>
+                <Shield size={14} className="text-orange" />
+                <span>전략 분석 엔진 모델</span>
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '3px' }}>
-                OpenAI GPT-5.4 단일 전용 전략 모델로 모든 보고서와 분석이 수행됩니다.
+                전용 전략 분석 모델을 통해 심층 인텔리전스 보고서를 도출합니다.
               </div>
             </div>
             <span style={{
@@ -102,7 +102,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
 
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <label className="form-label">OpenAI API Key</label>
+              <label className="form-label">엔진 인증 키 (API Key)</label>
               <button
                 type="button"
                 className="btn btn-sm btn-outline"
@@ -110,8 +110,8 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
                 disabled={isTesting || !apiKey.trim()}
                 style={{ fontSize: '0.72rem', padding: '0.2rem 0.55rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
               >
-                {isTesting ? <Loader2 size={12} className="fa-spin" /> : <Sparkles size={12} className="text-orange" />}
-                {isTesting ? '테스트 중...' : 'API 연결 & 토큰 테스트'}
+                {isTesting ? <Loader2 size={12} className="fa-spin" /> : <Check size={12} className="text-orange" />}
+                {isTesting ? '테스트 중...' : '연결 테스트'}
               </button>
             </div>
                 <input

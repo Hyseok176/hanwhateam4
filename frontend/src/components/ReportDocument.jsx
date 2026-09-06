@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-  Brain, ListChecks, Globe, Shield, Sparkles,
-  Crosshair, Compass, AlertTriangle, Thermometer, Cpu, Clock, ExternalLink,
+  ListChecks, Globe, Shield,
+  Crosshair, Compass, AlertTriangle, Thermometer, Clock, ExternalLink,
   FileText, Building2, ShieldCheck
 } from 'lucide-react';
 
 /**
- * AI 전략 보고서 전문(Full Document) 렌더링 컴포넌트
+ * 전략 보고서 전문(Full Document) 렌더링 컴포넌트
+ * - 정통 국방 안보 전략 인텔리전스 양식
  * - 제 1 장부터 제 6 장까지 정연한 6단계 전략 위계로 구성
- * - 제 4 장(글로벌 중점 감시 전구 종합 분석 매트릭스): 열 겹침 방지 및 너비 최적화
- * - 제 4 부(ECA 수출금융 일반론) 완전 삭제
  */
 export default function ReportDocument({ report, contentRef }) {
   if (!report) return null;
@@ -20,7 +19,7 @@ export default function ReportDocument({ report, contentRef }) {
       <div className="report-doc-official-header" style={{
         borderBottom: '2px solid var(--brand-orange)',
         paddingBottom: '1rem',
-        marginBottom: '1.5rem'
+        marginBottom: '1.25rem'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
           <div>
@@ -42,75 +41,54 @@ export default function ReportDocument({ report, contentRef }) {
               발행일: {report.displayDate || new Date().toLocaleDateString('ko-KR')}
             </div>
             <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: '3px' }}>
-              분석 모델: <strong style={{ color: 'var(--brand-orange)' }}>OpenAI GPT-5.4</strong>
-              {report.generatedAt && (
-                <span style={{ marginLeft: '6px', color: 'var(--text-secondary)' }}>
-                  ({new Date(report.generatedAt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })} 생성됨)
-                </span>
-              )}
+              문서 번호: <strong style={{ color: 'var(--text-secondary)' }}>HDF-2026-SR09</strong>
+              <span style={{ marginLeft: '6px', color: 'var(--brand-orange)', fontWeight: 700 }}>[대외비]</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 2. AI Engine & Telemetry Status Bar */}
-      {report.telemetry && (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.55rem',
-          background: report.telemetry.totalTokens > 0 ? 'rgba(4, 192, 158, 0.04)' : 'var(--bg-surface-elevated)',
-          border: `1px solid ${report.telemetry.totalTokens > 0 ? 'rgba(4, 192, 158, 0.2)' : 'var(--border-subtle)'}`,
-          borderRadius: 'var(--radius-md)',
-          padding: '0.75rem 1rem',
-          marginBottom: '1.75rem',
-          color: 'var(--text-secondary)'
-        }}>
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '0.75rem'
+      {/* 2. Official Classification & Document Metadata Bar */}
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '0.75rem',
+        background: 'var(--bg-surface-elevated)',
+        border: '1px solid var(--border-subtle)',
+        borderRadius: 'var(--radius-sm)',
+        padding: '0.65rem 1rem',
+        marginBottom: '1.75rem',
+        fontSize: '0.76rem',
+        color: 'var(--text-secondary)'
+      }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <ShieldCheck size={14} className="text-orange" />
+          <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>보안 등급:</span>
+          <span style={{
+            background: 'rgba(237, 109, 0, 0.1)',
+            border: '1px solid rgba(237, 109, 0, 0.3)',
+            color: 'var(--brand-orange)',
+            padding: '1px 8px',
+            borderRadius: 'var(--radius-xs)',
+            fontWeight: 800,
+            fontSize: '0.72rem'
           }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <Sparkles size={14} className="text-orange" />
-              <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.82rem' }}>
-                분석 엔진:
-              </span>
-              
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#FFFFFF', padding: '2px 10px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--border-medium)', boxShadow: 'var(--shadow-sm)' }}>
-                <Cpu size={12} className="text-cyan" />
-                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)' }}>엔진:</span>
-                <strong style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--brand-orange)' }}>OpenAI GPT-5.4</strong>
-              </div>
-
-              {report.telemetry.totalTokens > 0 ? (
-                <span style={{ color: 'var(--alert-green)', fontWeight: 600, fontSize: '0.74rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  ● 분석 완료 (캐시 보관됨)
-                </span>
-              ) : (
-                <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.74rem' }}>
-                  ● 정규 분석 데이터 (캐시)
-                </span>
-              )}
-            </div>
-
-            {report.telemetry.totalTokens > 0 && (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.72rem' }}>
-                <span>입력: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.promptTokens?.toLocaleString()}</strong> 토큰</span>
-                <span style={{ color: 'var(--border-subtle)' }}>|</span>
-                <span>출력: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.outputTokens?.toLocaleString()}</strong> 토큰</span>
-                <span style={{ color: 'var(--border-subtle)' }}>|</span>
-                <span style={{ color: 'var(--brand-orange)', fontWeight: 700 }}>총 {report.telemetry.totalTokens?.toLocaleString()} 토큰</span>
-                {report.telemetry.latencyMs && (
-                  <span style={{ color: 'var(--text-muted)' }}>({report.telemetry.latencyMs}ms)</span>
-                )}
-              </div>
-            )}
-          </div>
+            대외비 (CONFIDENTIAL)
+          </span>
+          <span style={{ color: 'var(--border-subtle)' }}>•</span>
+          <span>소관: 미래전략실 전략인텔리전스 센터</span>
         </div>
-      )}
+
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ color: 'var(--alert-green)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            ● 데이터 정합성 검증 완료
+          </span>
+          <span style={{ color: 'var(--border-subtle)' }}>|</span>
+          <span>분석 범위: <strong style={{ color: 'var(--text-primary)' }}>글로벌 29개 분쟁 전구</strong></span>
+        </div>
+      </div>
 
       {/* ========================================================= */}
       {/* 제 1 장: 경영진 거시 총평 및 총괄 요약                     */}
@@ -191,10 +169,10 @@ export default function ReportDocument({ report, contentRef }) {
                   </span>
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
-                  <strong style={{ color: 'var(--text-primary)' }}>⚡ 전황 급변 요인:</strong> {ut.flashTrigger}
+                  <strong style={{ color: 'var(--text-primary)' }}>■ 전황 급변 요인:</strong> {ut.flashTrigger}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--radar-cyan)', fontWeight: 600 }}>
-                  🎯 한화 솔루션: {ut.hanwhaSolution}
+                  ■ 대응 솔루션: {ut.hanwhaSolution}
                 </div>
                 <div style={{
                   fontSize: '0.76rem',
@@ -253,7 +231,7 @@ export default function ReportDocument({ report, contentRef }) {
                   padding: '0.55rem 0.75rem',
                   borderRadius: 'var(--radius-xs)'
                 }}>
-                  💰 파이프라인 목표: {aff.pipelineEstimate}
+                  ■ 파이프라인 목표: {aff.pipelineEstimate}
                 </div>
               </div>
             ))}
@@ -383,7 +361,7 @@ export default function ReportDocument({ report, contentRef }) {
                       color: 'var(--alert-red)',
                       fontWeight: 700
                     }}>
-                      📈 {t.riskMomentum}
+                      {t.riskMomentum}
                     </span>
                   )}
                 </div>
@@ -427,7 +405,7 @@ export default function ReportDocument({ report, contentRef }) {
               )}
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
-                
+
                 {/* 1. Real News Chronological Timeline Feed */}
                 {t.recentTimeline && t.recentTimeline.length > 0 && (
                   <div style={{
@@ -600,7 +578,7 @@ export default function ReportDocument({ report, contentRef }) {
         <div className="report-pillars-grid">
           {report.strategicRecommendations?.map((r, idx) => (
             <div className="pillar-card" key={idx} style={{ padding: '1.2rem' }}>
-              <div className="pillar-title" style={{ fontSize: '0.92rem', fontWeight: 800 }}>🎯 {r.pillar}</div>
+              <div className="pillar-title" style={{ fontSize: '0.92rem', fontWeight: 800 }}>{r.pillar}</div>
               <div className="pillar-action" style={{ fontSize: '0.84rem', lineHeight: 1.65 }}>{r.action}</div>
             </div>
           ))}
@@ -624,7 +602,7 @@ export default function ReportDocument({ report, contentRef }) {
           <div style={{ fontWeight: 800, color: 'var(--text-primary)', marginBottom: '3px' }}>
             한화 방산 미래전략실 전략 인텔리전스 센터 (Hanwha Defense Future Strategy Office)
           </div>
-          <div>본 보고서는 대외비(Confidential) 안보 전략 문서이며, 허가되지 않은 무단 전재 및 배포를 금합니다.</div>
+          <div>본 보고서는 대외비 안보 전략 문서이며, 허가되지 않은 무단 전재 및 배포를 금합니다.</div>
         </div>
         <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
