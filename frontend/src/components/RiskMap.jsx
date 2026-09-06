@@ -28,7 +28,21 @@ const GOOGLE_TILE_LAYERS = {
   }
 };
 
-export default function RiskMap({ conflicts, selectedConflict, onSelectConflict }) {
+// 분쟁지 좌표 추출 순수 헬퍼 함수
+const getConflictCoordinates = (c) => {
+  if (!c) return [25.0, 35.0];
+  if (c.locations && c.locations.length > 0 && typeof c.locations[0].lat === 'number' && typeof c.locations[0].lon === 'number') {
+    return [c.locations[0].lat, c.locations[0].lon];
+  }
+  if (c.regionKo === '동유럽') return [50.45, 30.52];
+  if (c.regionKo === '중동') return [31.76, 35.21];
+  if (c.regionKo === '동아시아') return [24.0, 121.0];
+  if (c.regionKo === '아프리카') return [15.5, 32.5];
+  if (c.regionKo === '남미') return [4.7, -74.0];
+  return [25.0, 35.0];
+};
+
+export default function RiskMap({ conflicts = [], selectedConflict, onSelectConflict }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersLayerRef = useRef(null);
@@ -42,29 +56,35 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    const map = L.map(mapRef.current, {
-      center: [25.0, 35.0],
-      zoom: 3,
-      minZoom: 2,
-      maxZoom: 18,
-      zoomControl: false,
-      attributionControl: false
-    });
+    try {
+      const map = L.map(mapRef.current, {
+        center: [25.0, 35.0],
+        zoom: 3,
+        minZoom: 2,
+        maxZoom: 18,
+        zoomControl: false,
+        attributionControl: false
+      });
 
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    tileLayerRef.current = L.tileLayer(GOOGLE_TILE_LAYERS.terrain.url, {
-      subdomains: GOOGLE_TILE_LAYERS.terrain.subdomains,
-      maxZoom: 20
-    }).addTo(map);
+      tileLayerRef.current = L.tileLayer(GOOGLE_TILE_LAYERS.terrain.url, {
+        subdomains: GOOGLE_TILE_LAYERS.terrain.subdomains,
+        maxZoom: 20
+      }).addTo(map);
 
-    markersLayerRef.current = L.layerGroup().addTo(map);
-    subLocationsLayerRef.current = L.layerGroup().addTo(map);
-    mapInstanceRef.current = map;
+      markersLayerRef.current = L.layerGroup().addTo(map);
+      subLocationsLayerRef.current = L.layerGroup().addTo(map);
+      mapInstanceRef.current = map;
+    } catch (err) {
+      console.error('지도 초기화 실패:', err);
+    }
 
     return () => {
-      map.remove();
-      mapInstanceRef.current = null;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
     };
   }, []);
 
@@ -72,22 +92,25 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
   const handleStyleChange = (styleKey) => {
     if (styleKey === mapStyle || !mapInstanceRef.current) return;
     setMapStyle(styleKey);
-    if (tileLayerRef.current) {
-      mapInstanceRef.current.removeLayer(tileLayerRef.current);
+    try {
+      if (tileLayerRef.current) {
+        mapInstanceRef.current.removeLayer(tileLayerRef.current);
+      }
+      const targetLayer = GOOGLE_TILE_LAYERS[styleKey];
+      tileLayerRef.current = L.tileLayer(targetLayer.url, {
+        subdomains: targetLayer.subdomains,
+        maxZoom: 20
+      }).addTo(mapInstanceRef.current);
+    } catch (e) {
+      console.warn('스타일 레이어 전환 실패:', e);
     }
-    const targetLayer = GOOGLE_TILE_LAYERS[styleKey];
-    tileLayerRef.current = L.tileLayer(targetLayer.url, {
-      subdomains: targetLayer.subdomains,
-      maxZoom: 20
-    }).addTo(mapInstanceRef.current);
   };
 
-  // 마커 렌더링
+  // 마커 렌더링 (순수 마커 표시만 수행, 부모 상태를 변경하지 않아 무한 루프 방지)
   useEffect(() => {
-    if (!mapInstanceRef.current || !markersLayerRef.current || !conflicts.length) return;
+    if (!mapInstanceRef.current || !markersLayerRef.current || !conflicts || !conflicts.length) return;
 
     markersLayerRef.current.clearLayers();
-    subLocationsLayerRef.current.clearLayers();
 
     const filtered = filterIntensity === 'ALL'
       ? conflicts
@@ -97,24 +120,9 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
           }
           return c.intensity === filterIntensity;
         });
-    // 분쟁지 좌표 추출 헬퍼
-    const getCoords = (c) => {
-      if (!c) return [25.0, 35.0];
-      if (c.locations && c.locations.length > 0 && c.locations[0].lat && c.locations[0].lon) {
-        return [c.locations[0].lat, c.locations[0].lon];
-      }
-      if (c.regionKo === '동유럽') return [50.45, 30.52];
-      if (c.regionKo === '중동') return [31.76, 35.21];
-      if (c.regionKo === '동아시아') return [24.0, 121.0];
-      if (c.regionKo === '아프리카') return [15.5, 32.5];
-      if (c.regionKo === '남미') return [4.7, -74.0];
-      return [25.0, 35.0];
-    };
 
     filtered.forEach(conflict => {
-      const [lat, lon] = getCoords(conflict);
-      markerCoords.push([lat, lon]);
-
+      const [lat, lon] = getConflictCoordinates(conflict);
       const isHigh = conflict.intensity === 'High';
       const isMed = conflict.intensity === 'Medium';
       const colorHex = isHigh ? '#EF4444' : isMed ? '#F59E0B' : '#10B981';
@@ -143,65 +151,81 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
       `, { direction: 'top', offset: [0, -size / 2] });
 
       marker.on('click', () => {
-        mapInstanceRef.current.flyTo([lat, lon], 6, { duration: 1.2 });
-        onSelectConflict(conflict);
+        try {
+          mapInstanceRef.current.flyTo([lat, lon], 6, { duration: 1.2 });
+        } catch (e) {}
+        if (onSelectConflict) onSelectConflict(conflict);
         renderSubLocations(conflict);
       });
 
       markersLayerRef.current.addLayer(marker);
     });
-
-    // 필터 선택 시 해당 위험도 지점들로 지도 스마트 확대 이동 (High, Medium, Low 모두 완벽 지원)
-    if (filtered.length > 0 && mapInstanceRef.current) {
-      if (filterIntensity === 'High') {
-        // 고위험 분쟁지: 동유럽·중동 핵심 전장 지점들로 줌인 확대
-        if (markerCoords.length > 1) {
-          try {
-            const bounds = L.latLngBounds(markerCoords);
-            mapInstanceRef.current.fitBounds(bounds, { padding: [60, 60], maxZoom: 5, duration: 1.2 });
-          } catch (e) {
-            mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
-          }
-        } else {
-          mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
-        }
-        if (!selectedConflict || selectedConflict.intensity !== 'High') {
-          onSelectConflict(filtered[0]);
-          renderSubLocations(filtered[0]);
-        }
-      } else if (filterIntensity === 'Medium') {
-        // 중위험 분쟁지: 중위험 전구 지점들로 줌인 확대
-        if (markerCoords.length > 1) {
-          try {
-            const bounds = L.latLngBounds(markerCoords);
-            mapInstanceRef.current.fitBounds(bounds, { padding: [60, 60], maxZoom: 5, duration: 1.2 });
-          } catch (e) {
-            mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
-          }
-        } else {
-          mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
-        }
-        if (!selectedConflict || selectedConflict.intensity !== 'Medium') {
-          onSelectConflict(filtered[0]);
-          renderSubLocations(filtered[0]);
-        }
-      } else if (filterIntensity === 'Low') {
-        // 저위험 분쟁지: 동아시아/해협 지점들 중심부로 줌인 확대
-        mapInstanceRef.current.flyTo([19.5, 118.0], 5, { duration: 1.2 });
-        if (!selectedConflict || (selectedConflict.intensity !== 'Low' && selectedConflict.intensity !== 'Elevated')) {
-          onSelectConflict(filtered[0]);
-          renderSubLocations(filtered[0]);
-        }
-      } else if (filterIntensity === 'ALL') {
-        mapInstanceRef.current.flyTo([25.0, 35.0], 3, { duration: 1.0 });
-      }
-    }
   }, [conflicts, filterIntensity]);
+
+  // 필터 버튼 클릭 핸들러 (사용자가 버튼을 눌렀을 때만 안전하게 확대/이동 및 분쟁 선택)
+  const handleFilterClick = (newIntensity) => {
+    setFilterIntensity(newIntensity);
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const filtered = newIntensity === 'ALL'
+      ? conflicts
+      : conflicts.filter(c => {
+          if (newIntensity === 'Low') return c.intensity === 'Low' || c.intensity === 'Elevated';
+          return c.intensity === newIntensity;
+        });
+
+    if (!filtered || filtered.length === 0) return;
+
+    try {
+      if (newIntensity === 'High') {
+        // 고위험: 동유럽·중동 핵심 고위험 전장 구역으로 줌인 확대
+        const coordsList = filtered.map(c => getConflictCoordinates(c)).filter(Boolean);
+        if (coordsList.length > 1) {
+          const bounds = L.latLngBounds(coordsList);
+          if (bounds.isValid()) {
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 5 });
+          } else {
+            map.flyTo(coordsList[0], 5, { duration: 1.0 });
+          }
+        } else {
+          map.flyTo(coordsList[0], 5, { duration: 1.0 });
+        }
+        if (onSelectConflict) onSelectConflict(filtered[0]);
+        renderSubLocations(filtered[0]);
+      } else if (newIntensity === 'Medium') {
+        // 중위험: 중위험 전구 지점들로 줌인 확대
+        const coordsList = filtered.map(c => getConflictCoordinates(c)).filter(Boolean);
+        if (coordsList.length > 1) {
+          const bounds = L.latLngBounds(coordsList);
+          if (bounds.isValid()) {
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 5 });
+          } else {
+            map.flyTo(coordsList[0], 5, { duration: 1.0 });
+          }
+        } else {
+          map.flyTo(coordsList[0], 5, { duration: 1.0 });
+        }
+        if (onSelectConflict) onSelectConflict(filtered[0]);
+        renderSubLocations(filtered[0]);
+      } else if (newIntensity === 'Low') {
+        // 저위험: 동아시아/해협 지점들 중심부로 줌인 확대
+        map.flyTo([19.5, 118.0], 5, { duration: 1.0 });
+        if (onSelectConflict) onSelectConflict(filtered[0]);
+        renderSubLocations(filtered[0]);
+      } else if (newIntensity === 'ALL') {
+        map.flyTo([25.0, 35.0], 3, { duration: 1.0 });
+      }
+    } catch (err) {
+      console.warn('필터 지도 줌인 예외 방어:', err);
+    }
+  };
 
   // 선택된 분쟁이 변경될 때 하위 거점 렌더링
   const renderSubLocations = (conflict) => {
-    if (!subLocationsLayerRef.current || !conflict.locations || conflict.locations.length <= 1) return;
+    if (!subLocationsLayerRef.current) return;
     subLocationsLayerRef.current.clearLayers();
+    if (!conflict || !conflict.locations || conflict.locations.length <= 1) return;
 
     conflict.locations.forEach(loc => {
       if (!loc.lat || !loc.lon) return;
@@ -226,29 +250,21 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
     });
   };
 
-  // 선택된 분쟁이 변경될 때 해당 지점으로 지도 줌인 & 하위 전선 거점 렌더링
+  // 선택된 분쟁이 외부(매트릭스 등)에서 변경되었을 때 안전하게 줌인 및 하위 거점 렌더링
   useEffect(() => {
-    if (!selectedConflict || !mapInstanceRef.current) return;
+    if (!selectedConflict) return;
     renderSubLocations(selectedConflict);
 
-    let lat = 25.0, lon = 35.0;
-    if (selectedConflict.locations && selectedConflict.locations.length > 0 && selectedConflict.locations[0].lat) {
-      lat = selectedConflict.locations[0].lat;
-      lon = selectedConflict.locations[0].lon;
-    } else {
-      if (selectedConflict.regionKo === '동유럽') { lat = 50.45; lon = 30.52; }
-      else if (selectedConflict.regionKo === '중동') { lat = 31.76; lon = 35.21; }
-      else if (selectedConflict.regionKo === '동아시아') { lat = 24.0; lon = 121.0; }
-      else if (selectedConflict.regionKo === '아프리카') { lat = 15.5; lon = 32.5; }
-      else if (selectedConflict.regionKo === '남미') { lat = 4.7; lon = -74.0; }
-    }
-
-    const currentCenter = mapInstanceRef.current.getCenter();
-    const currentZoom = mapInstanceRef.current.getZoom();
-    const dist = Math.hypot(currentCenter.lat - lat, currentCenter.lng - lon);
-
-    if (dist > 2 || currentZoom < 5) {
-      mapInstanceRef.current.flyTo([lat, lon], Math.max(currentZoom, 5.5), { duration: 1.2 });
+    try {
+      const map = mapInstanceRef.current;
+      if (map && typeof map.flyTo === 'function') {
+        const coords = getConflictCoordinates(selectedConflict);
+        if (coords && coords[0] && coords[1]) {
+          map.flyTo(coords, 5.5, { duration: 1.2 });
+        }
+      }
+    } catch (e) {
+      console.warn('selectedConflict 지도 동기화 안전 스킵:', e);
     }
   }, [selectedConflict?.slug || selectedConflict?.id || selectedConflict?.titleKo]);
 
@@ -303,25 +319,25 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
               <span className="overlay-label">위험도:</span>
               <button
                 className={`filter-chip ${filterIntensity === 'ALL' ? 'active' : ''}`}
-                onClick={() => setFilterIntensity('ALL')}
+                onClick={() => handleFilterClick('ALL')}
               >
                 전체 ({conflicts.length})
               </button>
               <button
                 className={`filter-chip chip-high ${filterIntensity === 'High' ? 'active' : ''}`}
-                onClick={() => setFilterIntensity('High')}
+                onClick={() => handleFilterClick('High')}
               >
                 고위험 (High) ({highCount})
               </button>
               <button
                 className={`filter-chip chip-med ${filterIntensity === 'Medium' ? 'active' : ''}`}
-                onClick={() => setFilterIntensity('Medium')}
+                onClick={() => handleFilterClick('Medium')}
               >
                 중위험 (Med) ({medCount})
               </button>
               <button
                 className={`filter-chip chip-low ${filterIntensity === 'Low' ? 'active' : ''}`}
-                onClick={() => setFilterIntensity('Low')}
+                onClick={() => handleFilterClick('Low')}
               >
                 저위험 (Low) ({lowCount})
               </button>
