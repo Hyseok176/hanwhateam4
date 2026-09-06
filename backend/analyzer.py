@@ -357,7 +357,7 @@ def normalize_model_name(model: str) -> str:
     m = model.strip()
     return m
 
-def build_openai_payload(model: str, messages: list, is_json: bool = True, max_tokens: int = 4000):
+def build_openai_payload(model: str, messages: list, is_json: bool = True, max_tokens: int = 6000):
     payload = {
         'model': model,
         'messages': messages,
@@ -368,9 +368,26 @@ def build_openai_payload(model: str, messages: list, is_json: bool = True, max_t
     # 환각 방지: 온도를 0.2로 낮춰 사실 기반 정밀 추론에 집중
     payload['temperature'] = 0.2
 
-    # gpt-5.4 및 최신 모델은 max_completion_tokens 권장
+    # gpt-5.4 및 최신 모델 권장 max_completion_tokens (심층 보고서 분량 확대를 위해 6000 상향)
     payload['max_completion_tokens'] = max_tokens
     return payload
+
+HISTORICAL_BENCHMARKS = """
+[한화 방산 글로벌 성공 수주 레퍼런스 및 벤치마킹 지식베이스 (Ground Truth)]
+1. 폴란드 1·2차 대규모 계약: K9 자주포 및 천무 MLRS 총 수조 원 규모 계약 체결. 한국수출입은행(KEXIM)·무역보험공사(K-SURE) 정책금융 연계, PGZ 컨소시엄 현지 생산(TOT), 조기 긴급 납기 준수(납기 신뢰성)로 동유럽 방산 허브 구축 성공.
+2. 호주 육군 Land 400 Phase 3: AS21 레드백 보兵전투장갑차(IFV) 수주. 독일 라인메탈 링스(Lynx)를 제치고 방호력(아이언피스트 능동방호체계 APS) 및 복합고무궤도 기동성 입증. 질롱시 현지 생산기지(H-ACE) 착공으로 오세아니아-인도태평양 생산 거점화.
+3. 이집트 K9 자주포 패키지(K9A1EGY): 사막 고온(50°C) 및 해안 방어 사격 시험 통과. 현지 국영 조달청 기술이전 및 카이로 인근 현지 정비창(MRO) 구축.
+4. 에스토니아·핀란드·노르웨이 북유럽 3국: 영하 40°C 극한지 설한지 기동 및 NATO 표준 탄약 호환 운용성 입증.
+"""
+
+THREAT_COMPARISONS = """
+[적성국/경쟁국 무기체계 1:1 비교 전술 우위 팩트 테이블]
+* 155mm 자주포: 러시아 2S19 Msta-S(발사속도 8발/분, 반응시간 3분) vs 한화 K9A2(완전 자동화 포탑, 9~10발/분 급속사격, 30초 내 초탄 사격 및 진지이탈 'Shoot-and-Scoot', 3발 동시탄착 MRSI 타격).
+* 대구경 다연장 로켓: 러시아 토네이도-S vs 한화 천무(239mm 유도미사일 80km 핀포인트 정밀 타격, 600mm KTSSM 전술지대지 탄도미사일 연동, 단일 포탑 2종 이종 구경 로켓 포드 혼합 장착 운용).
+* 보병전투장갑차(IFV): 러시아 BMP-3 / 구형 장갑차 vs 한화 레드백(능동방호체계 Iron Fist 장착으로 RPG/대전차미사일 요격, 복합고무궤도로 진동 70% 감소 및 라스푸티차 험지 돌파력 확보).
+* 저고도 방공: 자폭드론/순항미사일 위협 vs 한화 비호복합(30mm 쌍열 대공포 + 신궁 지대공 미사일 복합 체계, AESA 레이더 기반 드론 식별 즉각 요격).
+* 정찰/우주자산: 적 지상 위장 및 야간 전황 vs 한화시스템 초소형 SAR 위성(기상/주야간 불문 0.5m급 고해상도 합성개구레이더 탐지) 및 TICN 전술통신망 연계.
+"""
 
 async def call_external_llm(custom_config: dict, matching_data: list[dict], top_risks: list[dict]) -> dict:
     import time
@@ -414,31 +431,38 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
     ground_truth_text = "\n\n".join(theaters_context)
 
     prompt = f"""당신은 한화그룹 미래전략실 수석 방산 안보 수석 컨설턴트이자 전용 AI 전략 인텔리전스 엔진(OpenAI GPT-5.4)입니다.
-제공된 '실제 팩트 데이터베이스(Ground Truth)'만을 철저히 기반으로 하여, 한화 최고경영진(C-Level) 및 방산 3사(한화에어로스페이스, 한화시스템, 한화오션) 대표이사에게 보고할 '미래전략실 전략 인텔리전스 보고서'를 JSON 포맷으로 작성하십시오.
+제공된 '실제 팩트 데이터베이스(Ground Truth)', '과거 글로벌 수주 레퍼런스', '위협 무기 1:1 비교 팩트'를 철저히 기반으로 하여, 한화 최고경영진(C-Level) 및 방산 3사(한화에어로스페이스, 한화시스템, 한화오션) 대표이사에게 보고할 '최고급 전략 인텔리전스 심층 보고서'를 JSON 포맷으로 작성하십시오.
 
 [실제 팩트 데이터베이스 (Ground Truth - 절대 변경 및 날조 금지)]
 {ground_truth_text}
 
+{HISTORICAL_BENCHMARKS}
+
+{THREAT_COMPARISONS}
+
 [환각(Hallucination) 방지 절대 준수 지침]
-1. [허위 사실 창작 절대 금지]: 제공된 뉴스 타임라인 및 무기 스펙에 없는 가상의 수주 계약, 조작된 무기 제원, 허위의 전황 사상자 수치를 절대 지어내지(환각) 마십시오.
+1. [허위 사실 창작 절대 금지]: 제공된 뉴스 타임라인 및 무기 스펙에 없는 가상의 수주 계약, 조작된 무기 제원, 허위의 전황 사상자 수치를 절대 지어내지 마십시오.
 2. [출처 및 일시 인용 강제]: 타임라인이나 전황을 서술할 때는 반드시 제공된 실제 기사 ID(예: DD-XXXX) 또는 실제 일자/언론사명을 그대로 인용하십시오.
 3. [온도 및 스펙 팩트 고정]: 무기 보증 기온(-40°C~+50°C), 한계 습도(95%), 군용 규격(MIL-STD-810H)은 사전에 검증된 수치만을 정확히 인용하십시오.
 
-[보고서 구성 원칙]
-1. 'executive1Pager': 경영진이 신속하게 파악할 수 있는 고밀도 전략 요약입니다.
-   - 'macroTakeaway': 글로벌 안보 지형 및 한화 방산 전략적 함의 총평 (3~4문장)
-   - 'urgentTheaters': 상위 3대 긴급 분쟁지 요약 (theater, griScore, urgency['CRITICAL'], flashTrigger[실제 기사 기반], hanwhaSolution, immediateAction)
-   - 'affiliateActionMatrix': 한화 3사(에어로스페이스, 시스템, 오션)별 R&R 및 구체적 사업 추진 과제, 예상 수주 파이프라인 임팩트(pipelineEstimate)
-   - 'exportFinancingECA': 한국수출입은행(KEXIM)·무역보험공사(K-SURE) 수출금융 패키지 및 G2G 협력 로드맵 (2~3문장)
-2. 'keyTheaters': 제공된 전구별로 다음 항목을 상세 작성하십시오:
+[고품질 심층 서술 지침 - 단순 요약 금지]
+본 보고서는 C-Level 경영진의 대규모 수주 투자 및 전술 파이프라인 결정을 위한 심층 전략 보고서입니다. 단순한 1~2줄 요약은 지양하고, 항목별로 구체적 작전 교리, 단계별 군수지원(PBL) 패키지, 2026~2030 단계별 사업 추진 로드맵을 2~3개 단락 이상으로 전문적이고 상세하게 기술하십시오.
+
+1. 'executive1Pager':
+   - 'macroTakeaway': 글로벌 안보 지형의 패러다임 전환과 한화 방산 3사의 전략적 포지셔닝에 대한 거시적 심층 총평 (2~3개 단락)
+   - 'urgentTheaters': 상위 3대 긴급 분쟁지 상세 분석 (theater, griScore, urgency['CRITICAL'], flashTrigger[실제 기사 ID 인용], hanwhaSolution, immediateAction)
+   - 'affiliateActionMatrix': 한화 3사(에어로스페이스, 시스템, 오션)별 구체적 사업 파이프라인 임팩트(pipelineEstimate)를 조달 목표 규모($M 단위)와 함께 명시
+   - 'exportFinancingECA': 한국수출입은행(KEXIM)·무역보험공사(K-SURE) 정책금융 및 폴란드 1·2차 사례를 원용한 G2G 패키지 로드맵 상세 기술
+2. 'keyTheaters': 전구별로 다음 항목을 심층 작성하십시오:
    - theater, region, griScore, intensity, riskMomentum
    - matchedHanwhaSolution: 추천 무기체계 2~3종
-   - verifiedSpecs: MIL-STD-810H 보증 스펙 요약
-   - recentTimeline: 제공된 실제 기사들의 sourceId, date, headline, link, tacticalImpact를 빠짐없이 맵핑
-   - operationalDoctrine: 현지 지형/기후 특성에 최적화된 실전 운용 방식 및 교리(3~4문장)
-   - operationalCautions: 극한 기후(혹한, 50도 혹서, 라스푸티차 진흙, 모래폭풍 등) 극복을 위한 야전 정비/운용 지침(3~4문장)
-   - strategicImplication: 현지 생산·MRO 거점화 및 사업적 수주 효과(3~4문장)
-3. 'strategicRecommendations': 한화 3사 4대 전략(화력·기동, 다층 방공/C4I, 해양/정찰, 글로벌 GVC/ECA 금융)을 구체적 실행 로드맵으로 작성하십시오.
+   - verifiedSpecs: MIL-STD-810H 보증 스펙 및 위협 무기 대비 우위 분석
+   - recentTimeline: 제공된 실제 기사들의 sourceId, date, headline, link, tacticalImpact 맵핑
+   - environmentalFitAnalysis: 현지 지형/기후 특성과 한화 무기 내환경성 검증 분석 (2~3개 단락)
+   - operationalDoctrine: 1차 저지선, 2차 반격선 구축, 초소형 SAR 위성(시스템) ➡️ 전술 C4I ➡️ K9/천무(에어로스페이스) 타격 연동 및 UGV 유무인 복합(MUMT) 실전 교리를 2~3개 단락으로 상세 기술
+   - operationalCautions: 극한 기후(혹한, 50도 혹서, 라스푸티차 진흙, 사막 모래폭풍) 극복을 위한 엔진 예열/냉각 주기, 특수 방청 및 야전 정비 지침을 실전 엔지니어링 수준으로 서술
+   - strategicImplication: 현지 면허생산(TOT), 거점 정비창(MRO), 인접국 연계 수출 교두보 효과 및 2026~2030 사업 추진 타임라인을 상세 서술
+3. 'strategicRecommendations': 한화 3사 4대 전략(화력·기동, 다층 방공/C4I, 해양/특수함정, 글로벌 GVC/ECA 금융)별로 단기 즉각 조치 ➡️ 중기 현지화 ➡️ 장기 생태계 구축의 3단계 로드맵을 풍부하게 기술하십시오.
 
 반드시 마크다운 백틱 없이 순수한 JSON 포맷으로만 응답하십시오:
 {{
@@ -532,10 +556,10 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
     models_to_try = [target_model, 'gpt-4o', 'o3-mini']
     last_error = ''
 
-    async with httpx.AsyncClient(timeout=45.0) as client:
+    async with httpx.AsyncClient(timeout=60.0) as client:
         for model in models_to_try:
             try:
-                payload = build_openai_payload(model, [{'role': 'user', 'content': prompt}], is_json=True, max_tokens=4000)
+                payload = build_openai_payload(model, [{'role': 'user', 'content': prompt}], is_json=True, max_tokens=6000)
                 resp = await client.post(
                     'https://api.openai.com/v1/chat/completions',
                     headers={
