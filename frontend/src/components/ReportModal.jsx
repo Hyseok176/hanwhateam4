@@ -425,50 +425,85 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                 <div className="track-theaters-container" style={{ marginBottom: '2.5rem' }}>
                   
                   {/* Summary Theaters Table */}
+                  {/* Summary Theaters Table */}
                   <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
                     <Globe size={18} /> 중점 감시 전구 종합 현황 & 소요 솔루션
                   </h2>
 
-                  <table className="report-theaters-table" style={{ marginBottom: '2rem' }}>
-                    <thead>
-                      <tr>
-                        <th>분쟁 전구</th>
-                        <th>GRI 위험도</th>
-                        <th>전황 모멘텀</th>
-                        <th>한화 추천 솔루션</th>
-                        <th>전략적 시사점</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {report.keyTheaters?.map((t, idx) => (
-                        <tr key={idx}>
-                          <td>
-                            <strong style={{ color: 'var(--text-primary)', fontSize: '0.88rem' }}>{t.theater}</strong>
-                            <br />
-                            <span style={{ color: 'var(--brand-orange)', fontSize: '0.72rem', fontWeight: 600 }}>{t.region}</span>
-                          </td>
-                          <td className="col-gri">
-                            <div className="report-gri-tag-wrap">
-                              <span className={`report-gri-tag ${t.intensity === 'High' ? 'tag-high' : t.intensity === 'Medium' ? 'tag-med' : 'tag-low'}`}>
-                                <span className="gri-val">{t.griScore}</span>
-                                <span className="gri-sep">•</span>
-                                <span className="gri-txt">{t.intensity}</span>
-                              </span>
-                            </div>
-                          </td>
-                          <td style={{ fontSize: '0.76rem', color: 'var(--text-primary)', fontWeight: 600 }}>
-                            {t.riskMomentum || (t.intensity === 'High' ? '전황 격화' : '지속 대치')}
-                          </td>
-                          <td>
-                            <span style={{ color: 'var(--radar-cyan)', fontWeight: 600, fontSize: '0.82rem' }}>
-                              {Array.isArray(t.matchedHanwhaSolution) ? t.matchedHanwhaSolution.join(', ') : t.matchedHanwhaSolution}
-                            </span>
-                          </td>
-                          <td style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{t.strategicImplication}</td>
+                  <div style={{
+                    overflowX: 'auto',
+                    WebkitOverflowScrolling: 'touch',
+                    marginBottom: '2rem',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-subtle)',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}>
+                    <table className="report-theaters-table">
+                      <thead>
+                        <tr>
+                          <th>분쟁 전구</th>
+                          <th>GRI 위험도</th>
+                          <th>전황 모멘텀</th>
+                          <th>한화 추천 솔루션</th>
+                          <th>전략적 시사점</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {report.keyTheaters?.map((t, idx) => (
+                          <tr key={idx}>
+                            <td>
+                              <strong style={{ color: 'var(--text-primary)', fontSize: '0.86rem', display: 'block' }}>{t.theater}</strong>
+                              <span style={{ color: 'var(--brand-orange)', fontSize: '0.74rem', fontWeight: 600 }}>{t.region}</span>
+                            </td>
+                            <td className="col-gri" style={{ textAlign: 'center' }}>
+                              <div className="report-gri-tag-wrap">
+                                <span className={`report-gri-tag ${t.intensity === 'High' ? 'tag-high' : t.intensity === 'Medium' ? 'tag-med' : 'tag-low'}`}>
+                                  <span className="gri-val">{t.griScore}</span>
+                                  <span className="gri-sep">•</span>
+                                  <span className="gri-txt">{t.intensity}</span>
+                                </span>
+                              </div>
+                            </td>
+                            <td style={{ textAlign: 'center' }}>
+                              <span style={{
+                                display: 'inline-block',
+                                fontSize: '0.72rem',
+                                fontWeight: 700,
+                                padding: '3px 8px',
+                                borderRadius: 'var(--radius-pill)',
+                                background: t.intensity === 'High' ? 'rgba(255, 68, 68, 0.08)' : 'rgba(0, 240, 255, 0.08)',
+                                border: `1px solid ${t.intensity === 'High' ? 'rgba(255, 68, 68, 0.25)' : 'rgba(0, 240, 255, 0.25)'}`,
+                                color: t.intensity === 'High' ? 'var(--alert-red)' : 'var(--radar-cyan)',
+                                whiteSpace: 'nowrap'
+                              }}>
+                                {t.riskMomentum || (t.intensity === 'High' ? '전황 격화' : '지속 대치')}
+                              </span>
+                            </td>
+                            <td>
+                              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                {(Array.isArray(t.matchedHanwhaSolution) ? t.matchedHanwhaSolution : [t.matchedHanwhaSolution]).map((sol, sIdx) => (
+                                  <span key={sIdx} style={{
+                                    background: 'rgba(0, 240, 255, 0.06)',
+                                    border: '1px solid rgba(0, 240, 255, 0.2)',
+                                    color: 'var(--radar-cyan)',
+                                    padding: '2px 6px',
+                                    borderRadius: 'var(--radius-xs)',
+                                    fontSize: '0.72rem',
+                                    fontWeight: 600
+                                  }}>
+                                    {sol}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                            <td style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', lineHeight: 1.5 }}>
+                              {t.strategicImplication}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
                   {/* Detailed Per-Theater Cards with Real News Timeline & Doctrines */}
                   <h3 style={{
@@ -480,7 +515,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                     gap: '7px',
                     marginBottom: '1rem'
                   }}>
-                    <Crosshair size={18} /> 전구별 심층 전술 교리 · 실시간 전황 타임라인 및 야전 환경 극복 가이드
+                    <Crosshair size={18} /> 전구별 심층 분석 및 전황 타임라인
                   </h3>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -550,31 +585,33 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                           </div>
                         </div>
 
-                        {/* Verified MIL-SPEC Tag */}
+                        {/* Environment Spec Tag */}
                         {t.verifiedSpecs && (
                           <div style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '6px',
-                            background: 'rgba(4, 192, 158, 0.08)',
-                            border: '1px solid rgba(4, 192, 158, 0.25)',
-                            padding: '3px 9px',
+                            background: 'var(--bg-surface-elevated)',
+                            border: '1px solid var(--border-subtle)',
+                            padding: '3px 10px',
                             borderRadius: 'var(--radius-xs)',
                             fontSize: '0.74rem',
-                            color: 'var(--alert-green)',
+                            color: 'var(--text-secondary)',
                             fontWeight: 600,
                             marginBottom: '0.85rem'
                           }}>
-                            <CheckCircle2 size={13} /> 공식 검증 군용 규격: {t.verifiedSpecs}
+                            <Shield size={12} className="text-orange" />
+                            <span>환경 보증 스펙:</span>
+                            <strong style={{ color: 'var(--text-primary)' }}>{t.verifiedSpecs}</strong>
                           </div>
                         )}
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                           
-                          {/* 1. Real News Chronological Timeline Feed (Zero Hallucination with Links) */}
+                          {/* 1. Real News Chronological Timeline Feed */}
                           {t.recentTimeline && t.recentTimeline.length > 0 && (
                             <div style={{
-                              background: 'rgba(0, 0, 0, 0.02)',
+                              background: 'var(--bg-surface-elevated)',
                               border: '1px solid var(--border-subtle)',
                               borderRadius: 'var(--radius-sm)',
                               padding: '0.85rem 1rem'
@@ -588,9 +625,10 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                                 alignItems: 'center',
                                 gap: '6px'
                               }}>
-                                <Clock size={14} className="text-orange" /> ⚡ 실제 수집된 최근 전황 변동 타임라인 (Ground Truth Links)
+                                <Clock size={14} className="text-orange" />
+                                <span>최근 전황 타임라인 (관련 방산 뉴스)</span>
                               </div>
-                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                                 {t.recentTimeline.map((item, tlIdx) => (
                                   <div key={tlIdx} style={{
                                     display: 'flex',
@@ -600,19 +638,20 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                                     borderLeft: '2px solid var(--brand-orange)',
                                     paddingLeft: '8px'
                                   }}>
-                                    <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', flexShrink: 0, marginTop: '2px' }}>
+                                    <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', flexShrink: 0, marginTop: '2px', minWidth: '70px' }}>
                                       {item.date}
                                     </span>
-                                    <div style={{ flex: 1 }}>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', flexWrap: 'wrap' }}>
                                         <span style={{
-                                          background: 'var(--bg-surface-elevated)',
+                                          background: 'var(--bg-surface)',
                                           border: '1px solid var(--border-medium)',
                                           color: 'var(--brand-orange)',
                                           padding: '1px 5px',
                                           borderRadius: 'var(--radius-xs)',
                                           fontSize: '0.68rem',
-                                          fontWeight: 700
+                                          fontWeight: 700,
+                                          flexShrink: 0
                                         }}>
                                           {item.sourceId}
                                         </span>
@@ -625,23 +664,22 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                                               color: 'var(--text-primary)',
                                               fontWeight: 700,
                                               textDecoration: 'none',
-                                              display: 'inline-flex',
-                                              alignItems: 'center',
-                                              gap: '3px'
+                                              wordBreak: 'break-word',
+                                              lineHeight: 1.45
                                             }}
                                             className="timeline-article-link"
                                             title="데일리방산 실제 원문 기사 열기"
                                           >
-                                            {item.headline} <ExternalLink size={11} className="text-orange" />
+                                            {item.headline} <ExternalLink size={11} className="text-orange" style={{ verticalAlign: 'middle', display: 'inline' }} />
                                           </a>
                                         ) : (
-                                          <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>
+                                          <span style={{ color: 'var(--text-primary)', fontWeight: 700, wordBreak: 'break-word' }}>
                                             {item.headline}
                                           </span>
                                         )}
                                       </div>
                                       {item.tacticalImpact && (
-                                        <div style={{ color: 'var(--text-secondary)', marginTop: '2px', fontSize: '0.75rem' }}>
+                                        <div style={{ color: 'var(--text-secondary)', marginTop: '3px', fontSize: '0.75rem', lineHeight: 1.45 }}>
                                           ↳ <strong style={{ color: 'var(--radar-cyan)' }}>전술적 함의:</strong> {item.tacticalImpact}
                                         </div>
                                       )}
@@ -655,8 +693,8 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                           {/* 2. Operational Doctrine */}
                           {t.operationalDoctrine && (
                             <div style={{
-                              background: 'rgba(255, 102, 0, 0.04)',
-                              border: '1px solid rgba(255, 102, 0, 0.18)',
+                              background: 'rgba(255, 102, 0, 0.03)',
+                              border: '1px solid rgba(255, 102, 0, 0.16)',
                               borderRadius: 'var(--radius-sm)',
                               padding: '0.75rem 0.95rem'
                             }}>
@@ -669,7 +707,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                                 alignItems: 'center',
                                 gap: '6px'
                               }}>
-                                <Compass size={14} /> 🎯 실전 운용 방식 및 전술 교리 (Operational Doctrine)
+                                <Compass size={14} /> 실전 운용 방식 및 전술 교리
                               </div>
                               <p style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.65, margin: 0 }}>
                                 {t.operationalDoctrine}
@@ -680,21 +718,21 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                           {/* 3. Field Advisories & Cautions */}
                           {t.operationalCautions && (
                             <div style={{
-                              background: 'rgba(255, 179, 0, 0.04)',
-                              border: '1px solid rgba(255, 179, 0, 0.2)',
+                              background: 'rgba(255, 179, 0, 0.03)',
+                              border: '1px solid rgba(255, 179, 0, 0.18)',
                               borderRadius: 'var(--radius-sm)',
                               padding: '0.75rem 0.95rem'
                             }}>
                               <div style={{
                                 fontSize: '0.78rem',
                                 fontWeight: 800,
-                                color: '#ffb300',
+                                color: 'var(--alert-amber)',
                                 marginBottom: '0.35rem',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '6px'
                               }}>
-                                <AlertTriangle size={14} /> ⚠️ 야전 운용상 주의사항 및 환경 극복 가이드 (Field Advisories & Maintenance)
+                                <AlertTriangle size={14} /> 야전 운용상 주의사항 및 환경 극복 가이드
                               </div>
                               <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
                                 {t.operationalCautions}
@@ -705,8 +743,8 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                           {/* 4. Environmental Fit Analysis */}
                           {t.environmentalFitAnalysis && (
                             <div style={{
-                              background: 'rgba(0, 240, 255, 0.04)',
-                              border: '1px solid rgba(0, 240, 255, 0.18)',
+                              background: 'rgba(0, 240, 255, 0.03)',
+                              border: '1px solid rgba(0, 240, 255, 0.16)',
                               borderRadius: 'var(--radius-sm)',
                               padding: '0.75rem 0.95rem'
                             }}>
@@ -719,7 +757,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                                 alignItems: 'center',
                                 gap: '6px'
                               }}>
-                                <Thermometer size={14} /> 🌡️ 군용 규격(보증 기온 -40~+50°C / 허용 습도 95% RH) 대비 전장 적합도 분석
+                                <Thermometer size={14} /> 지형 및 기후 적합도 분석 (운용 규격 대비)
                               </div>
                               <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
                                 {t.environmentalFitAnalysis}

@@ -1764,37 +1764,36 @@ body {
 .report-theaters-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.25rem 0;
-  font-size: 0.84rem;
+  margin: 0;
+  font-size: 0.82rem;
   table-layout: fixed;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
 }
 
-.report-theaters-table th:nth-child(1) { width: 22%; }
-.report-theaters-table th:nth-child(2) { width: 18%; text-align: center; }
-.report-theaters-table th:nth-child(3) { width: 26%; }
-.report-theaters-table th:nth-child(4) { width: 34%; }
+.report-theaters-table th:nth-child(1) { width: 18%; }
+.report-theaters-table th:nth-child(2) { width: 14%; text-align: center; }
+.report-theaters-table th:nth-child(3) { width: 14%; text-align: center; }
+.report-theaters-table th:nth-child(4) { width: 24%; }
+.report-theaters-table th:nth-child(5) { width: 30%; }
 
 .report-theaters-table th {
   background: var(--bg-surface-elevated);
-  padding: 0.85rem 1rem;
+  padding: 0.8rem 0.85rem;
   text-align: left;
   font-size: 0.76rem;
   font-weight: 800;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
 }
 
 .report-theaters-table td {
-  padding: 0.95rem 1rem;
+  padding: 0.85rem 0.85rem;
   border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--text-secondary);
+  word-break: break-word;
 }
 
 .report-theaters-table tr:last-child td {

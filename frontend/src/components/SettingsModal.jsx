@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, X, Check, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 
-const PRESET_MODELS = ['gpt-5.4', 'gpt-4o', 'gpt-4o-mini', 'o3-mini', 'o1-mini', 'gpt-3.5-turbo'];
-
 export default function SettingsModal({ isOpen, onClose, settings, onSaveSettings }) {
-  const initialProvider = settings.provider === 'gemini' ? 'openai' : (settings.provider || 'openai');
-  const [provider, setProvider] = useState(initialProvider);
+  const [provider, setProvider] = useState('openai');
   const [apiKey, setApiKey] = useState(settings.apiKey || '');
-  
-  const currentModel = settings.model || 'gpt-5.4';
-  const isCustom = !PRESET_MODELS.includes(currentModel);
-  const [selectedPreset, setSelectedPreset] = useState(isCustom ? 'custom' : currentModel);
-  const [customModelName, setCustomModelName] = useState(isCustom ? currentModel : '');
-  const [model, setModel] = useState(currentModel);
   const [syncInterval, setSyncInterval] = useState(settings.syncInterval || 0);
 
   const [isTesting, setIsTesting] = useState(false);
@@ -20,35 +11,14 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
 
   useEffect(() => {
     if (isOpen) {
-      const cur = settings.model || 'gpt-5.4';
       setApiKey(settings.apiKey || '');
-      setProvider(settings.provider === 'gemini' ? 'openai' : (settings.provider || 'openai'));
-      setModel(cur);
-      const custom = !PRESET_MODELS.includes(cur);
-      setSelectedPreset(custom ? 'custom' : cur);
-      setCustomModelName(custom ? cur : '');
+      setProvider('openai');
       setSyncInterval(settings.syncInterval || 0);
       setTestResult(null);
     }
   }, [isOpen, settings]);
 
   if (!isOpen) return null;
-
-  const handlePresetChange = (val) => {
-    setSelectedPreset(val);
-    setTestResult(null);
-    if (val === 'custom') {
-      setModel(customModelName.trim() || 'gpt-5.4');
-    } else {
-      setModel(val);
-    }
-  };
-
-  const handleCustomModelChange = (val) => {
-    setCustomModelName(val);
-    setModel(val.trim() || 'gpt-5.4');
-    setTestResult(null);
-  };
 
   const handleTestConnection = async () => {
     if (!apiKey.trim()) {
@@ -61,7 +31,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
       const res = await fetch('/api/test-llm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apiKey: apiKey.trim(), model })
+        body: JSON.stringify({ apiKey: apiKey.trim(), model: 'gpt-5.4' })
       });
       const data = await res.json();
       setTestResult(data);
@@ -74,9 +44,9 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
 
   const handleSave = () => {
     onSaveSettings({
-      provider,
+      provider: 'openai',
       apiKey: apiKey.trim(),
-      model,
+      model: 'gpt-5.4',
       syncInterval: Number(syncInterval)
     });
     onClose();
@@ -95,12 +65,12 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
         </div>
 
         <div className="modal-body">
-          {/* AI Engine Info Card */}
+          {/* Dedicated Engine Info Card (No Dropdown) */}
           <div style={{
-            background: 'var(--brand-orange-light)',
-            border: '1px solid rgba(243, 115, 33, 0.25)',
+            background: 'var(--bg-surface-elevated)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 'var(--radius-md)',
-            padding: '0.85rem 1rem',
+            padding: '0.9rem 1.1rem',
             marginBottom: '1.25rem',
             display: 'flex',
             alignItems: 'center',
@@ -108,70 +78,42 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
             gap: '0.75rem'
           }}>
             <div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--brand-orange)', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <Sparkles size={14} /> AI 전략 분석 엔진: OpenAI GPT
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Sparkles size={14} className="text-orange" />
+                <span>AI 전략 분석 엔진</span>
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                글로벌 29개 분쟁과 무기 제원을 실제 OpenAI LLM으로 심층 분석합니다.
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '3px' }}>
+                OpenAI GPT-5.4 단일 전용 전략 모델로 모든 보고서와 분석이 수행됩니다.
               </div>
             </div>
-            <span className="score-badge badge-low" style={{ fontSize: '0.7rem', padding: '0.2rem 0.55rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
-              {model}
+            <span style={{
+              background: 'rgba(243, 115, 33, 0.12)',
+              border: '1px solid rgba(243, 115, 33, 0.35)',
+              color: 'var(--brand-orange)',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '3px 10px',
+              borderRadius: 'var(--radius-pill)',
+              whiteSpace: 'nowrap'
+            }}>
+              OpenAI GPT-5.4
             </span>
           </div>
 
           <div className="form-group">
-            <label className="form-label">OpenAI GPT 모델 선택</label>
-            <select
-              className="form-select"
-              value={selectedPreset}
-              onChange={(e) => handlePresetChange(e.target.value)}
-              style={{ width: '100%' }}
-            >
-              <option value="gpt-5.4">gpt-5.4 (미래전략실 전용 플래그십 AI 엔진 - 기본)</option>
-              <option value="gpt-4o">gpt-4o (심층 안보 전략 분석)</option>
-              <option value="gpt-4o-mini">gpt-4o-mini (경량 고속 안보 분석)</option>
-              <option value="o3-mini">o3-mini (차세대 고급 추론 분석)</option>
-              <option value="o1-mini">o1-mini (심층 논리 추론 분석)</option>
-              <option value="gpt-3.5-turbo">gpt-3.5-turbo (기본 호환 모드)</option>
-              <option value="custom">직접 모델명 입력 (Custom Model)...</option>
-            </select>
-
-            {selectedPreset === 'custom' && (
-              <div style={{ marginTop: '0.4rem' }}>
-                <input
-                  type="text"
-                  className="form-input"
-                  style={{ width: '100%' }}
-                  placeholder="OpenAI 모델 ID 입력 (예: gpt-4o, gpt-4o-mini, o3-mini 등)"
-                  value={customModelName}
-                  onChange={(e) => handleCustomModelChange(e.target.value)}
-                />
-                <small className="form-hint">
-                  사용 가능한 OpenAI 모델 식별자(ID)를 직접 입력할 수 있습니다.
-                </small>
-              </div>
-            )}
-
-            <small className="form-hint" style={{ marginTop: '0.35rem', display: 'block' }}>
-              현재 설정된 활성 모델: <strong style={{ color: 'var(--brand-orange)', fontWeight: 700 }}>{model}</strong>
-            </small>
-          </div>
-
-              <div className="form-group">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <label className="form-label">OpenAI API Key</label>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline"
-                    onClick={handleTestConnection}
-                    disabled={isTesting || !apiKey.trim()}
-                    style={{ fontSize: '0.72rem', padding: '0.2rem 0.55rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                  >
-                    {isTesting ? <Loader2 size={12} className="fa-spin" /> : <Sparkles size={12} className="text-orange" />}
-                    {isTesting ? '테스트 중...' : 'API 연결 & 토큰 테스트'}
-                  </button>
-                </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="form-label">OpenAI API Key</label>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline"
+                onClick={handleTestConnection}
+                disabled={isTesting || !apiKey.trim()}
+                style={{ fontSize: '0.72rem', padding: '0.2rem 0.55rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              >
+                {isTesting ? <Loader2 size={12} className="fa-spin" /> : <Sparkles size={12} className="text-orange" />}
+                {isTesting ? '테스트 중...' : 'API 연결 & 토큰 테스트'}
+              </button>
+            </div>
                 <input
                   type="password"
                   className="form-input"
