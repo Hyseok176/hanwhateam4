@@ -1815,30 +1815,33 @@ body {
 }
 
 .report-sec-heading {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  color: var(--brand-orange);
-  margin: 1.75rem 0 0.85rem;
+  color: var(--text-primary);
+  margin: 2rem 0 0.95rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--brand-orange);
+  padding-bottom: 0.55rem;
+  letter-spacing: -0.01em;
 }
 
 .report-exec-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  padding-left: 0;
 }
 
 .report-exec-list li {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   background: var(--bg-surface-elevated);
-  border-left: 4px solid var(--brand-orange);
-  padding: 0.85rem 1.15rem;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--brand-orange);
+  padding: 0.8rem 1.1rem;
+  border-radius: var(--radius-xs);
   color: var(--text-primary);
   line-height: 1.65;
 }
@@ -1846,9 +1849,9 @@ body {
 .report-theaters-table-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-medium);
+  box-shadow: none;
   margin-bottom: 2rem;
   background: var(--bg-surface);
 }
@@ -1867,10 +1870,10 @@ body {
   background: var(--bg-surface-elevated);
   padding: 0.85rem 1rem;
   text-align: left;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-medium);
   white-space: nowrap;
 }
 
@@ -1948,7 +1951,7 @@ body {
   background: rgba(243, 115, 33, 0.1);
   color: var(--brand-orange);
   border: 1px solid rgba(243, 115, 33, 0.3);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
@@ -1959,7 +1962,6 @@ body {
 .btn-card-action:hover {
   background: var(--brand-orange);
   color: #fff;
-  box-shadow: 0 2px 8px var(--brand-orange-glow);
 }
 
 .report-theaters-table td.col-gri {
@@ -1977,8 +1979,8 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-xs);
   font-size: 0.78rem;
   font-weight: 800;
   white-space: nowrap;
@@ -1987,21 +1989,21 @@ body {
 .report-gri-tag.tag-high {
   background: rgba(240, 68, 82, 0.1);
   color: var(--alert-red);
-  border: 1px solid rgba(240, 68, 82, 0.25);
+  border: 1px solid rgba(240, 68, 82, 0.3);
 }
 .report-gri-tag.tag-med {
   background: rgba(255, 149, 0, 0.1);
   color: var(--alert-amber);
-  border: 1px solid rgba(255, 149, 0, 0.25);
+  border: 1px solid rgba(255, 149, 0, 0.3);
 }
 .report-gri-tag.tag-low {
-  background: rgba(49, 130, 246, 0.1);
-  color: var(--radar-cyan);
+  background: rgba(49, 130, 246, 0.08);
+  color: var(--text-primary);
   border: 1px solid rgba(49, 130, 246, 0.25);
 }
 
 .report-gri-tag .gri-val {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 800;
 }
 
@@ -2011,8 +2013,8 @@ body {
   align-items: center;
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
   white-space: nowrap !important;
   line-height: 1.4;
   box-sizing: border-box;
@@ -2023,16 +2025,16 @@ body {
   color: var(--alert-red);
 }
 .report-momentum-badge.momentum-normal {
-  background: rgba(49, 130, 246, 0.08);
-  border: 1px solid rgba(49, 130, 246, 0.28);
-  color: var(--radar-cyan);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
 }
 
-/* 한화 추천 솔루션 태그 래퍼 (4열 겹침 방지) */
+/* 한화 추천 솔루션 태그 래퍼 */
 .report-solution-tags-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
   max-width: 100%;
 }
@@ -2040,10 +2042,10 @@ body {
 .report-solution-tag {
   display: inline-flex;
   align-items: center;
-  background: rgba(0, 240, 255, 0.06);
-  border: 1px solid rgba(0, 240, 255, 0.22);
-  color: var(--radar-cyan);
-  padding: 3px 8px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  padding: 2px 7px;
   border-radius: var(--radius-xs);
   font-size: 0.72rem;
   font-weight: 600;
@@ -2053,16 +2055,17 @@ body {
 .report-pillars-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
-  margin-top: 1.25rem;
+  gap: 0.95rem;
+  margin-top: 1.15rem;
 }
 
 .pillar-card {
   background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 1.35rem 1.6rem;
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-medium);
+  border-left: 4px solid var(--brand-orange);
+  border-radius: var(--radius-xs);
+  padding: 1.25rem 1.5rem;
+  box-shadow: none;
   transition: all 0.2s ease;
 }
 
