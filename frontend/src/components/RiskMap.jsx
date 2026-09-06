@@ -413,10 +413,18 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
 
             <div className="map-legend">
               <span className="overlay-label">표시 범례:</span>
-              <span className="legend-item"><span className="legend-dot dot-high"></span> 고위험(High)</span>
-              <span className="legend-item"><span className="legend-dot dot-med"></span> 중위험(Medium)</span>
-              <span className="legend-item"><span className="legend-dot dot-low"></span> 저위험(Low)</span>
-              <span className="legend-item"><span className="legend-dot dot-front"></span> 전선 거점</span>
+              <span className="legend-item" title="GRI 지수 표시 및 긴급 대응 전구">
+                <span className="legend-marker-badge marker-high">GRI</span> 고위험(High)
+              </span>
+              <span className="legend-item" title="GRI 지수 표시 및 국지 충돌 전구">
+                <span className="legend-marker-badge marker-med">GRI</span> 중위험(Medium)
+              </span>
+              <span className="legend-item" title="GRI 지수 표시 및 잠재 긴장 전구">
+                <span className="legend-marker-badge marker-low">GRI</span> 저위험(Low)
+              </span>
+              <span className="legend-item" title="분쟁지 선택 시 표시되는 세부 전선/기지 거점">
+                <span className="legend-subloc-dot"></span> 전선 거점
+              </span>
             </div>
           </div>
         </div>

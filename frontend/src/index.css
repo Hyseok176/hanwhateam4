@@ -529,25 +529,77 @@ body {
   background: var(--alert-amber);
   border-color: var(--alert-amber);
 }
+.filter-chip.chip-low.active {
+  background: #10B981;
+  border-color: #10B981;
+}
 
 .legend-item {
-  font-size: 0.72rem;
+  font-size: 0.73rem;
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
-.legend-dot {
-  width: 8px;
-  height: 8px;
+/* 실제 지도 마커와 100% 동일한 비주얼 범례 뱃지 */
+.legend-marker-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 800;
+  color: #FFFFFF;
   border-radius: 50%;
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  font-family: sans-serif;
+  letter-spacing: -0.05em;
+  flex-shrink: 0;
 }
-.dot-high { background: var(--alert-red); }
-.dot-med { background: var(--alert-amber); }
-.dot-low { background: var(--radar-cyan); }
-.dot-front { background: #A0AEC0; }
+
+.legend-marker-badge.marker-high {
+  width: 18px;
+  height: 18px;
+  background: #EF4444; /* 실제 고위험 빨간 마커 */
+}
+
+.legend-marker-badge.marker-med {
+  width: 16px;
+  height: 16px;
+  background: #F59E0B; /* 실제 중위험 주황 마커 */
+}
+
+.legend-marker-badge.marker-low {
+  width: 15px;
+  height: 15px;
+  background: #10B981; /* 실제 저위험 초록 마커 */
+}
+
+.legend-subloc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #0284C7; /* 실제 전선 거점 파란 마커 */
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* 기본 dot 클래스도 실제 색상과 일치하도록 전면 교정 */
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.dot-high { background: #EF4444; }
+.dot-med { background: #F59E0B; }
+.dot-low { background: #10B981; }
+.dot-front { background: #0284C7; }
 
 /* Side Dossier Panel: Toss Clean White Card */
 .map-side-dossier {
