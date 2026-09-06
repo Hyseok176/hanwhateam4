@@ -206,7 +206,40 @@ export default function ReportPageView({ onBack }) {
               </button>
             </div>
           ) : report ? (
-            <ReportDocument report={report} contentRef={contentRef} />
+            <>
+              {report?.telemetry && (report.telemetry.promptTokens < 13000 || report.telemetry.outputTokens < 3500) && (
+                <div style={{
+                  background: 'rgba(237, 109, 0, 0.08)',
+                  border: '1px solid rgba(237, 109, 0, 0.3)',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '0.75rem 1.1rem',
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '1rem',
+                  fontSize: '0.82rem',
+                  color: 'var(--text-primary)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <ShieldCheck size={16} style={{ color: 'var(--brand-orange)', flexShrink: 0 }} />
+                    <span>
+                      <strong>안내:</strong> 현재 브라우저에 임시 저장된 이전 분석본(입력 {(report.telemetry.promptTokens || 0).toLocaleString()} / 출력 {(report.telemetry.outputTokens || 0).toLocaleString()} 토큰)이 표시 중입니다.
+                      신규 <strong>1.8만 토큰급 심층 그라운딩 엔진</strong>으로 업데이트하시려면 새로 분석을 실행하세요.
+                    </span>
+                  </div>
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => fetchReport(true)}
+                    disabled={isLoading}
+                    style={{ whiteSpace: 'nowrap', fontWeight: 700, padding: '0.35rem 0.85rem' }}
+                  >
+                    🚀 최신 심층 분석 실행
+                  </button>
+                </div>
+              )}
+              <ReportDocument report={report} contentRef={contentRef} />
+            </>
           ) : null}
         </div>
       </main>
