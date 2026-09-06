@@ -98,6 +98,7 @@ async def get_status():
         'newsCount': len(state.news),
         'conflictsCount': len(state.conflicts),
         'highRiskCount': high_count,
+        'portfolioCount': len(config.HANWHA_DEFENSE_PORTFOLIO),
         'isSyncing': state.is_syncing
     }
 

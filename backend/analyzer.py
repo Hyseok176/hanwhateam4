@@ -510,7 +510,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
         )
     theaters_ground_truth_text = "\n\n".join(theaters_context)
 
-    # 3. 팩트 그라운딩 테이블 [3]: 한화 방산 15대 전략 무기체계 군용 제원 공식 카탈로그 (전체 스펙 주입)
+    # 3. 팩트 그라운딩 테이블 [3]: 한화 방산 18대 전략 무기체계 군용 제원 공식 카탈로그 (전체 스펙 주입)
     weapons_catalog_entries = []
     for w in config.HANWHA_DEFENSE_PORTFOLIO:
         ops = w.get('operatingSpecs', {})
@@ -544,7 +544,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
 {theaters_ground_truth_text}
 
 ======================================================================
-[팩트 데이터베이스 3: 한화 방산 15대 전략 무기체계 군용 규격 카탈로그 (공식 제원)]
+[팩트 데이터베이스 3: 한화 방산 18대 전략 무기체계 군용 규격 카탈로그 (공식 제원)]
 {weapons_catalog_text}
 
 ======================================================================

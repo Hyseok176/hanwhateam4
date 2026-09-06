@@ -49,7 +49,7 @@ export default function PortfolioSpectrum({ portfolio }) {
       <div className="portfolio-header-wrap">
         <div>
           <h2 className="section-heading">
-            <ShieldCheck className="text-orange" size={22} /> 한화 방산 육·해·공·우주 15대 핵심 무기체계 스펙트럼
+            <ShieldCheck className="text-orange" size={22} /> 한화 방산 육·해·공·우주 {portfolio.length ? portfolio.length : 18}대 핵심 무기체계 스펙트럼
           </h2>
           <p className="section-desc">
             한화에어로스페이스 · 한화시스템 · 한화오션 3사의 글로벌 수출 주력 체계 및 전장 소요 매칭 포트폴리오

@@ -142,7 +142,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <ShieldCheck size={16} style={{ color: 'var(--brand-orange)', flexShrink: 0 }} />
                     <span>
-                      <strong>안내:</strong> 현재 브라우저에 임시 저장된 분석본입니다. 글로벌 29개 분쟁 전구 및 한화 방산 15대 전략 체계 최신 데이터가 반영된 전면 분석본을 생성하시려면 우측 버튼을 누르세요.
+                      <strong>안내:</strong> 현재 브라우저에 임시 저장된 분석본입니다. 글로벌 29개 분쟁 전구 및 한화 방산 18대 전략 체계 최신 데이터가 반영된 전면 분석본을 생성하시려면 우측 버튼을 누르세요.
                     </span>
                   </div>
                   <button
