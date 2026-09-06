@@ -1,18 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
-  Copy, Printer, X, Crosshair, ShieldCheck, RefreshCw, AlertTriangle
+  Copy, Check, Printer, X, Crosshair, ShieldCheck, RefreshCw, AlertTriangle
 } from 'lucide-react';
 import ReportDocument from './ReportDocument';
 
 export default function ReportModal({ isOpen, onClose, report, isLoading, currentModel, onSelectModel, onRegenerate }) {
   const contentRef = useRef(null);
+  const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
 
   const handleCopy = () => {
     if (contentRef.current) {
       navigator.clipboard.writeText(contentRef.current.innerText);
-      alert('미래전략실 공식 전략 보고서 전문이 클립보드에 복사되었습니다.');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -63,8 +65,22 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
               <RefreshCw size={13} className={isLoading ? 'fa-spin' : ''} />
               <span>{isLoading ? '분석 중...' : '새로 분석'}</span>
             </button>
-            <button className="btn btn-sm btn-outline" onClick={handleCopy} title="보고서 전문 클립보드 복사">
-              <Copy size={13} /> 복사
+            <button
+              className="btn btn-sm btn-outline"
+              onClick={handleCopy}
+              title="보고서 전문 클립보드 복사"
+              style={{ minWidth: '68px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
+            >
+              {copied ? (
+                <>
+                  <Check size={13} style={{ color: 'var(--radar-cyan)' }} />
+                  <span style={{ color: 'var(--radar-cyan)', fontWeight: 700 }}>복사됨</span>
+                </>
+              ) : (
+                <>
+                  <Copy size={13} /> <span>복사</span>
+                </>
+              )}
             </button>
             <button className="btn btn-sm btn-outline" onClick={handlePrint} title="A4 규격 인쇄 및 PDF 저장">
               <Printer size={13} /> 인쇄/PDF

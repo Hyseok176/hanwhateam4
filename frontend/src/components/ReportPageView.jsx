@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  ArrowLeft, Copy, Printer, RefreshCw,
+  ArrowLeft, Copy, Check, Printer, RefreshCw,
   Crosshair, ShieldCheck, ExternalLink, AlertTriangle
 } from 'lucide-react';
 import ReportDocument from './ReportDocument';
@@ -11,6 +11,7 @@ import ReportDocument from './ReportDocument';
  */
 export default function ReportPageView({ onBack }) {
   const contentRef = useRef(null);
+  const [copied, setCopied] = useState(false);
   const [report, setReport] = useState(() => {
     try {
       const cached = localStorage.getItem('cached_strategic_report');
@@ -72,7 +73,8 @@ export default function ReportPageView({ onBack }) {
   const handleCopy = () => {
     if (contentRef.current) {
       navigator.clipboard.writeText(contentRef.current.innerText);
-      alert('한화 방산 미래전략실 공식 전략 보고서 전문이 클립보드에 복사되었습니다.');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -157,9 +159,18 @@ export default function ReportPageView({ onBack }) {
             onClick={handleCopy}
             disabled={!report || isLoading}
             title="보고서 전문을 클립보드에 복사합니다"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', minWidth: '92px', justifyContent: 'center' }}
           >
-            <Copy size={14} /> <span>전문 복사</span>
+            {copied ? (
+              <>
+                <Check size={14} style={{ color: 'var(--radar-cyan)' }} />
+                <span style={{ color: 'var(--radar-cyan)', fontWeight: 700 }}>복사 완료</span>
+              </>
+            ) : (
+              <>
+                <Copy size={14} /> <span>전문 복사</span>
+              </>
+            )}
           </button>
 
           <button
