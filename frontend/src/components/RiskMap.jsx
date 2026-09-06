@@ -7,24 +7,38 @@ import {
   Maximize2, X, Compass, ShieldCheck, CheckCircle2
 } from 'lucide-react';
 
-const GOOGLE_TILE_LAYERS = {
+const TILE_LAYERS = {
   terrain: {
     id: 'terrain',
-    label: '구글 지형도',
-    url: 'https://{s}.google.com/vt/lyrs=p&hl=ko&gl=KR&x={x}&y={y}&z={z}',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    label: '입체 지형도',
+    icon: '⛰️',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    subdomains: ['server'],
+    maxZoom: 19
   },
-  roadmap: {
-    id: 'roadmap',
-    label: '구글 일반 지도',
-    url: 'https://{s}.google.com/vt/lyrs=m&hl=ko&gl=KR&x={x}&y={y}&z={z}',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  dark: {
+    id: 'dark',
+    label: '다크 전술',
+    icon: '🌌',
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    subdomains: ['a', 'b', 'c', 'd'],
+    maxZoom: 20
   },
   satellite: {
     id: 'satellite',
-    label: '구글 위성 하이브리드',
+    label: '구글 위성',
+    icon: '🛰️',
     url: 'https://{s}.google.com/vt/lyrs=y&hl=ko&gl=KR&x={x}&y={y}&z={z}',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxZoom: 20
+  },
+  roadmap: {
+    id: 'roadmap',
+    label: '구글 일반',
+    icon: '🗺️',
+    url: 'https://{s}.google.com/vt/lyrs=m&hl=ko&gl=KR&x={x}&y={y}&z={z}',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxZoom: 20
   }
 };
 
@@ -71,9 +85,10 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      tileLayerRef.current = L.tileLayer(GOOGLE_TILE_LAYERS.terrain.url, {
-        subdomains: GOOGLE_TILE_LAYERS.terrain.subdomains,
-        maxZoom: 20
+      const initLayer = TILE_LAYERS.terrain;
+      tileLayerRef.current = L.tileLayer(initLayer.url, {
+        subdomains: initLayer.subdomains || 'abc',
+        maxZoom: initLayer.maxZoom || 20
       }).addTo(map);
 
       markersLayerRef.current = L.layerGroup().addTo(map);
@@ -99,11 +114,17 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
       if (tileLayerRef.current) {
         mapInstanceRef.current.removeLayer(tileLayerRef.current);
       }
-      const targetLayer = GOOGLE_TILE_LAYERS[styleKey];
+      const targetLayer = TILE_LAYERS[styleKey];
+      if (!targetLayer) return;
+
       tileLayerRef.current = L.tileLayer(targetLayer.url, {
-        subdomains: targetLayer.subdomains,
-        maxZoom: 20
+        subdomains: targetLayer.subdomains || 'abc',
+        maxZoom: targetLayer.maxZoom || 20
       }).addTo(mapInstanceRef.current);
+
+      if (typeof tileLayerRef.current.bringToBack === 'function') {
+        tileLayerRef.current.bringToBack();
+      }
     } catch (e) {
       console.warn('스타일 레이어 전환 실패:', e);
     }
@@ -307,32 +328,40 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
 
           {/* Overlay Controls */}
           <div className="map-controls-overlay">
-            {/* Google Map Style Switcher */}
+            {/* Map Style Switcher */}
             <div className="map-style-switcher">
               <span className="overlay-label">지도 테마:</span>
               <button
                 type="button"
                 className={`style-btn ${mapStyle === 'terrain' ? 'active' : ''}`}
                 onClick={() => handleStyleChange('terrain')}
-                title="구글 지형도 (등고선 및 자연 지형)"
+                title="입체 지형도 (산맥, 고원, 사막, 등고선 기복이 선명한 고해상도 지형도)"
               >
-                ⛰️ 구글 지형도
+                ⛰️ 입체 지형도
               </button>
               <button
                 type="button"
-                className={`style-btn ${mapStyle === 'roadmap' ? 'active' : ''}`}
-                onClick={() => handleStyleChange('roadmap')}
-                title="구글 일반 지도 (선명한 도로 및 지명)"
+                className={`style-btn ${mapStyle === 'dark' ? 'active' : ''}`}
+                onClick={() => handleStyleChange('dark')}
+                title="다크 전술 지도 (방산 상황실 스타일의 고대비 맵)"
               >
-                🗺️ 구글 일반
+                🌌 다크 전술
               </button>
               <button
                 type="button"
                 className={`style-btn ${mapStyle === 'satellite' ? 'active' : ''}`}
                 onClick={() => handleStyleChange('satellite')}
-                title="구글 위성 지도 (실제 위성 사진 및 도로 라벨)"
+                title="구글 위성 지도 (실제 고해상도 위성 영상 및 주요 도로)"
               >
                 🛰️ 구글 위성
+              </button>
+              <button
+                type="button"
+                className={`style-btn ${mapStyle === 'roadmap' ? 'active' : ''}`}
+                onClick={() => handleStyleChange('roadmap')}
+                title="구글 일반 지도 (선명한 도로망 및 행정 구역)"
+              >
+                🗺️ 구글 일반
               </button>
             </div>
 
