@@ -152,43 +152,41 @@ export default function ReportDocument({ report, contentRef }) {
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
             실시간 데일리방산 속보 및 분쟁 지수(GRI)를 바탕으로 급격한 전황 악화가 관측된 최우선 감시 구역입니다.
           </p>
-          <div className="report-three-col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '0.75rem', width: '100%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', width: '100%' }}>
             {report.executive1Pager.urgentTheaters.map((ut, idx) => (
               <div key={idx} style={{
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-medium)',
-                borderTop: '3px solid var(--alert-red)',
+                borderLeft: '4px solid var(--alert-red)',
                 borderRadius: 'var(--radius-md)',
-                padding: '0.9rem 1rem',
+                padding: '1rem 1.25rem',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '0.5rem',
+                gap: '0.55rem',
                 boxShadow: 'var(--shadow-sm)',
-                minWidth: 0,
-                boxSizing: 'border-box',
-                wordBreak: 'break-word'
+                pageBreakInside: 'avoid',
+                breakInside: 'avoid'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '4px' }}>
-                  <strong style={{ fontSize: '0.94rem', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ut.theater}</strong>
-                  <span className="score-badge badge-high" style={{ fontSize: '0.68rem', padding: '2px 5px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                  <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{ut.theater}</strong>
+                  <span className="score-badge badge-high" style={{ fontSize: '0.74rem', padding: '3px 8px' }}>
                     GRI {ut.griScore} • {ut.urgency}
                   </span>
                 </div>
-                <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', lineHeight: 1.48 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                   <strong style={{ color: 'var(--text-primary)' }}>■ 전황 급변 요인:</strong> {ut.flashTrigger}
                 </div>
-                <div style={{ fontSize: '0.76rem', color: 'var(--radar-cyan)', fontWeight: 600, lineHeight: 1.48 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--radar-cyan)', fontWeight: 600, lineHeight: 1.55 }}>
                   ■ 대응 솔루션: {ut.hanwhaSolution}
                 </div>
                 <div style={{
-                  fontSize: '0.74rem',
+                  fontSize: '0.8rem',
                   color: 'var(--brand-orange)',
                   background: 'rgba(243, 115, 33, 0.06)',
                   border: '1px solid rgba(243, 115, 33, 0.18)',
-                  padding: '0.45rem 0.6rem',
+                  padding: '0.5rem 0.8rem',
                   borderRadius: 'var(--radius-xs)',
-                  marginTop: 'auto',
-                  lineHeight: 1.42
+                  lineHeight: 1.5
                 }}>
                   <strong>즉시 실행 과제:</strong> {ut.immediateAction}
                 </div>
@@ -209,38 +207,37 @@ export default function ReportDocument({ report, contentRef }) {
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
             지정학 리스크를 실제 수출 기회로 전환하기 위한 계열사별(에어로스페이스·시스템·오션) 전사 과제입니다.
           </p>
-          <div className="report-three-col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '0.75rem', width: '100%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', width: '100%' }}>
             {report.executive1Pager.affiliateActionMatrix.map((aff, idx) => (
               <div key={idx} style={{
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-medium)',
+                borderLeft: '4px solid var(--brand-orange)',
                 borderRadius: 'var(--radius-md)',
-                padding: '0.9rem 1rem',
+                padding: '1rem 1.25rem',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '0.5rem',
+                gap: '0.55rem',
                 boxShadow: 'var(--shadow-sm)',
-                minWidth: 0,
-                boxSizing: 'border-box',
-                wordBreak: 'break-word'
+                pageBreakInside: 'avoid',
+                breakInside: 'avoid'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.4rem', gap: '4px' }}>
-                  <strong style={{ fontSize: '0.94rem', color: 'var(--brand-orange)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{aff.affiliate}</strong>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, flexShrink: 0 }}>{aff.focusPillar}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem', flexWrap: 'wrap', gap: '8px' }}>
+                  <strong style={{ fontSize: '1.02rem', color: 'var(--brand-orange)' }}>{aff.affiliate}</strong>
+                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>{aff.focusPillar}</span>
                 </div>
-                <div style={{ fontSize: '0.76rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.6 }}>
                   <strong style={{ color: 'var(--text-primary)' }}>주요 추진 과제:</strong> {aff.keyInitiative}
                 </div>
                 <div style={{
-                  marginTop: 'auto',
-                  fontSize: '0.74rem',
+                  fontSize: '0.8rem',
                   fontWeight: 700,
                   color: 'var(--radar-cyan)',
                   background: 'rgba(0, 240, 255, 0.05)',
                   border: '1px solid rgba(0, 240, 255, 0.18)',
-                  padding: '0.45rem 0.6rem',
+                  padding: '0.5rem 0.8rem',
                   borderRadius: 'var(--radius-xs)',
-                  lineHeight: 1.42
+                  lineHeight: 1.5
                 }}>
                   ■ 파이프라인 목표: {aff.pipelineEstimate}
                 </div>
