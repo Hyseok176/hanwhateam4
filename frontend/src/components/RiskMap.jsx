@@ -97,22 +97,22 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
           }
           return c.intensity === filterIntensity;
         });
-
-    const markerCoords = [];
+    // 분쟁지 좌표 추출 헬퍼
+    const getCoords = (c) => {
+      if (!c) return [25.0, 35.0];
+      if (c.locations && c.locations.length > 0 && c.locations[0].lat && c.locations[0].lon) {
+        return [c.locations[0].lat, c.locations[0].lon];
+      }
+      if (c.regionKo === '동유럽') return [50.45, 30.52];
+      if (c.regionKo === '중동') return [31.76, 35.21];
+      if (c.regionKo === '동아시아') return [24.0, 121.0];
+      if (c.regionKo === '아프리카') return [15.5, 32.5];
+      if (c.regionKo === '남미') return [4.7, -74.0];
+      return [25.0, 35.0];
+    };
 
     filtered.forEach(conflict => {
-      let lat = 20, lon = 0;
-      if (conflict.locations && conflict.locations.length > 0) {
-        lat = conflict.locations[0].lat;
-        lon = conflict.locations[0].lon;
-      } else {
-        if (conflict.regionKo === '동유럽') { lat = 50.45; lon = 30.52; }
-        else if (conflict.regionKo === '중동') { lat = 31.76; lon = 35.21; }
-        else if (conflict.regionKo === '동아시아') { lat = 24.0; lon = 121.0; }
-        else if (conflict.regionKo === '아프리카') { lat = 15.5; lon = 32.5; }
-        else if (conflict.regionKo === '남미') { lat = 4.7; lon = -74.0; }
-      }
-
+      const [lat, lon] = getCoords(conflict);
       markerCoords.push([lat, lon]);
 
       const isHigh = conflict.intensity === 'High';
@@ -151,10 +151,42 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
       markersLayerRef.current.addLayer(marker);
     });
 
-    // 필터 선택 시 해당 지역으로 지도 자동 이동
+    // 필터 선택 시 해당 위험도 지점들로 지도 스마트 확대 이동 (High, Medium, Low 모두 완벽 지원)
     if (filtered.length > 0 && mapInstanceRef.current) {
-      if (filterIntensity === 'Low') {
-        // 저위험 분쟁지 (대만 해협, 남중국해) 중심부로 이동
+      if (filterIntensity === 'High') {
+        // 고위험 분쟁지: 동유럽·중동 핵심 전장 지점들로 줌인 확대
+        if (markerCoords.length > 1) {
+          try {
+            const bounds = L.latLngBounds(markerCoords);
+            mapInstanceRef.current.fitBounds(bounds, { padding: [60, 60], maxZoom: 5, duration: 1.2 });
+          } catch (e) {
+            mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
+          }
+        } else {
+          mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
+        }
+        if (!selectedConflict || selectedConflict.intensity !== 'High') {
+          onSelectConflict(filtered[0]);
+          renderSubLocations(filtered[0]);
+        }
+      } else if (filterIntensity === 'Medium') {
+        // 중위험 분쟁지: 중위험 전구 지점들로 줌인 확대
+        if (markerCoords.length > 1) {
+          try {
+            const bounds = L.latLngBounds(markerCoords);
+            mapInstanceRef.current.fitBounds(bounds, { padding: [60, 60], maxZoom: 5, duration: 1.2 });
+          } catch (e) {
+            mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
+          }
+        } else {
+          mapInstanceRef.current.flyTo(getCoords(filtered[0]), 5, { duration: 1.2 });
+        }
+        if (!selectedConflict || selectedConflict.intensity !== 'Medium') {
+          onSelectConflict(filtered[0]);
+          renderSubLocations(filtered[0]);
+        }
+      } else if (filterIntensity === 'Low') {
+        // 저위험 분쟁지: 동아시아/해협 지점들 중심부로 줌인 확대
         mapInstanceRef.current.flyTo([19.5, 118.0], 5, { duration: 1.2 });
         if (!selectedConflict || (selectedConflict.intensity !== 'Low' && selectedConflict.intensity !== 'Elevated')) {
           onSelectConflict(filtered[0]);
@@ -193,6 +225,32 @@ export default function RiskMap({ conflicts, selectedConflict, onSelectConflict 
       subLocationsLayerRef.current.addLayer(subMarker);
     });
   };
+
+  // 선택된 분쟁이 변경될 때 해당 지점으로 지도 줌인 & 하위 전선 거점 렌더링
+  useEffect(() => {
+    if (!selectedConflict || !mapInstanceRef.current) return;
+    renderSubLocations(selectedConflict);
+
+    let lat = 25.0, lon = 35.0;
+    if (selectedConflict.locations && selectedConflict.locations.length > 0 && selectedConflict.locations[0].lat) {
+      lat = selectedConflict.locations[0].lat;
+      lon = selectedConflict.locations[0].lon;
+    } else {
+      if (selectedConflict.regionKo === '동유럽') { lat = 50.45; lon = 30.52; }
+      else if (selectedConflict.regionKo === '중동') { lat = 31.76; lon = 35.21; }
+      else if (selectedConflict.regionKo === '동아시아') { lat = 24.0; lon = 121.0; }
+      else if (selectedConflict.regionKo === '아프리카') { lat = 15.5; lon = 32.5; }
+      else if (selectedConflict.regionKo === '남미') { lat = 4.7; lon = -74.0; }
+    }
+
+    const currentCenter = mapInstanceRef.current.getCenter();
+    const currentZoom = mapInstanceRef.current.getZoom();
+    const dist = Math.hypot(currentCenter.lat - lat, currentCenter.lng - lon);
+
+    if (dist > 2 || currentZoom < 5) {
+      mapInstanceRef.current.flyTo([lat, lon], Math.max(currentZoom, 5.5), { duration: 1.2 });
+    }
+  }, [selectedConflict?.slug || selectedConflict?.id || selectedConflict?.titleKo]);
 
   const c = selectedConflict;
   const isHigh = c?.intensity === 'High';
