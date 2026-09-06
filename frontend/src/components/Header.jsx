@@ -45,7 +45,7 @@ export default function Header({ status, isSyncing, onSync, onOpenReport, onOpen
           <RefreshCw size={15} className={isSyncing ? 'fa-spin' : ''} />
           <span>{isSyncing ? '동기화 중...' : '실시간 동기화'}</span>
         </button>
-        <button className="btn btn-primary" onClick={onOpenReport} title="경영진 보고용 AI 브리핑 리포트">
+        <button className="btn btn-primary" onClick={() => onOpenReport && onOpenReport()} title="경영진 보고용 AI 브리핑 리포트">
           <FileText size={15} /> <span>AI 전략 보고서</span>
         </button>
       </div>

@@ -100,12 +100,19 @@ export default function App() {
   const handleOpenReport = async (overrideModel) => {
     setIsReportOpen(true);
     setIsReportLoading(true);
-    const targetModel = overrideModel || settings.model || 'gpt-5.4';
+    const targetModel = (typeof overrideModel === 'string' && overrideModel.trim())
+      ? overrideModel.trim()
+      : (settings.model || 'gpt-5.4');
     try {
       const res = await fetch('/api/report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...settings, model: targetModel })
+        body: JSON.stringify({
+          provider: settings.provider || 'openai',
+          apiKey: settings.apiKey || '',
+          model: targetModel,
+          syncInterval: Number(settings.syncInterval || 0)
+        })
       });
       const data = await res.json();
       if (data.success && data.report) {
@@ -153,7 +160,7 @@ export default function App() {
         status={status}
         isSyncing={isSyncing}
         onSync={() => handleSync(true)}
-        onOpenReport={handleOpenReport}
+        onOpenReport={() => handleOpenReport()}
         onOpenSettings={() => setIsSettingsOpen(true)}
       />
 
