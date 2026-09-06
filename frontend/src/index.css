@@ -439,6 +439,17 @@ body {
   box-shadow: var(--shadow-card);
 }
 
+/* 지도 타일 테마별 시각적 대비 최적화 (100% 한국어 지명 유지) */
+.tile-layer-terrain img {
+  filter: contrast(1.18) saturate(1.15) brightness(0.98);
+}
+.tile-layer-roadmap img {
+  filter: contrast(1.0) brightness(1.0);
+}
+.tile-layer-satellite img {
+  filter: contrast(1.06) brightness(0.95);
+}
+
 .style-btn {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-subtle);
