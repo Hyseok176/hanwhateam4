@@ -656,7 +656,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
     {{
       "pillar": "해양 안보 및 특수함정 (한화오션)",
       "action": "단기/중기/장기 실행 로드맵 (4~5문장)..."
-    }
+    }}
   ]
 }}"""
 
