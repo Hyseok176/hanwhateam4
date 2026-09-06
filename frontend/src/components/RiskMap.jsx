@@ -50,6 +50,7 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
   const tileLayerRef = useRef(null);
   const isFilterActionRef = useRef(false);
   const filterTimeoutRef = useRef(null);
+  const isInitialLoadRef = useRef(true);
   const [filterIntensity, setFilterIntensity] = useState('ALL');
   const [mapStyle, setMapStyle] = useState('terrain');
   const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
@@ -265,9 +266,16 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
     if (!selectedConflict) return;
     renderSubLocations(selectedConflict);
 
-    // 필터 버튼 클릭에 의한 전체 조망 모드일 때는 단일 지점으로의 flyTo를 건너뜀
+    // 1. 페이지 첫 로딩 시에는 전체 분쟁 조망(글로벌 뷰)을 유지하고 단일 지점 줌인을 건너뜀
+    if (isInitialLoadRef.current) {
+      isInitialLoadRef.current = false;
+      return;
+    }
+
+    // 2. 필터 버튼 클릭에 의한 전체 조망 모드일 때도 단일 지점으로의 flyTo를 건너뜀
     if (isFilterActionRef.current) return;
 
+    // 3. 사용자가 마커를 직접 클릭했거나 매트릭스에서 분쟁을 선택하여 넘어온 경우에만 해당 지점으로 줌인
     try {
       const map = mapInstanceRef.current;
       if (map && typeof map.flyTo === 'function') {
