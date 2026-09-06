@@ -48,6 +48,8 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
   const markersLayerRef = useRef(null);
   const subLocationsLayerRef = useRef(null);
   const tileLayerRef = useRef(null);
+  const isFilterActionRef = useRef(false);
+  const filterTimeoutRef = useRef(null);
   const [filterIntensity, setFilterIntensity] = useState('ALL');
   const [mapStyle, setMapStyle] = useState('terrain');
   const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
@@ -151,6 +153,7 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
       `, { direction: 'top', offset: [0, -size / 2] });
 
       marker.on('click', () => {
+        isFilterActionRef.current = false;
         try {
           mapInstanceRef.current.flyTo([lat, lon], 6, { duration: 1.2 });
         } catch (e) {}
@@ -162,9 +165,15 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
     });
   }, [conflicts, filterIntensity]);
 
-  // 필터 버튼 클릭 핸들러 (사용자가 버튼을 눌렀을 때만 안전하게 확대/이동 및 분쟁 선택)
+  // 필터 버튼 클릭 핸들러: 선택된 위험도의 '모든' 분쟁 지점이 화면에 한눈에 보이도록 맞춤 확대 (fitBounds)
   const handleFilterClick = (newIntensity) => {
+    if (filterTimeoutRef.current) {
+      clearTimeout(filterTimeoutRef.current);
+    }
+    // 필터 클릭 시에는 개별 지점으로 flyTo되는 부수효과를 일시 차단하여 모든 지점 조망 유지
+    isFilterActionRef.current = true;
     setFilterIntensity(newIntensity);
+
     const map = mapInstanceRef.current;
     if (!map) return;
 
@@ -178,46 +187,39 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
     if (!filtered || filtered.length === 0) return;
 
     try {
-      if (newIntensity === 'High') {
-        // 고위험: 동유럽·중동 핵심 고위험 전장 구역으로 줌인 확대
-        const coordsList = filtered.map(c => getConflictCoordinates(c)).filter(Boolean);
-        if (coordsList.length > 1) {
-          const bounds = L.latLngBounds(coordsList);
-          if (bounds.isValid()) {
-            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 5 });
+      const coordsList = filtered.map(c => getConflictCoordinates(c)).filter(Boolean);
+
+      if (coordsList.length > 0) {
+        const bounds = L.latLngBounds(coordsList);
+        if (bounds.isValid()) {
+          if (newIntensity === 'High') {
+            // 고위험: 전 세계 16개 고위험 분쟁 지점 전체가 한눈에 들어오도록 피팅
+            map.fitBounds(bounds.pad(0.08), { padding: [50, 50], maxZoom: 4.5, animate: true });
+          } else if (newIntensity === 'Medium') {
+            // 중위험: 11개 중위험 분쟁 지점 전체가 한눈에 들어오도록 피팅
+            map.fitBounds(bounds.pad(0.08), { padding: [50, 50], maxZoom: 4.5, animate: true });
+          } else if (newIntensity === 'Low') {
+            // 저위험: 대만 해협 및 남중국해 등 저위험 분쟁 지점 전체가 한눈에 들어오도록 피팅
+            map.fitBounds(bounds.pad(0.25), { padding: [60, 60], maxZoom: 5.5, animate: true });
           } else {
-            map.flyTo(coordsList[0], 5, { duration: 1.0 });
+            // 전체: 29개 분쟁 전체 조망
+            map.fitBounds(bounds.pad(0.05), { padding: [40, 40], maxZoom: 3.5, animate: true });
           }
-        } else {
-          map.flyTo(coordsList[0], 5, { duration: 1.0 });
         }
-        if (onSelectConflict) onSelectConflict(filtered[0]);
+      }
+
+      // 우측 전술 보고서 패널을 위해 해당 위험도의 첫 번째 항목 설정 (지도는 fitBounds 유지)
+      if (onSelectConflict && filtered.length > 0) {
+        onSelectConflict(filtered[0]);
         renderSubLocations(filtered[0]);
-      } else if (newIntensity === 'Medium') {
-        // 중위험: 중위험 전구 지점들로 줌인 확대
-        const coordsList = filtered.map(c => getConflictCoordinates(c)).filter(Boolean);
-        if (coordsList.length > 1) {
-          const bounds = L.latLngBounds(coordsList);
-          if (bounds.isValid()) {
-            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 5 });
-          } else {
-            map.flyTo(coordsList[0], 5, { duration: 1.0 });
-          }
-        } else {
-          map.flyTo(coordsList[0], 5, { duration: 1.0 });
-        }
-        if (onSelectConflict) onSelectConflict(filtered[0]);
-        renderSubLocations(filtered[0]);
-      } else if (newIntensity === 'Low') {
-        // 저위험: 동아시아/해협 지점들 중심부로 줌인 확대
-        map.flyTo([19.5, 118.0], 5, { duration: 1.0 });
-        if (onSelectConflict) onSelectConflict(filtered[0]);
-        renderSubLocations(filtered[0]);
-      } else if (newIntensity === 'ALL') {
-        map.flyTo([25.0, 35.0], 3, { duration: 1.0 });
       }
     } catch (err) {
-      console.warn('필터 지도 줌인 예외 방어:', err);
+      console.warn('필터 지도 전체 조망 피팅 예외 방어:', err);
+    } finally {
+      // 1.5초 후 필터 조망 플래그를 해제하여 추후 마커 직접 클릭 시 정상 줌인 지원
+      filterTimeoutRef.current = setTimeout(() => {
+        isFilterActionRef.current = false;
+      }, 1500);
     }
   };
 
@@ -250,10 +252,13 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
     });
   };
 
-  // 선택된 분쟁이 외부(매트릭스 등)에서 변경되었을 때 안전하게 줌인 및 하위 거점 렌더링
+  // 선택된 분쟁이 외부(마커 클릭 또는 매트릭스 등)에서 변경되었을 때 해당 지점으로 줌인
   useEffect(() => {
     if (!selectedConflict) return;
     renderSubLocations(selectedConflict);
+
+    // 필터 버튼 클릭에 의한 전체 조망 모드일 때는 단일 지점으로의 flyTo를 건너뜀
+    if (isFilterActionRef.current) return;
 
     try {
       const map = mapInstanceRef.current;
