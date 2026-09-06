@@ -64,7 +64,6 @@ export default function ReportDocument({ report, contentRef }) {
         <div style={{
           background: 'var(--bg-surface-elevated)',
           border: '1px solid var(--border-medium)',
-          borderLeft: '4px solid var(--brand-orange)',
           borderRadius: 'var(--radius-xs)',
           padding: '1.25rem 1.45rem',
           marginBottom: '1.25rem'
@@ -117,7 +116,6 @@ export default function ReportDocument({ report, contentRef }) {
               <div key={idx} style={{
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-medium)',
-                borderLeft: '4px solid var(--alert-red)',
                 borderRadius: 'var(--radius-xs)',
                 padding: '1.15rem 1.35rem',
                 display: 'flex',
@@ -188,7 +186,6 @@ export default function ReportDocument({ report, contentRef }) {
               <div key={idx} style={{
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-medium)',
-                borderLeft: '4px solid var(--brand-orange)',
                 borderRadius: 'var(--radius-xs)',
                 padding: '1.15rem 1.35rem',
                 display: 'flex',
@@ -314,7 +311,6 @@ export default function ReportDocument({ report, contentRef }) {
               style={{
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-medium)',
-                borderLeft: `4px solid ${t.intensity === 'High' ? 'var(--alert-red)' : t.intensity === 'Medium' ? 'var(--alert-amber)' : 'var(--brand-orange)'}`,
                 borderRadius: 'var(--radius-xs)',
                 padding: '1.35rem 1.55rem',
                 pageBreakInside: 'avoid',
@@ -420,11 +416,13 @@ export default function ReportDocument({ report, contentRef }) {
                         <div key={tlIdx} style={{
                           display: 'flex',
                           alignItems: 'flex-start',
-                          gap: '8px',
+                          gap: '10px',
                           fontSize: '0.82rem',
-                          borderLeft: '2px solid var(--brand-orange)',
-                          paddingLeft: '10px'
+                          padding: '3px 0'
                         }}>
+                          <span style={{ color: 'var(--brand-orange)', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0, marginTop: '2px' }}>
+                            •
+                          </span>
                           <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.74rem', flexShrink: 0, marginTop: '2px', minWidth: '76px' }}>
                             {item.date}
                           </span>
@@ -563,7 +561,7 @@ export default function ReportDocument({ report, contentRef }) {
               return !p.includes('공급망') && !p.includes('GVC') && !p.includes('금융') && !p.includes('ECA');
             })
             .map((r, idx) => (
-              <div className="pillar-card" key={idx} style={{ padding: '1.25rem 1.5rem', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-medium)', borderLeft: '4px solid var(--brand-orange)', background: 'var(--bg-surface-elevated)' }}>
+              <div className="pillar-card" key={idx} style={{ padding: '1.25rem 1.5rem', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-medium)', background: 'var(--bg-surface-elevated)' }}>
                 <div className="pillar-title" style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '0.6rem', color: 'var(--text-primary)' }}>
                   <span style={{ color: 'var(--brand-orange)', marginRight: '8px' }}>{idx + 1}.</span>
                   <span>{r.pillar}</span>

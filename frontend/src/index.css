@@ -1838,9 +1838,8 @@ body {
 .report-exec-list li {
   font-size: 0.88rem;
   background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  border-left: 3px solid var(--brand-orange);
-  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--border-medium);
+  padding: 0.85rem 1.15rem;
   border-radius: var(--radius-xs);
   color: var(--text-primary);
   line-height: 1.65;
@@ -2062,7 +2061,6 @@ body {
 .pillar-card {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-medium);
-  border-left: 4px solid var(--brand-orange);
   border-radius: var(--radius-xs);
   padding: 1.25rem 1.5rem;
   box-shadow: none;
