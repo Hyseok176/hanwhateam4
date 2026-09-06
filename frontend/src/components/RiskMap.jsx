@@ -148,11 +148,8 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
       const customIcon = L.divIcon({
         className: 'tactical-marker-wrap',
         html: `
-          <div style="position: relative; width: ${size}px; height: ${size}px; cursor: pointer;">
-            <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: ${colorHex}; border: 2.5px solid #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: ${size > 22 ? '11px' : '9px'}; font-weight: 800; font-family: sans-serif;">
-              ${conflict.griScore || ''}
-            </div>
-            ${isHigh || isMed ? `<div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid ${colorHex}; animation: map-pulse-${isHigh ? 'high' : 'med'} 2s infinite ease-out;"></div>` : ''}
+          <div style="width: ${size}px; height: ${size}px; cursor: pointer; border-radius: 50%; background: ${colorHex}; border: 2px solid #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: ${size > 22 ? '11px' : '9px'}; font-weight: 800; font-family: sans-serif;">
+            ${conflict.griScore || ''}
           </div>
         `,
         iconSize: [size, size],
@@ -544,17 +541,17 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
                   <div className="dossier-section-title">
                     <FileText size={14} className="text-orange" /> 미래전략실 전략 브리핑
                   </div>
-                  <p style={{
+                  <div style={{
                     fontSize: '0.82rem',
                     color: 'var(--text-secondary)',
-                    lineHeight: 1.55,
+                    lineHeight: 1.6,
                     background: 'var(--bg-surface-elevated)',
-                    padding: '0.85rem',
-                    borderRadius: 'var(--radius-sm)',
-                    borderLeft: '3px solid var(--brand-orange)'
+                    padding: '0.85rem 1rem',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-medium)'
                   }}>
                     {c.strategicSummary}
-                  </p>
+                  </div>
                 </div>
 
                 {/* 3. Matched Hanwha Weapons with Environmental & Operational Advisory */}

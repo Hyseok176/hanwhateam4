@@ -90,7 +90,7 @@ export default function PortfolioSpectrum({ portfolio }) {
                 background: selectedCat === tab ? 'var(--brand-orange)' : 'rgba(255,255,255,0.08)',
                 color: selectedCat === tab ? '#fff' : 'var(--text-muted)',
                 padding: '0.1rem 0.45rem',
-                borderRadius: 'var(--radius-pill)',
+                borderRadius: 'var(--radius-xs)',
                 fontSize: '0.68rem',
                 fontWeight: 700
               }}>

@@ -24,15 +24,15 @@
   --brand-orange-hover: #E06010;
   --brand-orange-light: #FFF0E6;
   --brand-orange-subtle: rgba(243, 115, 33, 0.08);
-  --brand-orange-glow: rgba(243, 115, 33, 0.2);
+  --brand-orange-glow: rgba(0, 0, 0, 0.08);
 
   /* Functional Accents (Toss style) */
   --radar-cyan: #3182F6; /* Toss Blue */
-  --radar-cyan-glow: rgba(49, 130, 246, 0.2);
+  --radar-cyan-glow: rgba(0, 0, 0, 0.08);
   --radar-cyan-subtle: rgba(49, 130, 246, 0.08);
 
   --alert-red: #F04452; /* Toss Red */
-  --alert-red-glow: rgba(240, 68, 82, 0.2);
+  --alert-red-glow: rgba(0, 0, 0, 0.08);
   --alert-amber: #FF9500;
   --alert-green: #04C09E;
 
@@ -52,12 +52,12 @@
   /* ======================================================== */
   /* 3. TOSS / BANKSALAD CORNER RADII                         */
   /* ======================================================== */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
-  --radius-pill: 9999px;
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-pill: 4px;
 
   /* ======================================================== */
   /* 4. TOSS / BANKSALAD SOFT SHADOWS                         */
@@ -154,7 +154,7 @@ body {
   justify-content: center;
   font-size: 1.25rem;
   color: #fff;
-  box-shadow: 0 4px 12px var(--brand-orange-glow);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .brand-title-wrap {
@@ -245,12 +245,12 @@ body {
 .btn-primary {
   background: var(--brand-orange);
   color: #fff;
-  box-shadow: 0 4px 14px var(--brand-orange-glow);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .btn-primary:hover {
   background: var(--brand-orange-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px var(--brand-orange-glow);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
 }
 
 .btn-outline {
@@ -292,8 +292,8 @@ body {
   gap: 0.35rem;
   background: var(--bg-surface-elevated);
   padding: 0.3rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-medium);
 }
 
 .nav-tab {
@@ -304,7 +304,7 @@ body {
   font-size: 0.84rem;
   font-weight: 600;
   padding: 0.45rem 1.15rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -320,7 +320,8 @@ body {
   background: var(--bg-surface);
   color: var(--brand-orange);
   font-weight: 800;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .nav-extra-info {
@@ -332,18 +333,11 @@ body {
 }
 
 .pulse-indicator {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   background: var(--alert-green);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--alert-green);
-  animation: pulse-green 2s infinite;
-}
-
-@keyframes pulse-green {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  70% { transform: scale(1.15); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.8; }
+  display: inline-block;
 }
 
 /* ======================================================== */
@@ -438,17 +432,16 @@ body {
 }
 
 .map-filter-group, .map-legend, .map-style-switcher {
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  padding: 0.35rem 0.75rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 0.35rem 0.65rem;
   display: inline-flex;
   width: fit-content;
   max-width: fit-content;
   align-items: center;
   gap: 0.45rem;
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* 지도 타일 테마별 시각적 대비 최적화 (100% 한국어 지명 유지) */
@@ -464,12 +457,12 @@ body {
 
 .style-btn {
   background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-medium);
   color: var(--text-secondary);
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 0.28rem 0.65rem;
-  border-radius: var(--radius-pill);
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
@@ -487,7 +480,7 @@ body {
   background: var(--brand-orange);
   color: #FFFFFF;
   border-color: var(--brand-orange);
-  box-shadow: 0 2px 8px var(--brand-orange-glow);
+  box-shadow: none;
   font-weight: 800;
 }
 
@@ -500,12 +493,12 @@ body {
 
 .filter-chip {
   background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-medium);
   color: var(--text-secondary);
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 0.28rem 0.65rem;
-  border-radius: var(--radius-pill);
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -731,7 +724,6 @@ body {
 }
 
 .terrain-recon-card:hover {
-  transform: translateY(-2px);
   box-shadow: var(--shadow-card);
   border-color: var(--brand-orange);
 }
@@ -1224,23 +1216,15 @@ body {
 }
 
 .matrix-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(243, 115, 33, 0.4);
+  border-color: var(--brand-orange);
   box-shadow: var(--shadow-card-hover);
 }
 
-.matrix-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-}
+/* Top colored line removed */
 
-.matrix-card.card-high::before { background: var(--alert-red); }
-.matrix-card.card-med::before { background: var(--alert-amber); }
-.matrix-card.card-low::before { background: var(--radar-cyan); }
+
+
+
 
 .mc-header {
   display: flex;
@@ -1383,7 +1367,7 @@ body {
   background: var(--brand-orange);
   border-color: var(--brand-orange);
   color: #fff;
-  box-shadow: 0 2px 8px var(--brand-orange-glow);
+  box-shadow: none;
 }
 
 .news-list-layout {
@@ -1410,8 +1394,7 @@ body {
   box-shadow: var(--shadow-card);
 }
 .news-card-row:hover {
-  border-color: rgba(243, 115, 33, 0.4);
-  transform: translateY(-2px);
+  border-color: var(--brand-orange);
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -1603,7 +1586,7 @@ body {
   background: var(--brand-orange);
   border-color: var(--brand-orange);
   color: #fff;
-  box-shadow: 0 2px 8px var(--brand-orange-glow);
+  box-shadow: none;
 }
 
 .portfolio-grid {
@@ -1624,8 +1607,7 @@ body {
 }
 
 .portfolio-card:hover {
-  border-color: rgba(243, 115, 33, 0.4);
-  transform: translateY(-3px);
+  border-color: var(--brand-orange);
   box-shadow: var(--shadow-card-hover);
 }
 

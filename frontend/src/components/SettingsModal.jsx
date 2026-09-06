@@ -93,7 +93,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
               fontSize: '0.76rem',
               fontWeight: 800,
               padding: '3px 10px',
-              borderRadius: 'var(--radius-pill)',
+              borderRadius: 'var(--radius-sm)',
               whiteSpace: 'nowrap'
             }}>
               OpenAI GPT-5.4
@@ -149,9 +149,9 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
                     )}
                     <div>
                       <div style={{ fontWeight: 600 }}>{testResult.message}</div>
-                      {testResult.success && testResult.totalTokens > 0 && (
-                        <div style={{ color: 'var(--radar-cyan)', marginTop: '0.2rem', fontFamily: 'var(--font-mono)' }}>
-                          입력: {testResult.promptTokens}토큰 | 출력: {testResult.outputTokens}토큰 (총 {testResult.totalTokens}토큰 정상 감지)
+                      {testResult.success && (
+                        <div style={{ color: 'var(--radar-cyan)', marginTop: '0.2rem', fontSize: '0.72rem' }}>
+                          인텔리전스 전략 분석 엔진과의 정상 통신이 확인되었습니다.
                         </div>
                       )}
                     </div>
