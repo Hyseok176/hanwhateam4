@@ -123,27 +123,6 @@ export default function ReportPageView({ onBack }) {
         </div>
 
         <div className="report-page-topbar-right">
-          {/* 토큰 현황 뱃지 */}
-          {report?.telemetry && (
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid var(--border-subtle)',
-              padding: '4px 12px',
-              borderRadius: 'var(--radius-pill)',
-              fontSize: '0.74rem',
-              fontFamily: 'var(--font-mono)',
-              whiteSpace: 'nowrap',
-              flexShrink: 0
-            }}>
-              <span style={{ color: 'var(--text-muted)' }}>분석 토큰:</span>
-              <span>입력 <strong style={{ color: 'var(--text-primary)' }}>{(report.telemetry.promptTokens || 0).toLocaleString()}</strong></span>
-              <span style={{ color: 'var(--border-subtle)' }}>/</span>
-              <span>출력 <strong style={{ color: 'var(--brand-orange)' }}>{(report.telemetry.outputTokens || 0).toLocaleString()}</strong></span>
-            </div>
-          )}
 
           <button
             className="btn btn-sm btn-primary"
@@ -219,39 +198,7 @@ export default function ReportPageView({ onBack }) {
               </button>
             </div>
           ) : report ? (
-            <>
-              {report?.telemetry && (report.telemetry.promptTokens < 13000 || report.telemetry.outputTokens < 3500) && (
-                <div style={{
-                  background: 'rgba(237, 109, 0, 0.08)',
-                  border: '1px solid rgba(237, 109, 0, 0.3)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '0.75rem 1.1rem',
-                  marginBottom: '1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '1rem',
-                  fontSize: '0.82rem',
-                  color: 'var(--text-primary)'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <ShieldCheck size={16} style={{ color: 'var(--brand-orange)', flexShrink: 0 }} />
-                    <span>
-                      <strong>안내:</strong> 현재 브라우저에 임시 저장된 분석본입니다. 글로벌 29개 분쟁 전구 및 한화 방산 18대 전략 체계 최신 데이터가 반영된 전면 분석본을 생성하시려면 우측 버튼을 누르세요.
-                    </span>
-                  </div>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => fetchReport(true)}
-                    disabled={isLoading}
-                    style={{ whiteSpace: 'nowrap', fontWeight: 700, padding: '0.35rem 0.85rem' }}
-                  >
-                    최신 전면 분석 실행
-                  </button>
-                </div>
-              )}
-              <ReportDocument report={report} contentRef={contentRef} />
-            </>
+            <ReportDocument report={report} contentRef={contentRef} />
           ) : null}
         </div>
       </main>
