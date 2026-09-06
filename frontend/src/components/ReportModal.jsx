@@ -133,7 +133,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                     disabled={isLoading}
                     style={{ whiteSpace: 'nowrap', fontWeight: 700, padding: '0.35rem 0.85rem' }}
                   >
-                    🚀 최신 심층 분석
+                    최신 심층 분석
                   </button>
                 </div>
               )}
