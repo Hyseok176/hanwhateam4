@@ -190,21 +190,29 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
       const coordsList = filtered.map(c => getConflictCoordinates(c)).filter(Boolean);
 
       if (coordsList.length > 0) {
-        const bounds = L.latLngBounds(coordsList);
-        if (bounds.isValid()) {
-          if (newIntensity === 'High') {
-            // 고위험: 전 세계 16개 고위험 분쟁 지점 전체가 한눈에 들어오도록 피팅
-            map.fitBounds(bounds.pad(0.08), { padding: [50, 50], maxZoom: 4.5, animate: true });
-          } else if (newIntensity === 'Medium') {
-            // 중위험: 11개 중위험 분쟁 지점 전체가 한눈에 들어오도록 피팅
-            map.fitBounds(bounds.pad(0.08), { padding: [50, 50], maxZoom: 4.5, animate: true });
-          } else if (newIntensity === 'Low') {
-            // 저위험: 대만 해협 및 남중국해 등 저위험 분쟁 지점 전체가 한눈에 들어오도록 피팅
-            map.fitBounds(bounds.pad(0.25), { padding: [60, 60], maxZoom: 5.5, animate: true });
-          } else {
-            // 전체: 29개 분쟁 전체 조망
-            map.fitBounds(bounds.pad(0.05), { padding: [40, 40], maxZoom: 3.5, animate: true });
+        if (newIntensity === 'High') {
+          // 고위험: 16곳 중 81%(13곳)가 밀집된 유라시아-중동-아프리카-남아시아 핵심 분쟁 벨트로 시원하게 줌인 확대 (줌 3.8~4.0)
+          const mainCluster = coordsList.filter(pt => pt[1] > -20);
+          const bounds = L.latLngBounds(mainCluster.length > 0 ? mainCluster : coordsList);
+          if (bounds.isValid()) {
+            map.fitBounds(bounds, { padding: [30, 30], maxZoom: 4.2, animate: true, duration: 1.0 });
           }
+        } else if (newIntensity === 'Medium') {
+          // 중위험: 11곳 중 91%(10곳)가 밀집된 중동-지중해-아프리카-중앙아시아 벨트로 정밀 줌인 확대 (줌 4.3~4.6)
+          const mainCluster = coordsList.filter(pt => pt[1] > -20);
+          const bounds = L.latLngBounds(mainCluster.length > 0 ? mainCluster : coordsList);
+          if (bounds.isValid()) {
+            map.fitBounds(bounds, { padding: [30, 30], maxZoom: 4.6, animate: true, duration: 1.0 });
+          }
+        } else if (newIntensity === 'Low') {
+          // 저위험: 대만 해협 및 남중국해 동아시아 해역 줌인 조망 (줌 5.5)
+          const bounds = L.latLngBounds(coordsList);
+          if (bounds.isValid()) {
+            map.fitBounds(bounds.pad(0.2), { padding: [50, 50], maxZoom: 5.5, animate: true, duration: 1.0 });
+          }
+        } else {
+          // 전체: 전 세계 29개 분쟁 전체 조망 (줌 2.8)
+          map.flyTo([22.0, 30.0], 2.8, { duration: 1.0 });
         }
       }
 
