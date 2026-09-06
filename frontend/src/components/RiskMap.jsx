@@ -48,7 +48,7 @@ const getConflictCoordinates = (c) => {
   return [25.0, 35.0];
 };
 
-export default function RiskMap({ conflicts = [], selectedConflict, onSelectConflict }) {
+export default function RiskMap({ conflicts = [], selectedConflict, onSelectConflict, focusConflict, onFocusConsumed }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersLayerRef = useRef(null);
@@ -275,27 +275,57 @@ export default function RiskMap({ conflicts = [], selectedConflict, onSelectConf
     });
   };
 
-  // 선택된 분쟁이 외부(마커 클릭 또는 매트릭스 등)에서 변경되었을 때 해당 지점으로 줌인
+  // 1. 소요 무기 매칭 매트릭스 등 외부에서 '지도에서 분석'을 눌러 특정 분쟁 지역으로 네비게이션된 경우
+  useEffect(() => {
+    if (!focusConflict) return;
+
+    // 매트릭스에서 명시적으로 넘어왔으므로 초기 로딩 건너뛰기 플래그 무조건 해제
+    isInitialLoadRef.current = false;
+    isFilterActionRef.current = false;
+
+    renderSubLocations(focusConflict);
+
+    const zoomToFocus = () => {
+      const map = mapInstanceRef.current;
+      if (!map) return;
+      try {
+        const coords = getConflictCoordinates(focusConflict);
+        if (coords && coords[0] && coords[1]) {
+          map.invalidateSize();
+          map.flyTo(coords, 5.8, { duration: 1.2 });
+        }
+      } catch (err) {
+        console.warn('focusConflict 줌인 처리 오류 방어:', err);
+      }
+      if (onFocusConsumed) onFocusConsumed();
+    };
+
+    // DOM 및 타일 준비를 위해 약간의 딜레이 후 확대 실행
+    const timer = setTimeout(zoomToFocus, 120);
+    return () => clearTimeout(timer);
+  }, [focusConflict]);
+
+  // 2. 선택된 분쟁이 지도 내부 클릭 또는 기타 변경되었을 때 처리
   useEffect(() => {
     if (!selectedConflict) return;
     renderSubLocations(selectedConflict);
 
-    // 1. 페이지 첫 로딩 시에는 전체 분쟁 조망(글로벌 뷰)을 유지하고 단일 지점 줌인을 건너뜀
+    // 페이지 첫 로딩 시 (focusConflict가 없는 경우)에는 전체 분쟁 조망(글로벌 뷰)을 유지
     if (isInitialLoadRef.current) {
       isInitialLoadRef.current = false;
       return;
     }
 
-    // 2. 필터 버튼 클릭에 의한 전체 조망 모드일 때도 단일 지점으로의 flyTo를 건너뜀
+    // 필터 버튼 클릭에 의한 전체 조망 모드일 때는 개별 지점 flyTo를 건너뜀
     if (isFilterActionRef.current) return;
 
-    // 3. 사용자가 마커를 직접 클릭했거나 매트릭스에서 분쟁을 선택하여 넘어온 경우에만 해당 지점으로 줌인
+    // 사용자가 마커를 직접 클릭했거나 분쟁을 선택한 경우 해당 지점으로 줌인
     try {
       const map = mapInstanceRef.current;
       if (map && typeof map.flyTo === 'function') {
         const coords = getConflictCoordinates(selectedConflict);
         if (coords && coords[0] && coords[1]) {
-          map.flyTo(coords, 5.5, { duration: 1.2 });
+          map.flyTo(coords, 5.8, { duration: 1.2 });
         }
       }
     } catch (e) {

@@ -21,6 +21,7 @@ export default function App() {
   const [news, setNews] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
   const [selectedConflict, setSelectedConflict] = useState(null);
+  const [focusConflict, setFocusConflict] = useState(null);
   const [isSyncing, setIsSyncing] = useState(false);
 
   // Modals state
@@ -192,9 +193,10 @@ export default function App() {
     alert('시스템 설정이 정상적으로 저장되었습니다.');
   };
 
-  // 매트릭스에서 선택 후 지도 탭으로 전환
+  // 매트릭스에서 선택 후 지도 탭으로 전환 (해당 분쟁 지역으로 포커스 줌인)
   const handleSelectConflictAndNavigate = (conflict) => {
     setSelectedConflict(conflict);
+    setFocusConflict(conflict);
     setCurrentView('map');
   };
 
@@ -235,6 +237,8 @@ export default function App() {
             conflicts={matching}
             selectedConflict={selectedConflict}
             onSelectConflict={setSelectedConflict}
+            focusConflict={focusConflict}
+            onFocusConsumed={() => setFocusConflict(null)}
           />
         )}
 
