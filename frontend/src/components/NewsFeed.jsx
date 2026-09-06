@@ -49,7 +49,7 @@ export default function NewsFeed({ news }) {
             <Newspaper className="text-cyan" size={22} /> 데일리방산 실시간 뉴스 인텔리전스
           </h2>
           <p className="section-desc">
-            데일리방산 공식 RSS 피드(최신 50건)를 실시간 수집하고, 주요 무기체계 및 글로벌 분쟁 태그를 자동 분석합니다.
+            데일리방산 공식 RSS 및 실시간 수집 피드(최신 {news.length || 100}건)를 분석하여 주요 무기체계 및 글로벌 분쟁 태그를 매칭합니다.
           </p>
         </div>
 

@@ -523,9 +523,9 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
         )
     weapons_catalog_text = "\n\n".join(weapons_catalog_entries)
 
-    # 4. 팩트 그라운딩 테이블 [4]: 최근 50건 데일리방산 실시간 수집 뉴스 전체 인덱스
+    # 4. 팩트 그라운딩 테이블 [4]: 수집된 100건 데일리방산 실시간 뉴스 전체 인덱스
     news_feed_entries = []
-    for idx, n in enumerate((news_list or [])[:50], 1):
+    for idx, n in enumerate((news_list or [])[:100], 1):
         clean_date = n.get('pubDate', '')[:10]
         news_feed_entries.append(
             f"[{n.get('id', f'DD-{idx:03d}')}] ({clean_date}) [{n.get('source', '데일리방산')}] {n.get('title', '')} (원문: {n.get('link', '')})"
@@ -548,7 +548,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
 {weapons_catalog_text}
 
 ======================================================================
-[팩트 데이터베이스 4: 최근 50건 데일리방산 실시간 수집 뉴스 전체 인덱스]
+[팩트 데이터베이스 4: 수집된 100건 데일리방산 실시간 뉴스 전체 인덱스]
 {news_feed_text}
 
 ======================================================================
