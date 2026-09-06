@@ -1,0 +1,687 @@
+import React from 'react';
+import {
+  Brain, ListChecks, Globe, Shield, Sparkles,
+  Crosshair, Compass, AlertTriangle, Thermometer, Cpu, Clock, ExternalLink,
+  FileText, Landmark, Building2, Layers, ShieldCheck
+} from 'lucide-react';
+
+/**
+ * AI 전략 보고서 전문(Full Document) 렌더링 컴포넌트
+ * 탭 분할 없이 제1부부터 제7부까지 단일 문서 형태로 연속 출력됩니다.
+ */
+export default function ReportDocument({ report, contentRef }) {
+  if (!report) return null;
+
+  return (
+    <div className="report-paper report-doc-full" ref={contentRef}>
+      {/* 1. Official Strategic Report Document Header */}
+      <div className="report-doc-official-header" style={{
+        borderBottom: '2px solid var(--brand-orange)',
+        paddingBottom: '1rem',
+        marginBottom: '1.5rem'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
+          <div>
+            <div className="report-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginBottom: '0.4rem' }}>
+              <ShieldCheck size={13} className="text-orange" />
+              <span>HANWHA DEFENSE STRATEGIC INTELLIGENCE • CLASSIFIED</span>
+            </div>
+            <h1 className="report-doc-title" style={{ fontSize: '1.45rem', fontWeight: 800, margin: '0 0 0.4rem 0', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+              {report.title || '글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서 (전문)'}
+            </h1>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span>분석 대상: 글로벌 29개 분쟁 전구 및 실시간 방산 데이터</span>
+              <span style={{ color: 'var(--border-subtle)' }}>•</span>
+              <span>연계 체계: 한화 3사(에어로스페이스·시스템·오션) 포트폴리오</span>
+            </div>
+          </div>
+          <div style={{ textAlign: 'right', minWidth: '180px' }}>
+            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              발행일: {report.displayDate || new Date().toLocaleDateString('ko-KR')}
+            </div>
+            <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: '3px' }}>
+              분석 모델: <strong style={{ color: 'var(--brand-orange)' }}>OpenAI GPT-5.4</strong>
+              {report.generatedAt && (
+                <span style={{ marginLeft: '6px', color: 'var(--text-secondary)' }}>
+                  ({new Date(report.generatedAt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })} 생성됨)
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. AI Engine & Telemetry Status Bar */}
+      {report.telemetry && (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.55rem',
+          background: report.telemetry.totalTokens > 0 ? 'rgba(4, 192, 158, 0.04)' : 'var(--bg-surface-elevated)',
+          border: `1px solid ${report.telemetry.totalTokens > 0 ? 'rgba(4, 192, 158, 0.2)' : 'var(--border-subtle)'}`,
+          borderRadius: 'var(--radius-md)',
+          padding: '0.75rem 1rem',
+          marginBottom: '1.75rem',
+          color: 'var(--text-secondary)'
+        }}>
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.75rem'
+          }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <Sparkles size={14} className="text-orange" />
+              <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.82rem' }}>
+                분석 엔진:
+              </span>
+              
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#FFFFFF', padding: '2px 10px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--border-medium)', boxShadow: 'var(--shadow-sm)' }}>
+                <Cpu size={12} className="text-cyan" />
+                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)' }}>엔진:</span>
+                <strong style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--brand-orange)' }}>OpenAI GPT-5.4</strong>
+              </div>
+
+              {report.telemetry.totalTokens > 0 ? (
+                <span style={{ color: 'var(--alert-green)', fontWeight: 600, fontSize: '0.74rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  ● 분석 완료 (캐시 보관됨)
+                </span>
+              ) : (
+                <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.74rem' }}>
+                  ● 정규 분석 데이터 (캐시)
+                </span>
+              )}
+            </div>
+
+            {report.telemetry.totalTokens > 0 && (
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.72rem' }}>
+                <span>입력: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.promptTokens?.toLocaleString()}</strong> 토큰</span>
+                <span style={{ color: 'var(--border-subtle)' }}>|</span>
+                <span>출력: <strong style={{ color: 'var(--text-primary)' }}>{report.telemetry.outputTokens?.toLocaleString()}</strong> 토큰</span>
+                <span style={{ color: 'var(--border-subtle)' }}>|</span>
+                <span style={{ color: 'var(--brand-orange)', fontWeight: 700 }}>총 {report.telemetry.totalTokens?.toLocaleString()} 토큰</span>
+                {report.telemetry.latencyMs && (
+                  <span style={{ color: 'var(--text-muted)' }}>({report.telemetry.latencyMs}ms)</span>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* 제 1 부: 경영진 거시 총평 및 총괄 요약                     */}
+      {/* ========================================================= */}
+      <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
+        <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Globe size={18} className="text-orange" /> 제 1 부: 경영진 거시 총평 및 총괄 요약 (Executive Summary)
+        </h2>
+
+        {/* Macro Key Takeaway Box */}
+        <div style={{
+          background: 'rgba(243, 115, 33, 0.04)',
+          border: '1px solid rgba(243, 115, 33, 0.22)',
+          borderLeft: '4px solid var(--brand-orange)',
+          borderRadius: 'var(--radius-md)',
+          padding: '1.15rem 1.35rem',
+          marginBottom: '1.25rem'
+        }}>
+          <h3 style={{
+            fontSize: '0.94rem',
+            fontWeight: 800,
+            color: 'var(--brand-orange)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            margin: '0 0 0.5rem 0'
+          }}>
+            <ShieldCheck size={16} /> 미래전략실 거시 총평 (Executive Strategic Takeaway)
+          </h3>
+          <p style={{ fontSize: '0.88rem', color: 'var(--text-primary)', lineHeight: 1.75, margin: 0 }}>
+            {report.executive1Pager?.macroTakeaway || report.executiveSummary?.[0]}
+          </p>
+        </div>
+
+        {/* Executive Summary Bullet Points */}
+        {report.executiveSummary && (
+          <div style={{ marginTop: '1rem' }}>
+            <h4 style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-secondary)', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ListChecks size={15} /> 핵심 브리핑 요약
+            </h4>
+            <ul className="report-exec-list" style={{ margin: 0 }}>
+              {report.executiveSummary.map((item, idx) => (
+                <li key={idx} style={{ fontSize: '0.84rem', lineHeight: 1.7 }}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      {/* ========================================================= */}
+      {/* 제 2 부: 3대 긴급 감시 전구 및 속보 전황                  */}
+      {/* ========================================================= */}
+      {report.executive1Pager?.urgentTheaters && (
+        <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
+          <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <AlertTriangle size={18} className="text-red" /> 제 2 부: 3대 긴급 감시 전구 및 속보 전황 (Top 3 Flash Triggers)
+          </h2>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+            실시간 데일리방산 속보 및 분쟁 지수(GRI)를 바탕으로 급격한 전황 악화가 관측된 최우선 감시 구역입니다.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem' }}>
+            {report.executive1Pager.urgentTheaters.map((ut, idx) => (
+              <div key={idx} style={{
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-medium)',
+                borderTop: '3px solid var(--alert-red)',
+                borderRadius: 'var(--radius-md)',
+                padding: '1.1rem 1.25rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.6rem',
+                boxShadow: 'var(--shadow-sm)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{ut.theater}</strong>
+                  <span className="score-badge badge-high" style={{ fontSize: '0.72rem', padding: '2px 8px' }}>
+                    GRI {ut.griScore} • {ut.urgency}
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>⚡ 전황 급변 요인:</strong> {ut.flashTrigger}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--radar-cyan)', fontWeight: 600 }}>
+                  🎯 한화 솔루션: {ut.hanwhaSolution}
+                </div>
+                <div style={{
+                  fontSize: '0.76rem',
+                  color: 'var(--brand-orange)',
+                  background: 'rgba(243, 115, 33, 0.06)',
+                  border: '1px solid rgba(243, 115, 33, 0.18)',
+                  padding: '0.5rem 0.75rem',
+                  borderRadius: 'var(--radius-xs)',
+                  marginTop: 'auto'
+                }}>
+                  <strong>즉시 실행 과제:</strong> {ut.immediateAction}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ========================================================= */}
+      {/* 제 3 부: 한화 방산 3사 전사 실무 과제 & 수주 파이프라인    */}
+      {/* ========================================================= */}
+      {report.executive1Pager?.affiliateActionMatrix && (
+        <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
+          <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Building2 size={18} className="text-orange" /> 제 3 부: 한화 방산 3사 즉시 추진 과제 & 수주 파이프라인 임팩트
+          </h2>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+            지정학 리스크를 실제 수출 기회로 전환하기 위한 계열사별(에어로스페이스·시스템·오션) 전사 과제입니다.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem' }}>
+            {report.executive1Pager.affiliateActionMatrix.map((aff, idx) => (
+              <div key={idx} style={{
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-medium)',
+                borderRadius: 'var(--radius-md)',
+                padding: '1.15rem 1.25rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.65rem',
+                boxShadow: 'var(--shadow-sm)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem' }}>
+                  <strong style={{ fontSize: '1rem', color: 'var(--brand-orange)' }}>{aff.affiliate}</strong>
+                  <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600 }}>{aff.focusPillar}</span>
+                </div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.6 }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>주요 추진 과제:</strong> {aff.keyInitiative}
+                </div>
+                <div style={{
+                  marginTop: 'auto',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  color: 'var(--radar-cyan)',
+                  background: 'rgba(0, 240, 255, 0.05)',
+                  border: '1px solid rgba(0, 240, 255, 0.18)',
+                  padding: '0.55rem 0.75rem',
+                  borderRadius: 'var(--radius-xs)'
+                }}>
+                  💰 파이프라인 목표: {aff.pipelineEstimate}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ========================================================= */}
+      {/* 제 4 부: 한국수출입은행·무역보험공사 수출금융(ECA) 지원책 */}
+      {/* ========================================================= */}
+      {report.executive1Pager?.exportFinancingECA && (
+        <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
+          <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Landmark size={18} className="text-cyan" /> 제 4 부: 한국수출입은행·무역보험공사 수출금융(ECA) 및 G2G 협력 전략
+          </h2>
+          <div style={{
+            background: 'rgba(0, 240, 255, 0.04)',
+            border: '1px solid rgba(0, 240, 255, 0.2)',
+            borderRadius: 'var(--radius-md)',
+            padding: '1.15rem 1.35rem'
+          }}>
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-primary)', lineHeight: 1.75, margin: 0 }}>
+              {report.executive1Pager.exportFinancingECA}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Page break marker for Print */}
+      <div className="page-break" style={{ height: '1px', margin: '2rem 0', borderBottom: '2px dashed var(--border-subtle)' }} />
+
+      {/* ========================================================= */}
+      {/* 제 5 부: 글로벌 중점 감시 전구 종합 현황 (5열 테이블)       */}
+      {/* ========================================================= */}
+      <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
+        <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Globe size={18} /> 제 5 부: 글로벌 중점 감시 전구 종합 현황 & 소요 무기 매칭 매트릭스
+        </h2>
+        <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+          글로벌 29개 분쟁 데이터와 GRI 지수, 실시간 방산 뉴스를 교차 분석한 종합 매트릭스입니다.
+        </p>
+
+        <div style={{
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--border-subtle)',
+          boxShadow: 'var(--shadow-sm)'
+        }}>
+          <table className="report-theaters-table">
+            <thead>
+              <tr>
+                <th>분쟁 전구</th>
+                <th>GRI 위험도</th>
+                <th>전황 모멘텀</th>
+                <th>한화 추천 솔루션</th>
+                <th>전략적 시사점</th>
+              </tr>
+            </thead>
+            <tbody>
+              {report.keyTheaters?.map((t, idx) => (
+                <tr key={idx}>
+                  <td>
+                    <strong style={{ color: 'var(--text-primary)', fontSize: '0.86rem', display: 'block' }}>{t.theater}</strong>
+                    <span style={{ color: 'var(--brand-orange)', fontSize: '0.74rem', fontWeight: 600 }}>{t.region}</span>
+                  </td>
+                  <td className="col-gri" style={{ textAlign: 'center' }}>
+                    <div className="report-gri-tag-wrap">
+                      <span className={`report-gri-tag ${t.intensity === 'High' ? 'tag-high' : t.intensity === 'Medium' ? 'tag-med' : 'tag-low'}`}>
+                        <span className="gri-val">{t.griScore}</span>
+                        <span className="gri-sep">•</span>
+                        <span className="gri-txt">{t.intensity}</span>
+                      </span>
+                    </div>
+                  </td>
+                  <td style={{ textAlign: 'center' }}>
+                    <span style={{
+                      display: 'inline-block',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: 'var(--radius-pill)',
+                      background: t.intensity === 'High' ? 'rgba(255, 68, 68, 0.08)' : 'rgba(0, 240, 255, 0.08)',
+                      border: `1px solid ${t.intensity === 'High' ? 'rgba(255, 68, 68, 0.25)' : 'rgba(0, 240, 255, 0.25)'}`,
+                      color: t.intensity === 'High' ? 'var(--alert-red)' : 'var(--radar-cyan)',
+                      whiteSpace: 'nowrap'
+                    }}>
+                      {t.riskMomentum || (t.intensity === 'High' ? '전황 격화' : '지속 대치')}
+                    </span>
+                  </td>
+                  <td>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                      {(Array.isArray(t.matchedHanwhaSolution) ? t.matchedHanwhaSolution : [t.matchedHanwhaSolution]).map((sol, sIdx) => (
+                        <span key={sIdx} style={{
+                          background: 'rgba(0, 240, 255, 0.06)',
+                          border: '1px solid rgba(0, 240, 255, 0.2)',
+                          color: 'var(--radar-cyan)',
+                          padding: '2px 6px',
+                          borderRadius: 'var(--radius-xs)',
+                          fontSize: '0.72rem',
+                          fontWeight: 600
+                        }}>
+                          {sol}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', lineHeight: 1.5 }}>
+                    {t.strategicImplication}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 제 6 부: 전구별 심층 안보 인텔리전스, 전황 타임라인 & 가이드 */}
+      {/* ========================================================= */}
+      <section className="report-doc-section" style={{ marginBottom: '2.5rem' }}>
+        <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Crosshair size={18} className="text-orange" /> 제 6 부: 전구별 심층 안보 인텔리전스, 전황 타임라인 & 무기체계 스펙 가이드
+        </h2>
+        <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
+          각 전구의 실제 뉴스 타임라인, 작전 교리, 환경 규격 및 야전 운용 가이드를 종합 수록하였습니다.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {report.keyTheaters?.map((t, idx) => (
+            <div
+              key={idx}
+              className="theater-doctrine-card"
+              style={{
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-subtle)',
+                borderLeft: `4px solid ${t.intensity === 'High' ? 'var(--alert-red)' : t.intensity === 'Medium' ? 'var(--alert-amber)' : 'var(--radar-cyan)'}`,
+                borderRadius: 'var(--radius-md)',
+                padding: '1.25rem 1.45rem',
+                boxShadow: 'var(--shadow-sm)'
+              }}
+            >
+              {/* Header bar of Theater Card */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '0.6rem',
+                marginBottom: '0.95rem',
+                paddingBottom: '0.75rem',
+                borderBottom: '1px solid var(--border-subtle)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                    {t.theater}
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--brand-orange)', fontWeight: 600 }}>
+                    ({t.region})
+                  </span>
+                  <span className={`score-badge ${t.intensity === 'High' ? 'badge-high' : t.intensity === 'Medium' ? 'badge-med' : 'badge-low'}`} style={{ fontSize: '0.72rem' }}>
+                    GRI {t.griScore} • {t.intensity}
+                  </span>
+                  {t.riskMomentum && (
+                    <span style={{
+                      fontSize: '0.72rem',
+                      padding: '2px 8px',
+                      borderRadius: 'var(--radius-pill)',
+                      background: 'rgba(255, 68, 68, 0.08)',
+                      border: '1px solid rgba(255, 68, 68, 0.25)',
+                      color: 'var(--alert-red)',
+                      fontWeight: 700
+                    }}>
+                      📈 {t.riskMomentum}
+                    </span>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  {(Array.isArray(t.matchedHanwhaSolution) ? t.matchedHanwhaSolution : [t.matchedHanwhaSolution]).map((sol, sIdx) => (
+                    <span key={sIdx} style={{
+                      background: 'rgba(0, 240, 255, 0.08)',
+                      border: '1px solid rgba(0, 240, 255, 0.25)',
+                      color: 'var(--radar-cyan)',
+                      padding: '0.2rem 0.6rem',
+                      borderRadius: 'var(--radius-xs)',
+                      fontSize: '0.74rem',
+                      fontWeight: 600
+                    }}>
+                      {sol}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Environment Spec Tag */}
+              {t.verifiedSpecs && (
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: 'var(--bg-surface-elevated)',
+                  border: '1px solid var(--border-subtle)',
+                  padding: '4px 12px',
+                  borderRadius: 'var(--radius-xs)',
+                  fontSize: '0.76rem',
+                  color: 'var(--text-secondary)',
+                  fontWeight: 600,
+                  marginBottom: '1rem'
+                }}>
+                  <Shield size={12} className="text-orange" />
+                  <span>환경 보증 스펙:</span>
+                  <strong style={{ color: 'var(--text-primary)' }}>{t.verifiedSpecs}</strong>
+                </div>
+              )}
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
+                
+                {/* 1. Real News Chronological Timeline Feed */}
+                {t.recentTimeline && t.recentTimeline.length > 0 && (
+                  <div style={{
+                    background: 'var(--bg-surface-elevated)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '0.95rem 1.15rem'
+                  }}>
+                    <div style={{
+                      fontSize: '0.82rem',
+                      fontWeight: 800,
+                      color: 'var(--text-primary)',
+                      marginBottom: '0.75rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      <Clock size={14} className="text-orange" />
+                      <span>최근 전황 타임라인 (관련 방산 뉴스)</span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      {t.recentTimeline.map((item, tlIdx) => (
+                        <div key={tlIdx} style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '8px',
+                          fontSize: '0.8rem',
+                          borderLeft: '2px solid var(--brand-orange)',
+                          paddingLeft: '10px'
+                        }}>
+                          <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', flexShrink: 0, marginTop: '2px', minWidth: '72px' }}>
+                            {item.date}
+                          </span>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', flexWrap: 'wrap' }}>
+                              <span style={{
+                                background: 'var(--bg-surface)',
+                                border: '1px solid var(--border-medium)',
+                                color: 'var(--brand-orange)',
+                                padding: '1px 5px',
+                                borderRadius: 'var(--radius-xs)',
+                                fontSize: '0.68rem',
+                                fontWeight: 700,
+                                flexShrink: 0
+                              }}>
+                                {item.sourceId}
+                              </span>
+                              {item.link ? (
+                                <a
+                                  href={item.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    color: 'var(--text-primary)',
+                                    fontWeight: 700,
+                                    textDecoration: 'none',
+                                    wordBreak: 'break-word',
+                                    lineHeight: 1.5
+                                  }}
+                                  className="timeline-article-link"
+                                  title="데일리방산 실제 원문 기사 열기"
+                                >
+                                  {item.headline} <ExternalLink size={11} className="text-orange" style={{ verticalAlign: 'middle', display: 'inline' }} />
+                                </a>
+                              ) : (
+                                <span style={{ color: 'var(--text-primary)', fontWeight: 700, wordBreak: 'break-word' }}>
+                                  {item.headline}
+                                </span>
+                              )}
+                            </div>
+                            {item.tacticalImpact && (
+                              <div style={{ color: 'var(--text-secondary)', marginTop: '4px', fontSize: '0.76rem', lineHeight: 1.5 }}>
+                                ↳ <strong style={{ color: 'var(--radar-cyan)' }}>전술적 함의:</strong> {item.tacticalImpact}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 2. Operational Doctrine */}
+                {t.operationalDoctrine && (
+                  <div style={{
+                    background: 'rgba(255, 102, 0, 0.03)',
+                    border: '1px solid rgba(255, 102, 0, 0.16)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '0.85rem 1.05rem'
+                  }}>
+                    <div style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 800,
+                      color: 'var(--brand-orange)',
+                      marginBottom: '0.4rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      <Compass size={14} /> 실전 운용 방식 및 전술 교리
+                    </div>
+                    <p style={{ fontSize: '0.84rem', color: 'var(--text-primary)', lineHeight: 1.7, margin: 0 }}>
+                      {t.operationalDoctrine}
+                    </p>
+                  </div>
+                )}
+
+                {/* 3. Field Advisories & Cautions */}
+                {t.operationalCautions && (
+                  <div style={{
+                    background: 'rgba(255, 179, 0, 0.03)',
+                    border: '1px solid rgba(255, 179, 0, 0.18)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '0.85rem 1.05rem'
+                  }}>
+                    <div style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 800,
+                      color: 'var(--alert-amber)',
+                      marginBottom: '0.4rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      <AlertTriangle size={14} /> 야전 운용상 주의사항 및 환경 극복 가이드
+                    </div>
+                    <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+                      {t.operationalCautions}
+                    </p>
+                  </div>
+                )}
+
+                {/* 4. Environmental Fit Analysis */}
+                {t.environmentalFitAnalysis && (
+                  <div style={{
+                    background: 'rgba(0, 240, 255, 0.03)',
+                    border: '1px solid rgba(0, 240, 255, 0.16)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '0.85rem 1.05rem'
+                  }}>
+                    <div style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 800,
+                      color: 'var(--radar-cyan)',
+                      marginBottom: '0.4rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      <Thermometer size={14} /> 지형 및 기후 적합도 분석 (운용 규격 대비)
+                    </div>
+                    <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+                      {t.environmentalFitAnalysis}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 제 7 부: 한화 방산 부문 4대 전략적 실행 제언               */}
+      {/* ========================================================= */}
+      <section className="report-doc-section" style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.75rem', marginBottom: '2.5rem' }}>
+        <h2 className="report-sec-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Shield size={18} className="text-orange" /> 제 7 부: 한화 방산 부문 4대 전략적 실행 제언
+        </h2>
+        <div className="report-pillars-grid">
+          {report.strategicRecommendations?.map((r, idx) => (
+            <div className="pillar-card" key={idx} style={{ padding: '1.2rem' }}>
+              <div className="pillar-title" style={{ fontSize: '0.92rem', fontWeight: 800 }}>🎯 {r.pillar}</div>
+              <div className="pillar-action" style={{ fontSize: '0.84rem', lineHeight: 1.65 }}>{r.action}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 8. Official Sign-off and Security Classification Footer */}
+      <footer className="report-doc-official-footer" style={{
+        marginTop: '3rem',
+        borderTop: '2px solid var(--border-medium)',
+        paddingTop: '1.5rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '1rem',
+        fontSize: '0.78rem',
+        color: 'var(--text-muted)'
+      }}>
+        <div>
+          <div style={{ fontWeight: 800, color: 'var(--text-primary)', marginBottom: '3px' }}>
+            한화 방산 미래전략실 전략 인텔리전스 센터 (Hanwha Defense Future Strategy Office)
+          </div>
+          <div>본 보고서는 대외비(Confidential) 안보 전략 문서이며, 허가되지 않은 무단 전재 및 배포를 금합니다.</div>
+        </div>
+        <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{
+            border: '1px solid var(--brand-orange)',
+            color: 'var(--brand-orange)',
+            padding: '4px 10px',
+            borderRadius: 'var(--radius-xs)',
+            fontWeight: 800,
+            fontSize: '0.72rem',
+            letterSpacing: '0.05em'
+          }}>
+            OFFICIAL APPROVED
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

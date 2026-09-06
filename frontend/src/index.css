@@ -1905,9 +1905,164 @@ body {
   text-decoration: underline !important;
 }
 
+/* ==========================================================================
+   Full Strategic Report Dedicated Page Styles (/report)
+   ========================================================================== */
+.report-page-layout {
+  min-height: 100vh;
+  background-color: var(--bg-body);
+  display: flex;
+  flex-direction: column;
+}
+
+.report-page-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.75rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(8px);
+}
+
+.report-page-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.report-back-btn {
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-elevated);
+  transition: var(--transition-fast);
+}
+.report-back-btn:hover {
+  background: var(--border-subtle);
+  color: var(--brand-orange);
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border-medium);
+}
+
+.report-page-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.report-page-logo-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--brand-orange-light);
+  color: var(--brand-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(243, 115, 33, 0.25);
+}
+
+.report-page-brand-text .brand-sub {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--brand-orange);
+  letter-spacing: 0.06em;
+}
+
+.report-page-brand-text .brand-main {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.report-page-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.report-page-main {
+  flex: 1;
+  padding: 2.25rem 1.5rem 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.report-page-container {
+  width: 100%;
+  max-width: 1140px;
+}
+
+.report-doc-full {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem 3rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-normal);
+}
+
+.report-page-loading-card,
+.report-page-error-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 4.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 768px) {
+  .report-page-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+  .report-page-topbar-right {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .report-doc-full {
+    padding: 1.5rem 1.25rem;
+  }
+  .report-page-main {
+    padding: 1rem 0.5rem 3rem;
+  }
+}
+
 @media print {
   .no-print {
     display: none !important;
+  }
+  .report-page-layout {
+    background: #FFFFFF !important;
+    min-height: auto !important;
+  }
+  .report-page-main {
+    padding: 0 !important;
+    display: block !important;
+  }
+  .report-page-container {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .report-doc-full {
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
   }
   .modal-overlay {
     position: static !important;

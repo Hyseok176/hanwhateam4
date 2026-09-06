@@ -6,9 +6,15 @@ import MatchingMatrix from './components/MatchingMatrix';
 import NewsFeed from './components/NewsFeed';
 import PortfolioSpectrum from './components/PortfolioSpectrum';
 import ReportModal from './components/ReportModal';
+import ReportPageView from './components/ReportPageView';
 import SettingsModal from './components/SettingsModal';
 
 export default function App() {
+  // 라우트 상태 감지 (/report 또는 ?view=report)
+  const [isReportRoute, setIsReportRoute] = useState(() => {
+    return window.location.pathname === '/report' || window.location.search.includes('view=report');
+  });
+
   const [currentView, setCurrentView] = useState('map');
   const [status, setStatus] = useState({});
   const [matching, setMatching] = useState([]);
@@ -38,6 +44,16 @@ export default function App() {
     model: localStorage.getItem('ai_model') || 'gpt-5.4',
     syncInterval: Number(localStorage.getItem('ai_sync_interval') || '0')
   });
+
+  // 브라우저 뒤로가기 / 앞으로가기 라우팅 처리
+  useEffect(() => {
+    const handlePopState = () => {
+      const isRep = window.location.pathname === '/report' || window.location.search.includes('view=report');
+      setIsReportRoute(isRep);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // 데이터 로드
   const loadData = async () => {
@@ -70,18 +86,20 @@ export default function App() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isReportRoute) {
+      loadData();
+    }
+  }, [isReportRoute]);
 
   // 자동 동기화 타이머
   useEffect(() => {
-    if (settings.syncInterval > 0) {
+    if (!isReportRoute && settings.syncInterval > 0) {
       const interval = setInterval(() => {
         handleSync(false);
       }, settings.syncInterval * 60 * 1000);
       return () => clearInterval(interval);
     }
-  }, [settings.syncInterval]);
+  }, [isReportRoute, settings.syncInterval]);
 
   // 실시간 동기화
   const handleSync = async (manual = true) => {
@@ -100,6 +118,16 @@ export default function App() {
       if (manual) alert('동기화 중 오류가 발생했습니다.');
     } finally {
       setIsSyncing(false);
+    }
+  };
+
+  // AI 전략 보고서 새 창으로 열기 (사용자 요청: 새 페이지를 열게 하면서 뜨도록)
+  const handleOpenReportInNewTab = () => {
+    const newWindow = window.open('/report', '_blank');
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      // 팝업이 차단된 환경의 경우 동일 창 라우트로 안전하게 전환
+      window.history.pushState({}, '', '/report');
+      setIsReportRoute(true);
     }
   };
 
@@ -141,27 +169,7 @@ export default function App() {
     }
   };
 
-  // AI 전략 보고서 모달 열기 (기존 캐시 보고서가 있으면 API 호출 없이 즉시 열람하여 토큰 소모 방지)
-  const handleOpenReport = (overrideModel) => {
-    setIsReportOpen(true);
-    const targetModel = (typeof overrideModel === 'string' && overrideModel.trim())
-      ? overrideModel.trim()
-      : (settings.model || 'gpt-5.4');
-
-    // 이미 생성된 보고서가 있다면 토큰 소모 없이 즉시 열기
-    if (reportData) {
-      // 단, 특정 모델로 명시적 요청되었는데 현재 캐시와 모델이 다른 경우에만 새로 생성
-      if (overrideModel && typeof overrideModel === 'string' && reportData.modelUsed !== targetModel) {
-        generateReport(targetModel, true);
-      }
-      return;
-    }
-
-    // 캐시된 보고서가 아예 없는 최초 1회에만 생성
-    generateReport(targetModel, false);
-  };
-
-  // 보고서 모달 내부에서 "새로 분석" 버튼 클릭 시 (의도적인 최신 데이터 재분석)
+  // 보고서 새로 분석 (모달용)
   const handleRegenerateReport = (modelToUse) => {
     generateReport(modelToUse || settings.model || 'gpt-5.4', true);
   };
@@ -190,6 +198,18 @@ export default function App() {
     setCurrentView('map');
   };
 
+  // 대시보드로 복귀 핸들러
+  const handleBackToDashboard = () => {
+    window.history.pushState({}, '', '/');
+    setIsReportRoute(false);
+  };
+
+  // 1. /report 경로일 경우 전용 전체화면 보고서 페이지 렌더링
+  if (isReportRoute) {
+    return <ReportPageView onBack={handleBackToDashboard} />;
+  }
+
+  // 2. 메인 대시보드 렌더링
   return (
     <div className="app-container">
       {/* Header */}
@@ -197,7 +217,7 @@ export default function App() {
         status={status}
         isSyncing={isSyncing}
         onSync={() => handleSync(true)}
-        onOpenReport={() => handleOpenReport()}
+        onOpenReport={handleOpenReportInNewTab}
         onOpenSettings={() => setIsSettingsOpen(true)}
       />
 
@@ -234,7 +254,7 @@ export default function App() {
         )}
       </main>
 
-      {/* AI Strategic Report Modal */}
+      {/* AI Strategic Report Modal (기존 모달 호환) */}
       <ReportModal
         isOpen={isReportOpen}
         onClose={() => setIsReportOpen(false)}
