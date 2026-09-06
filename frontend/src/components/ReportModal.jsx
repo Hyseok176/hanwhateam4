@@ -12,7 +12,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
   const handleCopy = () => {
     if (contentRef.current) {
       navigator.clipboard.writeText(contentRef.current.innerText);
-      alert('📋 미래전략실 공식 전략 보고서 전문이 클립보드에 복사되었습니다.');
+      alert('미래전략실 공식 전략 보고서 전문이 클립보드에 복사되었습니다.');
     }
   };
 
@@ -83,7 +83,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                 onClick={() => onSelectModel && onSelectModel(activeModelName)}
                 style={{ padding: '0.5rem 1.2rem', fontWeight: 700 }}
               >
-                🔄 다시 생성하기
+                다시 생성하기
               </button>
             </div>
           ) : (
