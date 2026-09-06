@@ -44,47 +44,49 @@ export default function ReportDocument({ report, contentRef }) {
         </div>
       </div>
 
-      {/* 토큰 개수 및 분석 메트릭스 바 */}
+      {/* 전략 분석 엔진 검증 제원 및 토큰 모니터링 바 */}
       {report.telemetry && (
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '0.6rem',
+          gap: '0.75rem',
           background: 'var(--bg-surface-elevated)',
           border: '1px solid var(--border-subtle)',
           borderRadius: 'var(--radius-sm)',
-          padding: '0.6rem 1rem',
+          padding: '0.65rem 1.15rem',
           marginBottom: '1.5rem',
           fontSize: '0.78rem',
           color: 'var(--text-secondary)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>분석 엔진 메트릭스:</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap' }}>
+            <Shield size={14} className="text-orange" />
+            <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>전략 분석 엔진 검증 제원:</span>
             <span style={{
               background: 'rgba(237, 109, 0, 0.1)',
               color: 'var(--brand-orange)',
               border: '1px solid rgba(237, 109, 0, 0.25)',
-              padding: '1px 7px',
+              padding: '2px 8px',
               borderRadius: 'var(--radius-xs)',
               fontWeight: 700,
-              fontSize: '0.72rem'
+              fontSize: '0.72rem',
+              whiteSpace: 'nowrap'
             }}>
-              {report.telemetry.model || 'OpenAI GPT-5.4'}
+              {report.telemetry.model ? `한화 미래전략 엔진 (${report.telemetry.model})` : '한화 미래전략 전용 엔진'}
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontFamily: 'var(--font-mono)' }}>
-            <span>입력 토큰: <strong style={{ color: 'var(--text-primary)' }}>{(report.telemetry.promptTokens || 0).toLocaleString()}</strong></span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontFamily: 'var(--font-mono)', flexWrap: 'nowrap', overflowX: 'auto', whiteSpace: 'nowrap' }}>
+            <span style={{ whiteSpace: 'nowrap' }}>입력 토큰: <strong style={{ color: 'var(--text-primary)' }}>{(report.telemetry.promptTokens || 0).toLocaleString()}</strong></span>
             <span style={{ color: 'var(--border-subtle)' }}>|</span>
-            <span>출력 토큰: <strong style={{ color: 'var(--brand-orange)' }}>{(report.telemetry.outputTokens || 0).toLocaleString()}</strong></span>
+            <span style={{ whiteSpace: 'nowrap' }}>출력 토큰: <strong style={{ color: 'var(--brand-orange)' }}>{(report.telemetry.outputTokens || 0).toLocaleString()}</strong></span>
             <span style={{ color: 'var(--border-subtle)' }}>|</span>
-            <span>총 토큰: <strong style={{ color: 'var(--radar-cyan)' }}>{(report.telemetry.totalTokens || ((report.telemetry.promptTokens || 0) + (report.telemetry.outputTokens || 0))).toLocaleString()}</strong></span>
+            <span style={{ whiteSpace: 'nowrap' }}>총 토큰: <strong style={{ color: 'var(--radar-cyan)' }}>{(report.telemetry.totalTokens || ((report.telemetry.promptTokens || 0) + (report.telemetry.outputTokens || 0))).toLocaleString()}</strong></span>
             {report.telemetry.latencyMs > 0 && (
               <>
                 <span style={{ color: 'var(--border-subtle)' }}>|</span>
-                <span>지연시간: <strong style={{ color: 'var(--text-secondary)' }}>{report.telemetry.latencyMs.toLocaleString()}ms</strong></span>
+                <span style={{ whiteSpace: 'nowrap' }}>처리 지연: <strong style={{ color: 'var(--text-secondary)' }}>{report.telemetry.latencyMs.toLocaleString()}ms</strong></span>
               </>
             )}
           </div>

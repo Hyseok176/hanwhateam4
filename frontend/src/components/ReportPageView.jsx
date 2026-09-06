@@ -134,9 +134,11 @@ export default function ReportPageView({ onBack }) {
               padding: '4px 12px',
               borderRadius: 'var(--radius-pill)',
               fontSize: '0.74rem',
-              fontFamily: 'var(--font-mono)'
+              fontFamily: 'var(--font-mono)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0
             }}>
-              <span style={{ color: 'var(--text-muted)' }}>토큰:</span>
+              <span style={{ color: 'var(--text-muted)' }}>분석 토큰:</span>
               <span>입력 <strong style={{ color: 'var(--text-primary)' }}>{(report.telemetry.promptTokens || 0).toLocaleString()}</strong></span>
               <span style={{ color: 'var(--border-subtle)' }}>/</span>
               <span>출력 <strong style={{ color: 'var(--brand-orange)' }}>{(report.telemetry.outputTokens || 0).toLocaleString()}</strong></span>
@@ -235,8 +237,7 @@ export default function ReportPageView({ onBack }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <ShieldCheck size={16} style={{ color: 'var(--brand-orange)', flexShrink: 0 }} />
                     <span>
-                      <strong>안내:</strong> 현재 브라우저에 임시 저장된 이전 분석본(입력 {(report.telemetry.promptTokens || 0).toLocaleString()} / 출력 {(report.telemetry.outputTokens || 0).toLocaleString()} 토큰)이 표시 중입니다.
-                      신규 <strong>1.8만 토큰급 심층 그라운딩 엔진</strong>으로 업데이트하시려면 새로 분석을 실행하세요.
+                      <strong>안내:</strong> 현재 브라우저에 임시 저장된 분석본입니다. 글로벌 29개 분쟁 전구 및 한화 방산 15대 전략 체계 최신 데이터가 반영된 전면 분석본을 생성하시려면 우측 버튼을 누르세요.
                     </span>
                   </div>
                   <button
@@ -245,7 +246,7 @@ export default function ReportPageView({ onBack }) {
                     disabled={isLoading}
                     style={{ whiteSpace: 'nowrap', fontWeight: 700, padding: '0.35rem 0.85rem' }}
                   >
-                    최신 심층 분석 실행
+                    최신 전면 분석 실행
                   </button>
                 </div>
               )}

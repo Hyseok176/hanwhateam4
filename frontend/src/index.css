@@ -189,6 +189,8 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 105px;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: background 0.2s ease;
 }
 
@@ -199,6 +201,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  white-space: nowrap;
 }
 
 .kpi-val {
@@ -206,6 +209,7 @@ body {
   font-weight: 800;
   color: var(--text-primary);
   margin-top: 0.1rem;
+  white-space: nowrap;
 }
 
 .text-red { color: var(--alert-red) !important; }
@@ -223,7 +227,10 @@ body {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
   outline: none;
@@ -248,11 +255,10 @@ body {
 .btn-outline:hover {
   background: var(--bg-surface-elevated);
   border-color: var(--brand-orange);
-  color: var(--brand-orange);
+  color: var(--text-primary);
 }
 
 .btn-sm {
-  padding: 0.35rem 0.75rem;
   font-size: 0.76rem;
   border-radius: var(--radius-sm);
 }
@@ -1858,6 +1864,39 @@ body {
   border-bottom: none;
 }
 
+.report-theaters-table .theater-name {
+  display: block;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.report-theaters-table .theater-region {
+  display: block;
+  white-space: nowrap;
+}
+
+.btn-card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.35rem 0.75rem;
+  background: rgba(243, 115, 33, 0.1);
+  color: var(--brand-orange);
+  border: 1px solid rgba(243, 115, 33, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+.btn-card-action:hover {
+  background: var(--brand-orange);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--brand-orange-glow);
+}
+
 .report-theaters-table td.col-gri {
   text-align: center;
   white-space: nowrap;
@@ -1901,18 +1940,16 @@ body {
   font-weight: 800;
 }
 
-/* 전황 모멘텀 배지: white-space: normal로 줄바꿈 허용 -> 인접 열 침범 100% 방지 */
+/* 전황 모멘텀 배지: white-space: nowrap으로 한 줄 정렬 */
 .report-momentum-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 6px 10px;
+  padding: 4px 10px;
   border-radius: var(--radius-sm);
-  white-space: normal !important;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.45;
-  max-width: 100%;
+  white-space: nowrap !important;
+  line-height: 1.4;
   box-sizing: border-box;
 }
 .report-momentum-badge.momentum-high {

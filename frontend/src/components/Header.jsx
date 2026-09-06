@@ -32,7 +32,7 @@ export default function Header({ status, isSyncing, onSync, onOpenReport, onOpen
         </div>
         <div className="kpi-item">
           <span className="kpi-label"><Shield size={12} /> 한화 포트폴리오</span>
-          <span className="kpi-val text-orange">10개 체계</span>
+          <span className="kpi-val text-orange">15대 체계</span>
         </div>
       </div>
 
