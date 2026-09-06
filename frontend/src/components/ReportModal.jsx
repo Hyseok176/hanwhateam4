@@ -33,9 +33,9 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
           <div className="modal-header-left">
             <div className="report-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
               <ShieldCheck size={13} className="text-orange" />
-              <span>HANWHA DEFENSE INTELLIGENCE • CONFIDENTIAL LEVEL 2</span>
+              <span>HANWHA DEFENSE STRATEGIC INTELLIGENCE</span>
             </div>
-            <h2 className="modal-title">한화 방산 미래전략실 전략 인텔리전스 보고서</h2>
+            <h2 className="modal-title">글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서</h2>
           </div>
 
           <div className="modal-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -58,10 +58,10 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                 <Brain size={42} />
               </div>
               <p style={{ fontSize: '0.96rem', color: 'var(--text-primary)', fontWeight: 700 }}>
-                OpenAI GPT-5.4 전용 전략 엔진으로 실시간 팩트 그라운딩 및 무환각 안보 보고서를 생성하고 있습니다...
+                전략 인텔리전스 엔진으로 실시간 안보 데이터 및 방산 전략 보고서를 생성하고 있습니다...
               </p>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                데일리방산 실제 기사 타임라인 100건과 한화 3사 18대 무기체계의 MIL-STD-810H 공식 스펙을 교차 검증 중입니다.
+                데일리방산 뉴스 타임라인과 한화 3사 주요 무기체계 스펙을 종합 분석 중입니다.
               </p>
             </div>
           ) : !report ? (
@@ -82,7 +82,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
             </div>
           ) : (
             <>
-              {/* C-Level Formal Document Header */}
+              {/* Strategic Report Document Header */}
               <div className="report-doc-official-header" style={{
                 borderBottom: '2px solid var(--brand-orange)',
                 paddingBottom: '0.85rem',
@@ -90,56 +90,21 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '4px' }}>
-                      <span style={{
-                        background: 'rgba(243, 115, 33, 0.12)',
-                        border: '1px solid rgba(243, 115, 33, 0.35)',
-                        color: 'var(--brand-orange)',
-                        fontSize: '0.72rem',
-                        fontWeight: 800,
-                        padding: '2px 8px',
-                        borderRadius: 'var(--radius-xs)',
-                        letterSpacing: '0.5px'
-                      }}>
-                        {report.docMeta?.classification || 'CONFIDENTIAL / LEVEL 2 (미래전략실 대외비)'}
-                      </span>
-                      <span style={{
-                        background: 'var(--bg-surface-elevated)',
-                        border: '1px solid var(--border-subtle)',
-                        color: 'var(--text-secondary)',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        padding: '2px 8px',
-                        borderRadius: 'var(--radius-xs)',
-                        fontFamily: 'var(--font-mono)'
-                      }}>
-                        문서번호: {report.docMeta?.docId || 'HW-FSO-2026-INTEL'}
-                      </span>
-                      <span style={{
-                        background: 'rgba(4, 192, 158, 0.1)',
-                        border: '1px solid rgba(4, 192, 158, 0.3)',
-                        color: 'var(--alert-green)',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        padding: '2px 8px',
-                        borderRadius: 'var(--radius-xs)'
-                      }}>
-                        ✓ 실시간 기사 팩트 검증 완료
-                      </span>
-                    </div>
-                    <h1 className="report-doc-title" style={{ fontSize: '1.28rem', fontWeight: 800, margin: '0.4rem 0 0.2rem 0', color: 'var(--text-primary)' }}>
-                      {report.title}
+                    <h1 className="report-doc-title" style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0 0 0.35rem 0', color: 'var(--text-primary)' }}>
+                      {report.title || '한화 방산 글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서'}
                     </h1>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                      {report.docMeta?.distribution || '수신: 한화그룹 미래전략실장, 한화에어로스페이스·한화시스템·한화오션 대표이사'}
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <span>분석 대상: 글로벌 29개 분쟁 전구 및 실시간 방산 데이터</span>
+                      <span style={{ color: 'var(--border-subtle)' }}>•</span>
+                      <span>연계 체계: 한화 3사(에어로스페이스·시스템·오션) 포트폴리오</span>
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--brand-orange)' }}>
-                      {report.displayDate || new Date().toLocaleDateString('ko-KR')}
+                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                      발행일: {report.displayDate || new Date().toLocaleDateString('ko-KR')}
                     </div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      전용 엔진: <strong style={{ color: 'var(--radar-cyan)' }}>OpenAI GPT-5.4</strong>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                      분석 모델: <strong style={{ color: 'var(--brand-orange)' }}>{report.telemetry?.model || activeModelName || 'GPT-5.4'}</strong>
                     </div>
                   </div>
                 </div>
@@ -168,7 +133,7 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                       <Sparkles size={14} className="text-orange" />
                       <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.82rem' }}>
-                        전략 AI 엔진: {report.telemetry.provider || 'OpenAI GPT-5.4'}
+                        분석 엔진:
                       </span>
                       
                       {/* Model Selector Pill */}
@@ -184,29 +149,29 @@ export default function ReportModal({ isOpen, onClose, report, isLoading, curren
                             outline: 'none',
                             background: 'transparent',
                             fontSize: '0.76rem',
-                            fontWeight: 800,
+                            fontWeight: 700,
                             color: 'var(--brand-orange)',
                             cursor: 'pointer',
                             fontFamily: 'var(--font-sans)'
                           }}
                         >
-                          <option value="gpt-5.4">gpt-5.4 (미래전략실 전용 플래그십 AI 엔진)</option>
-                          <option value="gpt-4o">gpt-4o (심층 안보 전략 분석)</option>
-                          <option value="gpt-4o-mini">gpt-4o-mini (경량 고속 분석)</option>
-                          <option value="o3-mini">o3-mini (차세대 고급 추론 분석)</option>
+                          <option value="gpt-5.4">gpt-5.4</option>
+                          <option value="gpt-4o">gpt-4o</option>
+                          <option value="gpt-4o-mini">gpt-4o-mini</option>
+                          <option value="o3-mini">o3-mini</option>
                           {isCustomModel && (
-                            <option value={activeModelName}>{activeModelName} (사용자 설정 모델)</option>
+                            <option value={activeModelName}>{activeModelName}</option>
                           )}
                         </select>
                       </div>
 
                       {report.telemetry.totalTokens > 0 ? (
-                        <span style={{ color: 'var(--alert-green)', fontWeight: 700, fontSize: '0.72rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                          ● 실시간 GPT-5.4 심층 추론 완료 (팩트 그라운딩)
+                        <span style={{ color: 'var(--alert-green)', fontWeight: 600, fontSize: '0.74rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          ● 실시간 AI 분석 완료
                         </span>
                       ) : (
-                        <span style={{ color: 'var(--brand-orange)', fontWeight: 600, fontSize: '0.72rem' }}>
-                          ● 100% 팩트 기반 정규 DB 데이터 분석
+                        <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.74rem' }}>
+                          ● 정규 분석 데이터
                         </span>
                       )}
                     </div>

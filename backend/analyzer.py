@@ -424,14 +424,13 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
 2. [출처 및 일시 인용 강제]: 타임라인이나 전황을 서술할 때는 반드시 제공된 실제 기사 ID(예: DD-XXXX) 또는 실제 일자/언론사명을 그대로 인용하십시오.
 3. [온도 및 스펙 팩트 고정]: 무기 보증 기온(-40°C~+50°C), 한계 습도(95%), 군용 규격(MIL-STD-810H)은 사전에 검증된 수치만을 정확히 인용하십시오.
 
-[보고서 구성 원칙 (미래전략실 C-Level 공식 규격)]
-1. 'docMeta': 문서 번호(HW-FSO-2026-INTEL), 보안 등급(CONFIDENTIAL / LEVEL 2 대외비), 배포처(미래전략실장, 한화 3사 대표이사), aiEngine('OpenAI GPT-5.4')을 포함하십시오.
-2. 'executive1Pager': 경영진이 3분 내 파악할 수 있는 고밀도 전략 요약입니다.
+[보고서 구성 원칙]
+1. 'executive1Pager': 경영진이 신속하게 파악할 수 있는 고밀도 전략 요약입니다.
    - 'macroTakeaway': 글로벌 안보 지형 및 한화 방산 전략적 함의 총평 (3~4문장)
    - 'urgentTheaters': 상위 3대 긴급 분쟁지 요약 (theater, griScore, urgency['CRITICAL'], flashTrigger[실제 기사 기반], hanwhaSolution, immediateAction)
    - 'affiliateActionMatrix': 한화 3사(에어로스페이스, 시스템, 오션)별 R&R 및 구체적 사업 추진 과제, 예상 수주 파이프라인 임팩트(pipelineEstimate)
    - 'exportFinancingECA': 한국수출입은행(KEXIM)·무역보험공사(K-SURE) 수출금융 패키지 및 G2G 협력 로드맵 (2~3문장)
-3. 'keyTheaters': 제공된 전구별로 다음 항목을 상세 작성하십시오:
+2. 'keyTheaters': 제공된 전구별로 다음 항목을 상세 작성하십시오:
    - theater, region, griScore, intensity, riskMomentum
    - matchedHanwhaSolution: 추천 무기체계 2~3종
    - verifiedSpecs: MIL-STD-810H 보증 스펙 요약
@@ -439,17 +438,11 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
    - operationalDoctrine: 현지 지형/기후 특성에 최적화된 실전 운용 방식 및 교리(3~4문장)
    - operationalCautions: 극한 기후(혹한, 50도 혹서, 라스푸티차 진흙, 모래폭풍 등) 극복을 위한 야전 정비/운용 지침(3~4문장)
    - strategicImplication: 현지 생산·MRO 거점화 및 사업적 수주 효과(3~4문장)
-4. 'strategicRecommendations': 한화 3사 4대 전략(화력·기동, 다층 방공/C4I, 해양/정찰, 글로벌 GVC/ECA 금융)을 구체적 실행 로드맵으로 작성하십시오.
+3. 'strategicRecommendations': 한화 3사 4대 전략(화력·기동, 다층 방공/C4I, 해양/정찰, 글로벌 GVC/ECA 금융)을 구체적 실행 로드맵으로 작성하십시오.
 
 반드시 마크다운 백틱 없이 순수한 JSON 포맷으로만 응답하십시오:
 {{
-  "docMeta": {{
-    "docId": "HW-FSO-2026-INTEL",
-    "classification": "CONFIDENTIAL / LEVEL 2 (미래전략실 대외비)",
-    "distribution": "한화그룹 미래전략실장, 한화에어로스페이스·한화시스템·한화오션 대표이사",
-    "aiEngine": "OpenAI GPT-5.4"
-  }},
-  "title": "한화 방산 미래전략실 글로벌 안보 리스크 & 소요 무기 매칭 전략 인텔리전스 보고서 (GPT-5.4)",
+  "title": "한화 방산 글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서",
   "displayDate": "{datetime.now().strftime('%Y년 %m월 %d일')}",
   "executive1Pager": {{
     "macroTakeaway": "글로벌 안보 리스크 총평...",
@@ -678,19 +671,13 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
     is_key_missing = not bool(api_key)
     telemetry_status = 'api_key_required' if is_key_missing else ('error_fallback' if external_error else 'success')
     status_msg = (
-        'OpenAI API 키 대기 중 (설정에서 키를 입력하시면 GPT-5.4 실시간 추론이 활성화됩니다)'
+        'OpenAI API 키 대기 중 (설정에서 키를 입력하시면 GPT-5.4 실시간 분석이 활성화됩니다)'
         if is_key_missing else
-        f'GPT-5.4 일시적 연결 지연으로 100% 팩트 기반 정규 데이터 분석 반환 ({external_error})'
+        f'GPT-5.4 일시적 연결 지연으로 정규 데이터 분석 반환 ({external_error})'
     )
 
     return {
-        'docMeta': {
-            'docId': doc_id,
-            'classification': 'CONFIDENTIAL / LEVEL 2 (미래전략실 대외비)',
-            'distribution': '한화그룹 미래전략실장, 한화에어로스페이스·한화시스템·한화오션 대표이사',
-            'aiEngine': 'OpenAI GPT-5.4 (Flagship Intelligence)'
-        },
-        'title': f'한화 방산 미래전략실 글로벌 안보 리스크 & 소요 무기 매칭 AI 전략 보고서 (GPT-5.4)',
+        'title': '한화 방산 글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서',
         'generatedAt': datetime.utcnow().isoformat() + 'Z',
         'displayDate': report_date,
         'modelUsed': 'gpt-5.4',
