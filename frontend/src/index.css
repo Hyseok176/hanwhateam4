@@ -1899,3 +1899,42 @@ body {
   padding: 1.25rem;
   margin-top: 1rem;
 }
+
+/* Timeline link and print styles for Executive Report */
+.timeline-article-link:hover {
+  color: var(--brand-orange) !important;
+  text-decoration: underline !important;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .modal-overlay {
+    position: static !important;
+    background: none !important;
+    padding: 0 !important;
+  }
+  .modal-card {
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .modal-header,
+  .modal-actions {
+    display: none !important;
+  }
+  .report-paper {
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+  body {
+    background: #FFFFFF !important;
+    color: #191F28 !important;
+  }
+}

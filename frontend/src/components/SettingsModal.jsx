@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, X, Check, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 
-const PRESET_MODELS = ['gpt-4o', 'gpt-4o-mini', 'o3-mini', 'o1-mini', 'gpt-3.5-turbo'];
+const PRESET_MODELS = ['gpt-5.4', 'gpt-4o', 'gpt-4o-mini', 'o3-mini', 'o1-mini', 'gpt-3.5-turbo'];
 
 export default function SettingsModal({ isOpen, onClose, settings, onSaveSettings }) {
   const initialProvider = settings.provider === 'gemini' ? 'openai' : (settings.provider || 'openai');
   const [provider, setProvider] = useState(initialProvider);
   const [apiKey, setApiKey] = useState(settings.apiKey || '');
   
-  const currentModel = settings.model || 'gpt-4o';
+  const currentModel = settings.model || 'gpt-5.4';
   const isCustom = !PRESET_MODELS.includes(currentModel);
   const [selectedPreset, setSelectedPreset] = useState(isCustom ? 'custom' : currentModel);
   const [customModelName, setCustomModelName] = useState(isCustom ? currentModel : '');
@@ -20,7 +20,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
 
   useEffect(() => {
     if (isOpen) {
-      const cur = settings.model || 'gpt-4o';
+      const cur = settings.model || 'gpt-5.4';
       setApiKey(settings.apiKey || '');
       setProvider(settings.provider === 'gemini' ? 'openai' : (settings.provider || 'openai'));
       setModel(cur);
@@ -38,7 +38,7 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
     setSelectedPreset(val);
     setTestResult(null);
     if (val === 'custom') {
-      setModel(customModelName.trim() || 'gpt-4o');
+      setModel(customModelName.trim() || 'gpt-5.4');
     } else {
       setModel(val);
     }
@@ -128,7 +128,8 @@ export default function SettingsModal({ isOpen, onClose, settings, onSaveSetting
               onChange={(e) => handlePresetChange(e.target.value)}
               style={{ width: '100%' }}
             >
-              <option value="gpt-4o">gpt-4o (플래그십 심층 안보 전략 분석 - 추천)</option>
+              <option value="gpt-5.4">gpt-5.4 (미래전략실 전용 플래그십 AI 엔진 - 기본)</option>
+              <option value="gpt-4o">gpt-4o (심층 안보 전략 분석)</option>
               <option value="gpt-4o-mini">gpt-4o-mini (경량 고속 안보 분석)</option>
               <option value="o3-mini">o3-mini (차세대 고급 추론 분석)</option>
               <option value="o1-mini">o1-mini (심층 논리 추론 분석)</option>

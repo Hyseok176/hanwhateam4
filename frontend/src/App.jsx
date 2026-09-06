@@ -28,7 +28,7 @@ export default function App() {
   const [settings, setSettings] = useState({
     provider: 'openai',
     apiKey: localStorage.getItem('ai_api_key') || '',
-    model: localStorage.getItem('ai_model') || 'gpt-4o',
+    model: localStorage.getItem('ai_model') || 'gpt-5.4',
     syncInterval: Number(localStorage.getItem('ai_sync_interval') || '0')
   });
 
@@ -100,7 +100,7 @@ export default function App() {
   const handleOpenReport = async (overrideModel) => {
     setIsReportOpen(true);
     setIsReportLoading(true);
-    const targetModel = overrideModel || settings.model || 'gpt-4o';
+    const targetModel = overrideModel || settings.model || 'gpt-5.4';
     try {
       const res = await fetch('/api/report', {
         method: 'POST',
@@ -135,7 +135,7 @@ export default function App() {
     setSettings(newSettings);
     localStorage.setItem('ai_provider', newSettings.provider);
     localStorage.setItem('ai_api_key', newSettings.apiKey);
-    localStorage.setItem('ai_model', newSettings.model || 'gpt-4o');
+    localStorage.setItem('ai_model', newSettings.model || 'gpt-5.4');
     localStorage.setItem('ai_sync_interval', String(newSettings.syncInterval));
     alert('⚙️ 설정이 저장되었습니다.');
   };
@@ -196,7 +196,7 @@ export default function App() {
         onClose={() => setIsReportOpen(false)}
         report={reportData}
         isLoading={isReportLoading}
-        currentModel={settings.model || 'gpt-4o'}
+        currentModel={settings.model || 'gpt-5.4'}
         onSelectModel={handleModelChangeFromReport}
       />
 
