@@ -389,6 +389,75 @@ THREAT_COMPARISONS = """
 * 정찰/우주자산: 적 지상 위장 및 야간 전황 vs 한화시스템 초소형 SAR 위성(기상/주야간 불문 0.5m급 고해상도 합성개구레이더 탐지) 및 TICN 전술통신망 연계.
 """
 
+def build_fact_theaters_data(top_risks: list[dict]) -> tuple[list[dict], list[dict]]:
+    key_theaters_data = []
+    urgent_theaters_data = []
+
+    for idx, t in enumerate(top_risks):
+        top_w = t['matchedWeapons'][0] if t.get('matchedWeapons') else None
+        specs = top_w.get('operatingSpecs', {}) if top_w else {}
+        env = top_w.get('environmentalAssessment', {}) if top_w else {}
+        t_info = t.get('terrainInfo') or {}
+        w_name = top_w['nameKo'] if top_w else '한화 무기체계'
+
+        loc_t = t_info.get('tempRange', {})
+        loc_h = t_info.get('humidity', {})
+        t_desc = loc_t.get('desc', '온화')
+        h_desc = loc_h.get('desc', '보통')
+        
+        env_fit_str = (
+            f"현지 기후 환경(기온: {t_desc} [{loc_t.get('min', -10)}°C~{loc_t.get('max', 40)}°C] / "
+            f"습도: {h_desc} [평균 {loc_h.get('avg', 60)}%~최대 {loc_h.get('max', 85)}%]) 대비, "
+            f"{w_name}의 군용 운용 규격({specs.get('standard', 'MIL-STD-810H')}, 보증기온 {specs.get('tempRange', '-40°C~+50°C')}, "
+            f"한계습도 {specs.get('maxHumidity', 95)}%)은 {env.get('tempDesc', '규격 완전 적합')} 및 {env.get('humidityDesc', '습도 한계 충족')} 상태로 공식 검증되었습니다."
+        )
+
+        terrain_type = t_info.get('terrainType', '전장 복합 지형')
+        doctrine_str = (
+            f"[{terrain_type}] 전장 환경에 맞춰 {w_name}은(는) "
+            f"현지 개활지 및 엄폐 지형을 활용한 고기동 분산 전개와 급속 사격 후 신속 진지 이탈(Shoot-and-Scoot) 교리를 철저히 이행합니다. "
+            f"또한 전장 네트워크(C4I) 및 초소형 SAR 위성·드론 정찰 자산과 연동하여 적의 비대칭 공격을 사전 무력화하는 정밀 타격 운용 방식을 채택합니다."
+        )
+
+        advisories = env.get('fieldAdvisories', [])
+        adv_text = " ".join(advisories[:2]) if advisories else specs.get('fieldConstraints', '표준 야전 군용 정비 지침을 철저히 준수함.')
+        pkg = env.get('countermeasurePackage', specs.get('countermeasurePackage', '기본 야전 정비 키트'))
+        cautions_str = f"{adv_text} 야전 운용 가동률 유지를 위해 [환경 극복 패키지: {pkg}]를 필히 적용해야 합니다."
+
+        timeline = t.get('recentTimeline', [])
+        if not timeline:
+            timeline = extract_conflict_timeline(t.get('matchedNews', []), limit=3)
+
+        key_theaters_data.append({
+            'theater': t['titleKo'],
+            'region': t['regionKo'],
+            'griScore': t['griScore'],
+            'intensity': t['intensity'],
+            'riskMomentum': t.get('riskMomentum', '고강도 대치 지속'),
+            'threatProfile': t.get('mainTheaters', ''),
+            'matchedHanwhaSolution': [w['nameKo'] for w in t['matchedWeapons'][:3]],
+            'verifiedSpecs': f"{specs.get('standard', 'MIL-STD-810H')} | 보증기온 {specs.get('tempRange', '-40°C~+50°C')} | 한계습도 {specs.get('maxHumidity', 95)}%",
+            'recentTimeline': timeline,
+            'environmentalFitAnalysis': env_fit_str,
+            'operationalDoctrine': doctrine_str,
+            'operationalCautions': cautions_str,
+            'strategicImplication': f"전장 환경 및 위협 특성에 따라 {w_name} 중심의 패키지 수출과 현지 창정비·합작생산(MRO/Co-production) 거점화 구축을 최우선 추진함."
+        })
+
+        if idx < 3:
+            first_news = timeline[0] if timeline else {}
+            trigger_text = f"최신 기사 [{first_news.get('sourceId', 'DD-NEWS')}]: {first_news.get('headline', '국경 지역 군사적 긴장 고조')}" if first_news else "전선 대치 지속 및 화력 소모전"
+            urgent_theaters_data.append({
+                'theater': t['titleKo'],
+                'griScore': t['griScore'],
+                'urgency': 'CRITICAL',
+                'flashTrigger': trigger_text,
+                'hanwhaSolution': ', '.join([w['nameKo'].split()[0] for w in t['matchedWeapons'][:2]]) if t['matchedWeapons'] else '종합 방호 체계',
+                'immediateAction': f"동맹국 긴급 조달 쿼터 확보 및 현지 탄약·MRO 공급망 연계 가속화"
+            })
+
+    return key_theaters_data, urgent_theaters_data
+
 async def call_external_llm(custom_config: dict, matching_data: list[dict], top_risks: list[dict]) -> dict:
     import time
     start_time = time.time()
@@ -453,7 +522,7 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
    - 'urgentTheaters': 상위 3대 긴급 분쟁지 상세 분석 (theater, griScore, urgency['CRITICAL'], flashTrigger[실제 기사 ID 인용], hanwhaSolution, immediateAction)
    - 'affiliateActionMatrix': 한화 3사(에어로스페이스, 시스템, 오션)별 구체적 사업 파이프라인 임팩트(pipelineEstimate)를 조달 목표 규모($M 단위)와 함께 명시
    - 'exportFinancingECA': 한국수출입은행(KEXIM)·무역보험공사(K-SURE) 정책금융 및 폴란드 1·2차 사례를 원용한 G2G 패키지 로드맵 상세 기술
-2. 'keyTheaters': 전구별로 다음 항목을 심층 작성하십시오:
+2. 'keyTheaters': 제공된 상위 주요 분쟁 전구 5개(우크라이나, 이스라엘/가자, 대만해협, 수단, 예멘 등)에 대해 총 5개의 전구 분석 객체를 'keyTheaters' 배열에 반드시 각각 모두 작성하십시오. (※ 절대 1개만 작성하지 말고 최소 5개 전구 모두를 배열에 포함해야 합니다.)
    - theater, region, griScore, intensity, riskMomentum
    - matchedHanwhaSolution: 추천 무기체계 2~3종
    - verifiedSpecs: MIL-STD-810H 보증 스펙 및 위협 무기 대비 우위 분석
@@ -576,6 +645,22 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
                     report = json.loads(cleaned)
                     report['title'] = "한화 방산 글로벌 안보 리스크 & 소요 무기 매칭 전략 보고서"
                     report['modelUsed'] = 'gpt-5.4'
+
+                    # 제 4장 매트릭스에 항상 최소 5개 이상의 분쟁 전구가 표시되도록 팩트 데이터로 보강
+                    parsed_theaters = report.get('keyTheaters')
+                    if not isinstance(parsed_theaters, list):
+                        parsed_theaters = []
+
+                    existing_names = {t.get('theater') for t in parsed_theaters if isinstance(t, dict)}
+                    if len(parsed_theaters) < 5:
+                        fb_theaters, _ = build_fact_theaters_data(top_risks)
+                        for fb_item in fb_theaters:
+                            if fb_item['theater'] not in existing_names:
+                                parsed_theaters.append(fb_item)
+                                existing_names.add(fb_item['theater'])
+                                if len(parsed_theaters) >= 5:
+                                    break
+                    report['keyTheaters'] = parsed_theaters
                     report['telemetry'] = {
                         'provider': 'OpenAI GPT-5.4',
                         'model': 'gpt-5.4',
@@ -603,9 +688,10 @@ async def call_external_llm(custom_config: dict, matching_data: list[dict], top_
 
 async def generate_strategic_report(matching_data: list[dict], news_list: list[dict], custom_config: dict = None) -> dict:
     """한화 미래전략실 C-Level 전략 보고서 생성기 (외부 LLM: GPT-5.4 전용)"""
-    top_high_risks = [m for m in matching_data if m['intensity'] == 'High'][:5]
-    if not top_high_risks:
-        top_high_risks = matching_data[:5]
+    top_high_risks = [m for m in matching_data if m['intensity'] == 'High'][:6]
+    if len(top_high_risks) < 5:
+        extras = [m for m in matching_data if m not in top_high_risks]
+        top_high_risks.extend(extras[:5 - len(top_high_risks)])
 
     custom_config = custom_config or {}
     external_error = None
@@ -627,71 +713,7 @@ async def generate_strategic_report(matching_data: list[dict], news_list: list[d
     doc_id = f"HW-FSO-{datetime.now().strftime('%Y%m%d')}-01"
     high_count = len([m for m in matching_data if m['intensity'] == 'High'])
 
-    key_theaters_data = []
-    urgent_theaters_data = []
-
-    for idx, t in enumerate(top_high_risks):
-        top_w = t['matchedWeapons'][0] if t.get('matchedWeapons') else None
-        specs = top_w.get('operatingSpecs', {}) if top_w else {}
-        env = top_w.get('environmentalAssessment', {}) if top_w else {}
-        t_info = t.get('terrainInfo') or {}
-        w_name = top_w['nameKo'] if top_w else '한화 무기체계'
-
-        loc_t = t_info.get('tempRange', {})
-        loc_h = t_info.get('humidity', {})
-        t_desc = loc_t.get('desc', '온화')
-        h_desc = loc_h.get('desc', '보통')
-        
-        env_fit_str = (
-            f"현지 기후 환경(기온: {t_desc} [{loc_t.get('min', -10)}°C~{loc_t.get('max', 40)}°C] / "
-            f"습도: {h_desc} [평균 {loc_h.get('avg', 60)}%~최대 {loc_h.get('max', 85)}%]) 대비, "
-            f"{w_name}의 군용 운용 규격({specs.get('standard', 'MIL-STD-810H')}, 보증기온 {specs.get('tempRange', '-40°C~+50°C')}, "
-            f"한계습도 {specs.get('maxHumidity', 95)}%)은 {env.get('tempDesc', '규격 완전 적합')} 및 {env.get('humidityDesc', '습도 한계 충족')} 상태로 공식 검증되었습니다."
-        )
-
-        terrain_type = t_info.get('terrainType', '전장 복합 지형')
-        doctrine_str = (
-            f"[{terrain_type}] 전장 환경에 맞춰 {w_name}은(는) "
-            f"현지 개활지 및 엄폐 지형을 활용한 고기동 분산 전개와 급속 사격 후 신속 진지 이탈(Shoot-and-Scoot) 교리를 철저히 이행합니다. "
-            f"또한 전장 네트워크(C4I) 및 초소형 SAR 위성·드론 정찰 자산과 연동하여 적의 비대칭 공격을 사전 무력화하는 정밀 타격 운용 방식을 채택합니다."
-        )
-
-        advisories = env.get('fieldAdvisories', [])
-        adv_text = " ".join(advisories[:2]) if advisories else specs.get('fieldConstraints', '표준 야전 군용 정비 지침을 철저히 준수함.')
-        pkg = env.get('countermeasurePackage', specs.get('countermeasurePackage', '기본 야전 정비 키트'))
-        cautions_str = f"{adv_text} 야전 운용 가동률 유지를 위해 [환경 극복 패키지: {pkg}]를 필히 적용해야 합니다."
-
-        timeline = t.get('recentTimeline', [])
-        if not timeline:
-            timeline = extract_conflict_timeline(t.get('matchedNews', []), limit=3)
-
-        key_theaters_data.append({
-            'theater': t['titleKo'],
-            'region': t['regionKo'],
-            'griScore': t['griScore'],
-            'intensity': t['intensity'],
-            'riskMomentum': t.get('riskMomentum', '고강도 대치 지속'),
-            'threatProfile': t.get('mainTheaters', ''),
-            'matchedHanwhaSolution': [w['nameKo'] for w in t['matchedWeapons'][:3]],
-            'verifiedSpecs': f"{specs.get('standard', 'MIL-STD-810H')} | 보증기온 {specs.get('tempRange', '-40°C~+50°C')} | 한계습도 {specs.get('maxHumidity', 95)}%",
-            'recentTimeline': timeline,
-            'environmentalFitAnalysis': env_fit_str,
-            'operationalDoctrine': doctrine_str,
-            'operationalCautions': cautions_str,
-            'strategicImplication': f"전장 환경 및 위협 특성에 따라 {w_name} 중심의 패키지 수출과 현지 창정비·합작생산(MRO/Co-production) 거점화 구축을 최우선 추진함."
-        })
-
-        if idx < 3:
-            first_news = timeline[0] if timeline else {}
-            trigger_text = f"최신 기사 [{first_news.get('sourceId', 'DD-NEWS')}]: {first_news.get('headline', '국경 지역 군사적 긴장 고조')}" if first_news else "전선 대치 지속 및 화력 소모전"
-            urgent_theaters_data.append({
-                'theater': t['titleKo'],
-                'griScore': t['griScore'],
-                'urgency': 'CRITICAL',
-                'flashTrigger': trigger_text,
-                'hanwhaSolution': ', '.join([w['nameKo'].split()[0] for w in t['matchedWeapons'][:2]]) if t['matchedWeapons'] else '종합 방호 체계',
-                'immediateAction': f"동맹국 긴급 조달 쿼터 확보 및 현지 탄약·MRO 공급망 연계 가속화"
-            })
+    key_theaters_data, urgent_theaters_data = build_fact_theaters_data(top_high_risks)
 
     is_key_missing = not bool(api_key)
     telemetry_status = 'api_key_required' if is_key_missing else ('error_fallback' if external_error else 'success')

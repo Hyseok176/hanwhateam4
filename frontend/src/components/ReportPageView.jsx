@@ -121,6 +121,25 @@ export default function ReportPageView({ onBack }) {
         </div>
 
         <div className="report-page-topbar-right">
+          {/* 토큰 현황 뱃지 */}
+          {report?.telemetry && (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid var(--border-subtle)',
+              padding: '4px 12px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.74rem',
+              fontFamily: 'var(--font-mono)'
+            }}>
+              <span style={{ color: 'var(--text-muted)' }}>토큰:</span>
+              <span>입력 <strong style={{ color: 'var(--text-primary)' }}>{(report.telemetry.promptTokens || 0).toLocaleString()}</strong></span>
+              <span style={{ color: 'var(--border-subtle)' }}>/</span>
+              <span>출력 <strong style={{ color: 'var(--brand-orange)' }}>{(report.telemetry.outputTokens || 0).toLocaleString()}</strong></span>
+            </div>
+          )}
 
           <button
             className="btn btn-sm btn-primary"

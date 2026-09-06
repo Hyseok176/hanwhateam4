@@ -44,6 +44,53 @@ export default function ReportDocument({ report, contentRef }) {
         </div>
       </div>
 
+      {/* 토큰 개수 및 분석 메트릭스 바 */}
+      {report.telemetry && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.6rem',
+          background: 'var(--bg-surface-elevated)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--radius-sm)',
+          padding: '0.6rem 1rem',
+          marginBottom: '1.5rem',
+          fontSize: '0.78rem',
+          color: 'var(--text-secondary)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>분석 엔진 메트릭스:</span>
+            <span style={{
+              background: 'rgba(237, 109, 0, 0.1)',
+              color: 'var(--brand-orange)',
+              border: '1px solid rgba(237, 109, 0, 0.25)',
+              padding: '1px 7px',
+              borderRadius: 'var(--radius-xs)',
+              fontWeight: 700,
+              fontSize: '0.72rem'
+            }}>
+              {report.telemetry.model || 'OpenAI GPT-5.4'}
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontFamily: 'var(--font-mono)' }}>
+            <span>입력 토큰: <strong style={{ color: 'var(--text-primary)' }}>{(report.telemetry.promptTokens || 0).toLocaleString()}</strong></span>
+            <span style={{ color: 'var(--border-subtle)' }}>|</span>
+            <span>출력 토큰: <strong style={{ color: 'var(--brand-orange)' }}>{(report.telemetry.outputTokens || 0).toLocaleString()}</strong></span>
+            <span style={{ color: 'var(--border-subtle)' }}>|</span>
+            <span>총 토큰: <strong style={{ color: 'var(--radar-cyan)' }}>{(report.telemetry.totalTokens || ((report.telemetry.promptTokens || 0) + (report.telemetry.outputTokens || 0))).toLocaleString()}</strong></span>
+            {report.telemetry.latencyMs > 0 && (
+              <>
+                <span style={{ color: 'var(--border-subtle)' }}>|</span>
+                <span>지연시간: <strong style={{ color: 'var(--text-secondary)' }}>{report.telemetry.latencyMs.toLocaleString()}ms</strong></span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ========================================================= */}
       {/* 제 1 장: 경영진 거시 총평 및 총괄 요약                     */}
       {/* ========================================================= */}
