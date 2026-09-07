@@ -1198,7 +1198,7 @@ body {
 
 .matching-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
   gap: 1.4rem;
 }
 
@@ -1591,7 +1591,7 @@ body {
 
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 1.35rem;
 }
 
@@ -1698,6 +1698,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .report-badge {
@@ -1710,14 +1712,17 @@ body {
 .modal-header-left {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  flex: 1 1 280px;
+  min-width: 0;
 }
 
 .modal-title {
   font-size: clamp(1.02rem, 1.35vw, 1.25rem);
   font-weight: 800;
   color: var(--text-primary);
-  white-space: nowrap !important;
+  white-space: normal;
+  word-break: keep-all;
+  line-height: 1.35;
 }
 
 .modal-close-btn {
@@ -1879,7 +1884,6 @@ body {
   min-width: 210px;
   text-align: left;
   padding: 0.95rem 1rem;
-  overflow: hidden;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -1889,7 +1893,6 @@ body {
   width: 23%;
   min-width: 210px;
   padding: 0.95rem 1rem;
-  overflow: hidden;
 }
 
 .report-theaters-table th.col-implication,
@@ -1988,17 +1991,20 @@ body {
   font-weight: 800;
 }
 
-/* 전황 모멘텀 배지: white-space: nowrap으로 한 줄 정렬 */
+/* 전황 모멘텀 배지: word-break: keep-all로 자연스러운 래핑 */
 .report-momentum-badge {
   display: inline-flex;
   align-items: center;
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 3px 8px;
+  padding: 4px 8px;
   border-radius: var(--radius-xs);
-  white-space: nowrap !important;
-  line-height: 1.4;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-height: 1.35;
   box-sizing: border-box;
+  max-width: 100%;
 }
 .report-momentum-badge.momentum-high {
   background: rgba(240, 68, 82, 0.08);
@@ -2270,6 +2276,88 @@ body {
 @media (max-width: 1240px) {
   .header-kpis {
     display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .map-layout {
+    flex-direction: column;
+    height: auto;
+  }
+  .map-wrapper {
+    height: 520px;
+    min-height: 420px;
+  }
+  .map-side-dossier {
+    width: 100%;
+    height: 650px;
+  }
+}
+
+@media (max-width: 960px) {
+  .news-list-layout {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .view-nav-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    padding: 0.6rem 1rem;
+  }
+  .nav-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 0.35rem;
+  }
+  .nav-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .nav-extra-info {
+    justify-content: flex-end;
+  }
+  .modal-card {
+    max-width: 95%;
+    max-height: 92vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .cmd-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+  .header-left {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .brand-title {
+    white-space: normal !important;
+    word-break: keep-all;
+  }
+  .header-actions {
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: stretch;
+    gap: 0.5rem;
+  }
+  .header-actions .btn {
+    flex: 1 1 calc(33.333% - 0.5rem);
+    min-width: 90px;
+    justify-content: center;
+  }
+  .view-panel {
+    padding: 1rem 1rem 2.5rem;
+  }
+  .map-view-panel {
+    padding: 0.75rem 1rem 1.5rem !important;
   }
 }
 
