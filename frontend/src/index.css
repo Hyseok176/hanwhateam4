@@ -1688,8 +1688,9 @@ body {
 }
 
 .modal-large {
-  max-width: 960px;
-  max-height: 90vh;
+  max-width: 1100px;
+  width: 96%;
+  max-height: 92vh;
 }
 
 .modal-header {
@@ -1844,7 +1845,6 @@ body {
 
 .report-theaters-table {
   width: 100%;
-  min-width: 1080px;
   border-collapse: collapse;
   margin: 0;
   font-size: 0.82rem;
@@ -1854,7 +1854,7 @@ body {
 
 .report-theaters-table th {
   background: var(--bg-surface-elevated);
-  padding: 0.85rem 1rem;
+  padding: 0.85rem 0.75rem;
   text-align: left;
   font-size: 0.78rem;
   font-weight: 800;
@@ -1866,45 +1866,45 @@ body {
 .report-theaters-table th.col-theater,
 .report-theaters-table td.col-theater {
   width: 17%;
-  min-width: 150px;
-  padding: 0.95rem 1rem;
+  padding: 0.85rem 0.75rem;
+  vertical-align: middle;
 }
 
 .report-theaters-table th.col-gri,
 .report-theaters-table td.col-gri {
-  width: 10%;
-  min-width: 90px;
+  width: 11%;
   text-align: center;
-  padding: 0.95rem 0.5rem;
+  padding: 0.85rem 0.35rem;
+  vertical-align: middle;
 }
 
 .report-theaters-table th.col-momentum,
 .report-theaters-table td.col-momentum {
-  width: 23%;
-  min-width: 210px;
+  width: 16%;
   text-align: left;
-  padding: 0.95rem 1rem;
+  padding: 0.85rem 0.65rem;
+  vertical-align: middle;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
 
 .report-theaters-table th.col-solution,
 .report-theaters-table td.col-solution {
-  width: 23%;
-  min-width: 210px;
-  padding: 0.95rem 1rem;
+  width: 22%;
+  padding: 0.85rem 0.65rem;
+  vertical-align: middle;
 }
 
 .report-theaters-table th.col-implication,
 .report-theaters-table td.col-implication {
-  width: 27%;
-  min-width: 240px;
-  padding: 0.95rem 1rem;
+  width: 34%;
+  padding: 0.85rem 0.85rem;
   line-height: 1.6;
+  vertical-align: middle;
 }
 
 .report-theaters-table td {
-  padding: 0.95rem 1rem;
+  padding: 0.85rem 0.75rem;
   border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
   line-height: 1.55;
@@ -1918,13 +1918,18 @@ body {
 
 .report-theaters-table .theater-name {
   display: block;
-  white-space: nowrap;
+  white-space: normal;
   word-break: keep-all;
+  overflow-wrap: break-word;
+  line-height: 1.35;
+  margin-bottom: 3px;
 }
 
 .report-theaters-table .theater-region {
   display: block;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: keep-all;
+  line-height: 1.25;
 }
 
 .btn-card-action {
@@ -2358,6 +2363,9 @@ body {
   }
   .map-view-panel {
     padding: 0.75rem 1rem 1.5rem !important;
+  }
+  .report-theaters-table {
+    min-width: 720px;
   }
 }
 
